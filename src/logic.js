@@ -18,6 +18,7 @@ export function start() {
         size: new Vector(5, 5),
         position: new Vector(75, 75),
         velocity: new Vector(),
+        maxVelocity: new Vector(0.5, 0.5),
         acceleration: new Vector()
     });
 
@@ -43,6 +44,8 @@ export function start() {
 
             object.velocity = object.velocity.add(object.acceleration.multiply(dt).addY(g));
             object.position = object.position.add(object.velocity.multiply(dt));
+
+            if(object.position.y < 0) object.position.y = 0;
         }
     }, physicInterval);
 }
@@ -75,15 +78,15 @@ function stop() {
 }
 
 function left() {
-    controllables().forEach(o => o.velocity.x = -1);
+    controllables().forEach(o => o.velocity.x = -o.maxVelocity.x);
 }
 
 function right() {
-    controllables().forEach(o => o.velocity.x = 1);
+    controllables().forEach(o => o.velocity.x = o.maxVelocity.x);
 }
 
 function jump() {
-    controllables().forEach(o => o.acceleration.y = 5);
+    controllables().forEach(o => o.velocity.y = 2);
 }
 
 function controllables() {
