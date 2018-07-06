@@ -1,4 +1,4 @@
-import Vector from "../../data/vector";
+import Vector from "../../../data/vector";
 
 export default class Player {
 
