@@ -7,8 +7,10 @@
   "main": "src/server/index.js",
   "dependencies": {
     "express": "^4.16.3",
+    "mongodb": "^3.1.1",
     "react": "^16.3.1",
-    "react-dom": "^16.3.1"
+    "react-dom": "^16.3.1",
+    "body-parser": "latest"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
