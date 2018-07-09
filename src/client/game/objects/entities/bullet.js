@@ -9,9 +9,7 @@ export default class Bullet extends Particle {
         this.position = position;
         this.size = new Vector(2, 2);
         this.velocity = new Vector(1, 1);
-
         this.direction = destination.subtract(position).normalize;
-        console.log(this.direction);
     }
 
 

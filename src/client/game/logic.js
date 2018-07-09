@@ -34,10 +34,20 @@ export function onKeyUp(event) {
     }
 }
 
+const socket = new WebSocket("ws://localhost:8081");
+socket.onmessage = function(event) {
+    const incomingMessage = event.data;
+    console.log(incomingMessage);
+};
+
 export function onClick(event) {
+    socket.send('letletlet');
+
+
     if (event.path[0].id === 'scene') {
         const target = new Vector(event.layerX, worldHeight - event.layerY);
 
         world.players.forEach(o => o.shoot(target));
     }
 }
+
