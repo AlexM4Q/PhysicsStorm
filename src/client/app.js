@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import './app.css';
-import {onClick, onKeyDown, onKeyUp, start} from "./game/logic";
+import {startGame} from "./game/context";
+import {onClick, onKeyDown, onKeyUp} from "./game/controller";
 
 export default class App extends Component {
     constructor(props) {
@@ -12,11 +13,11 @@ export default class App extends Component {
             .then(res => res.json())
             .then(users => console.log(users));
 
-        start();
-
         document.addEventListener('keydown', onKeyDown);
         document.addEventListener('keyup', onKeyUp);
         document.addEventListener('click', onClick);
+
+        startGame();
     }
 
     componentWillUnmount() {

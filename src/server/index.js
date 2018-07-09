@@ -1,3 +1,5 @@
+import {startServer} from "./game/logic";
+
 const express = require("express");
 const bodyParser = require("body-parser");
 
@@ -41,29 +43,4 @@ app.post("/api/users", jsonParser, function (req, res) {
 
 app.listen(8080, () => console.log("Listening on port 8080!"));
 
-const WebSocketServer = new require('ws');
-
-const clients = {};
-const webSocketServer = new WebSocketServer.Server({
-    port: 8081
-});
-webSocketServer.on('connection', function(ws) {
-
-    const id = Math.random();
-    clients[id] = ws;
-    console.log("новое соединение " + id);
-
-    ws.on('message', function(message) {
-        console.log('получено сообщение ' + message);
-
-        for (const key in clients) {
-            clients[key].send(message);
-        }
-    });
-
-    ws.on('close', function() {
-        console.log('соединение закрыто ' + id);
-        delete clients[id];
-    });
-
-});
+startServer();

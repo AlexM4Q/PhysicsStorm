@@ -1,5 +1,5 @@
 import Particle from "./particle";
-import Vector from "../../data/vector";
+import Vector from "/shared/data/vector";
 
 export default class Bullet extends Particle {
 

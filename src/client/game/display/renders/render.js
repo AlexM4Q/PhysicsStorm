@@ -1,11 +1,10 @@
-import Vector from "../../data/vector";
+import GameObject from "../../../../shared/data/game-object";
 
-export default class GameObject {
+export default class Render extends GameObject {
 
     constructor() {
+        super();
         this.color = "#000000";
-        this.size = new Vector(0, 0);
-        this.position = new Vector(0, 0);
     }
 
     draw(context) {

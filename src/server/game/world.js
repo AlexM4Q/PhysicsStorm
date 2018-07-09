@@ -1,7 +1,6 @@
 import Player from "./objects/entities/player";
 import Particle from "./objects/entities/particle";
 
-const drawInterval = 1000 / 60;
 const physicInterval = 10;
 
 export default class World {
@@ -9,16 +8,6 @@ export default class World {
     constructor() {
         this._objects = [];
         this._lastUpdate = 0;
-
-        const scene = document.getElementById("scene");
-        const context = scene.getContext("2d");
-        context.transform(1, 0, 0, -1, 0, scene.height);
-
-        setInterval(() => {
-            context.clearRect(0, 0, scene.width, scene.height);
-
-            this._objects.forEach(object => object.draw(context))
-        }, drawInterval);
 
         setInterval(() => {
             const now = Date.now();
@@ -35,6 +24,10 @@ export default class World {
                 if (object.position.y < 0) object.position.y = 0;
             }
         }, physicInterval);
+    }
+
+    get renders() {
+        return this._objects;
     }
 
     get players() {
