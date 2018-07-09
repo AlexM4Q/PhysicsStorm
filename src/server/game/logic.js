@@ -7,7 +7,7 @@ let world;
 
 export function startServer() {
     server = new GameServer();
-    window.world = world = new World();
+    world = new World();
 
     world.addObject(new Player());
 
@@ -17,4 +17,8 @@ export function startServer() {
             renders: world.renders
         });
     }, 10);
+
+    server.onMessage = (message) => {
+
+    };
 }

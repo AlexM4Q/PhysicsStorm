@@ -13,7 +13,11 @@ export default class GameServer {
             const id = Math.random();
 
             thiz.clients[id] = ws;
-            ws.on('message', (message) => this.onmessage({id, message}));
+            ws.on('message', (message) => {
+                if (this.onmessage) {
+                    this.onmessage({id, message});
+                }
+            });
             ws.on('close', () => delete thiz.clients[id]);
         });
     }
@@ -24,7 +28,7 @@ export default class GameServer {
 
     sendAll(message) {
         for (const key in this.clients) {
-            this.clients[key].send(message);
+            this.clients[key].send(JSON.stringify(message));
         }
     }
 }

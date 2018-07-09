@@ -1,7 +1,7 @@
 import Particle from "./particle";
-import Vector from "/shared/data/vector";
 import Bullet from "./bullet";
 import {g} from "../../constants";
+import Vector from "../../../../shared/data/vector";
 
 export default class Player extends Particle {
 
