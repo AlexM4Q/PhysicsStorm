@@ -1,4 +1,4 @@
-import {startServer} from "./game/logic";
+import {startServer} from "./game/server-context";
 import mongodb from "mongodb";
 import express from "express";
 import bodyParser from "body-parser";

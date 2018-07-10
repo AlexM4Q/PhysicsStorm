@@ -1,5 +1,5 @@
 import {worldHeight} from "../../shared/constants";
-import {client} from "./context";
+import {client} from "./client-context";
 
 export function onKeyDown(event) {
     switch (event.code) {

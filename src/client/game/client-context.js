@@ -7,12 +7,13 @@ export const client = new GameClient("ws://localhost:8081");
 export function startGame() {
     const scene = document.getElementById("scene");
     const renderer = new Renderer(scene);
+
     client.onMessage = (message) => {
         const data = JSON.parse(message.data);
 
         switch (data.type) {
             case 'state':
-                renderer.renders = data.renders.map(r => new Render(r));
+                renderer.renders = data.state.map(r => new Render(r));
                 break;
         }
     };

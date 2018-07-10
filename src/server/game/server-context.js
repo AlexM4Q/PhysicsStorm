@@ -12,7 +12,7 @@ export function startServer() {
     setInterval(() => {
         server.sendAll({
             type: 'state',
-            renders: world.renders
+            state: world.renders
         });
     }, 10);
 
@@ -46,6 +46,5 @@ export function startServer() {
             case 'click':
                 break;
         }
-
     };
 }

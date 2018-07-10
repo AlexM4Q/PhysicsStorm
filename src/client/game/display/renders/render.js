@@ -6,7 +6,7 @@ export default class Render extends GameObject {
         super(obj);
 
         if (obj) {
-            Object.assign(this, obj);
+            this.update(obj);
         } else {
             this.color = "#000000";
         }
@@ -15,6 +15,12 @@ export default class Render extends GameObject {
     draw(context) {
         context.fillStyle = this.color;
         context.fillRect(this.position.x, this.position.y, this.size.x, this.size.y);
+    }
+
+    updateBy(obj) {
+        super.updateBy(obj);
+
+        Object.assign(this, obj);
     }
 
 }

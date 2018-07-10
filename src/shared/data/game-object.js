@@ -13,4 +13,8 @@ export default class GameObject {
         }
     }
 
+    updateBy(obj) {
+        Object.assign(this, obj);
+    }
+
 }
