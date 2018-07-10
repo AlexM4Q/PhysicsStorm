@@ -1,16 +1,22 @@
 export default class GameClient {
 
     constructor(url) {
-        this.id = false;
-        this.socket = new WebSocket(url);
+        this._socket = new WebSocket(url);
     }
 
     set onMessage(onmessage) {
-        this.socket.onmessage = onmessage;
+        this._socket.onmessage = onmessage;
     }
 
     _send(data) {
-        this.socket.send({data});
+        this._socket.send(JSON.stringify(data));
+    }
+
+    right() {
+        this._send({
+            type: 'move',
+            direction: 'right'
+        });
     }
 
     left() {
@@ -20,22 +26,17 @@ export default class GameClient {
         });
     }
 
-    right() {
+    stop() {
         this._send({
             type: 'move',
-            direction: 'left'
+            direction: 'stop'
         });
     }
 
     jump() {
         this._send({
-            type: 'jump'
-        });
-    }
-
-    stop() {
-        this._send({
-            type: 'stop',
+            type: 'move',
+            direction: 'jump'
         });
     }
 

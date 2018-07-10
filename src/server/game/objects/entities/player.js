@@ -1,6 +1,5 @@
 import Particle from "./particle";
-import Bullet from "./bullet";
-import {g} from "../../constants";
+import {g} from "../../../../shared/constants";
 import Vector from "../../../../shared/data/vector";
 
 export default class Player extends Particle {
@@ -13,12 +12,14 @@ export default class Player extends Particle {
 
     move(dt) {
         super.move(dt);
-        this.velocity = this.velocity.add(this.acceleration.factor(dt).addY(g));
+        const acceleration = this.acceleration.addY(g);
+        this.velocity = this.velocity.add(acceleration.factor(dt));
         this.position = this.position.add(this.velocity.factor(dt));
     }
 
     shoot(target) {
-        window.world.addObject(new Bullet(this.position, target));
+        // todo repair
+        // window.world.addObject(new Bullet(this.position, target));
     }
 
 }

@@ -1,4 +1,4 @@
-import {worldHeight} from "../../server/game/constants";
+import {worldHeight} from "../../shared/constants";
 import {client} from "./context";
 
 export function onKeyDown(event) {

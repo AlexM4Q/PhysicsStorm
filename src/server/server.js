@@ -1,6 +1,6 @@
 import {startServer} from "./game/logic";
 import mongodb from "mongodb";
-import express from 'express'
+import express from "express";
 import bodyParser from "body-parser";
 
 const mongoClient = mongodb.MongoClient;

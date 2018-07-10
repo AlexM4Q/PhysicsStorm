@@ -2,9 +2,14 @@ import GameObject from "../../../../shared/data/game-object";
 
 export default class Render extends GameObject {
 
-    constructor() {
-        super();
-        this.color = "#000000";
+    constructor(obj) {
+        super(obj);
+
+        if (obj) {
+            Object.assign(this, obj);
+        } else {
+            this.color = "#000000";
+        }
     }
 
     draw(context) {

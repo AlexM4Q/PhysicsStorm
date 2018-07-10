@@ -1,8 +1,10 @@
+import uuidv4 from "uuid/v4";
+import WebSocketServer from "ws";
+
 export default class GameServer {
     constructor() {
         this.clients = {};
 
-        const WebSocketServer = new require('ws');
         const webSocketServer = new WebSocketServer.Server({
             port: 8081
         });
@@ -10,16 +12,26 @@ export default class GameServer {
         const thiz = this;
 
         webSocketServer.on('connection', function (ws) {
-            const id = Math.random();
+            const id = uuidv4();
+
+            console.log(`User connected ${id}`);
 
             thiz.clients[id] = ws;
+            thiz.onconnection(id);
             ws.on('message', (message) => {
-                if (this.onmessage) {
-                    this.onmessage({id, message});
+                if (thiz.onmessage) {
+                    thiz.onmessage({
+                        id: id,
+                        data: JSON.parse(message)
+                    });
                 }
             });
             ws.on('close', () => delete thiz.clients[id]);
         });
+    }
+
+    set onConnection(onconnection) {
+        this.onconnection = onconnection;
     }
 
     set onMessage(onmessage) {
