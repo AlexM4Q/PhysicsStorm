@@ -1,6 +1,6 @@
 import Particle from "./particle";
-import {g} from "../../../../shared/constants";
-import Vector from "../../../../shared/data/vector";
+import {g} from "../../../constants";
+import Vector from "../../../data/vector";
 
 export default class Player extends Particle {
 

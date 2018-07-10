@@ -8,7 +8,9 @@ export default class World {
     constructor() {
         this._objects = [];
         this._lastUpdate = 0;
+    }
 
+    start() {
         setInterval(() => {
             const now = Date.now();
             const dt = now - this._lastUpdate;
@@ -26,7 +28,7 @@ export default class World {
         }, physicInterval);
     }
 
-    get renders() {
+    get state() {
         return this._objects;
     }
 

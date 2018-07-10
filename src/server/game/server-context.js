@@ -1,18 +1,16 @@
-import World from "./world";
-import Player from "./objects/entities/player";
 import GameServer from "./game-server";
-
-let server;
-let world;
+import Player from "../../shared/game/objects/entities/player";
+import {world} from "../../shared/game/shared-context";
 
 export function startServer() {
-    server = new GameServer();
-    world = new World();
+    const server = new GameServer();
+
+    world.start();
 
     setInterval(() => {
         server.sendAll({
             type: 'state',
-            state: world.renders
+            state: world.state
         });
     }, 10);
 

@@ -33,13 +33,6 @@ export default class Vector {
         return new Vector(this.x * factor, this.y * factor);
     }
 
-    get round() {
-        return new Vector(
-            this.x === 0 ? 0 : this.x > 0 ? 1 : -1,
-            this.y === 0 ? 0 : this.y > 0 ? 1 : -1
-        );
-    }
-
     get length() {
         return Math.sqrt(this.x * this.x + this.y * this.y);
     }

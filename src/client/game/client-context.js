@@ -1,6 +1,6 @@
 import GameClient from "./game-client";
-import Renderer from "./display/renderer";
-import Render from "./display/renders/render";
+import Renderer from "./renderer";
+import GameObject from "../../shared/game/objects/entities/game-object";
 
 export const client = new GameClient("ws://localhost:8081");
 
@@ -13,7 +13,7 @@ export function startGame() {
 
         switch (data.type) {
             case 'state':
-                renderer.renders = data.state.map(r => new Render(r));
+                renderer.renders = data.state.map(r => new GameObject(r));
                 break;
         }
     };
