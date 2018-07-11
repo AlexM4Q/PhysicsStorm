@@ -10,6 +10,14 @@ export default class World {
         this._lastUpdate = 0;
     }
 
+    get state() {
+        return this._objects;
+    }
+
+    get players() {
+        return this._objects.filter(o => o instanceof Player);
+    }
+
     start() {
         setInterval(() => {
             const now = Date.now();
@@ -28,16 +36,11 @@ export default class World {
         }, physicInterval);
     }
 
-    get state() {
-        return this._objects;
-    }
-
-    get players() {
-        return this._objects.filter(o => o instanceof Player);
-    }
-
     addObject(object) {
         this._objects.push(object);
     }
 
+    remove(id) {
+        this._objects = this._objects.filter(x => x.id !== id);
+    }
 }

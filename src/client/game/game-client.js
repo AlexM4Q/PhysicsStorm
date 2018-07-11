@@ -40,11 +40,10 @@ export default class GameClient {
         });
     }
 
-    click(x, y) {
+    click(target) {
         this._send({
             type: 'click',
-            x: x,
-            y: y
+            target: target
         });
     }
 

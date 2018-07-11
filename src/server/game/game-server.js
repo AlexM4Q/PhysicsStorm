@@ -19,14 +19,15 @@ export default class GameServer {
             thiz.clients[id] = ws;
             thiz.onconnection(id);
             ws.on('message', (message) => {
-                if (thiz.onmessage) {
-                    thiz.onmessage({
-                        id: id,
-                        data: JSON.parse(message)
-                    });
-                }
+                thiz.onmessage({
+                    id: id,
+                    data: JSON.parse(message)
+                });
             });
-            ws.on('close', () => delete thiz.clients[id]);
+            ws.on('close', () => {
+                delete thiz.clients[id];
+                thiz.onclose(id);
+            });
         });
     }
 
@@ -36,6 +37,10 @@ export default class GameServer {
 
     set onMessage(onmessage) {
         this.onmessage = onmessage;
+    }
+
+    set onClose(onclose) {
+        this.onclose = onclose;
     }
 
     sendAll(message) {

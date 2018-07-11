@@ -13,7 +13,7 @@ export function startGame() {
 
         switch (data.type) {
             case 'state':
-                renderer.renders = data.state.map(r => new GameObject(r));
+                renderer.renders = data.state.map(r => GameObject.cast(r));
                 break;
         }
     };

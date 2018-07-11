@@ -5,6 +5,24 @@ export default class Vector {
         this.y = y;
     }
 
+    get length() {
+        return Math.sqrt(this.x * this.x + this.y * this.y);
+    }
+
+    get normalize() {
+        return new Vector(this.x, this.y).factor(1 / this.length);
+    }
+
+    static cast(obj) {
+        if (obj) {
+            const vector = new Vector();
+            Object.assign(vector, obj);
+            return vector;
+        }
+
+        return undefined;
+    }
+
     addX(value) {
         return new Vector(this.x + value, this.y);
     }
@@ -31,14 +49,6 @@ export default class Vector {
 
     factor(factor) {
         return new Vector(this.x * factor, this.y * factor);
-    }
-
-    get length() {
-        return Math.sqrt(this.x * this.x + this.y * this.y);
-    }
-
-    get normalize() {
-        return new Vector(this.x, this.y).factor(1 / this.length);
     }
 
 }

@@ -1,9 +1,10 @@
 import Particle from "./particle";
 import {g} from "../../../constants";
 import Vector from "../../../data/vector";
+import Bullet from "./bullet";
+import {world} from "../../shared-context";
 
 export default class Player extends Particle {
-
     constructor() {
         super();
         this.size = new Vector(5, 5);
@@ -18,8 +19,6 @@ export default class Player extends Particle {
     }
 
     shoot(target) {
-        // todo repair
-        // window.world.addObject(new Bullet(this.position, target));
+        world.addObject(new Bullet(this.position, target));
     }
-
 }

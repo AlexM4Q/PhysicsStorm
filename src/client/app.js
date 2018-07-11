@@ -9,10 +9,6 @@ export default class App extends Component {
     }
 
     componentDidMount() {
-        fetch('/api/users')
-            .then(res => res.json())
-            .then(users => console.log(users));
-
         document.addEventListener('keydown', onKeyDown);
         document.addEventListener('keyup', onKeyUp);
         document.addEventListener('click', onClick);

@@ -1,5 +1,6 @@
 import GameServer from "./game-server";
 import Player from "../../shared/game/objects/entities/player";
+import Vector from "../../shared/data/vector";
 import {world} from "../../shared/game/shared-context";
 
 export function startServer() {
@@ -42,7 +43,12 @@ export function startServer() {
                 }
                 break;
             case 'click':
+                player.shoot(Vector.cast(data.target));
                 break;
         }
+    };
+
+    server.onClose = (id) => {
+        world.remove(id);
     };
 }

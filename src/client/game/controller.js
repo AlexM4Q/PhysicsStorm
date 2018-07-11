@@ -1,5 +1,6 @@
 import {worldHeight} from "../../shared/constants";
 import {client} from "./client-context";
+import Vector from "../../shared/data/vector";
 
 export function onKeyDown(event) {
     switch (event.code) {
@@ -26,6 +27,6 @@ export function onKeyUp(event) {
 
 export function onClick(event) {
     if (event.path[0].id === 'scene') {
-        client.click(event.layerX, worldHeight - event.layerY);
+        client.click(new Vector(event.layerX, worldHeight - event.layerY));
     }
 }
