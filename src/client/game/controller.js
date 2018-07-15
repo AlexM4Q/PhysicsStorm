@@ -1,17 +1,17 @@
 import {worldHeight} from "../../shared/constants";
-import {client} from "./client-context";
+import {context} from "./client-context";
 import Vector from "../../shared/data/vector";
 
 export function onKeyDown(event) {
     switch (event.code) {
         case "KeyA":
-            client.left();
+            context.left();
             break;
         case "KeyD":
-            client.right();
+            context.right();
             break;
         case "Space":
-            client.jump();
+            context.jump();
             break;
     }
 }
@@ -20,13 +20,13 @@ export function onKeyUp(event) {
     switch (event.code) {
         case "KeyD":
         case "KeyA":
-            client.stop();
+            context.stop();
             break;
     }
 }
 
 export function onClick(event) {
     if (event.path[0].id === 'scene') {
-        client.click(new Vector(event.layerX, worldHeight - event.layerY));
+        context.click(new Vector(event.layerX, worldHeight - event.layerY));
     }
 }

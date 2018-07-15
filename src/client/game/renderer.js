@@ -1,9 +1,12 @@
+import {drawInterval} from "../../shared/constants";
+
 export default class Renderer {
-    constructor(scene) {
+
+    constructor() {
         this._renders = [];
+    }
 
-        const drawInterval = 1000 / 60;
-
+    start(scene) {
         const context = scene.getContext("2d");
         context.transform(1, 0, 0, -1, 0, scene.height);
 
