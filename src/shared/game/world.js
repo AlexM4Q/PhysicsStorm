@@ -1,5 +1,5 @@
 import Player from "./objects/entities/player";
-import Particle from "./objects/entities/particle";
+import Particle from "./objects/entities/physics/particle";
 import {physicInterval} from "../constants";
 
 export default class World {

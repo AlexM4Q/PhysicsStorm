@@ -29,16 +29,16 @@ export function startServer() {
             case 'move':
                 switch (data.direction) {
                     case 'right':
-                        player.velocity.x = player.maxVelocity.x;
+                        player.linearVelocity.x = player.maxVelocity.x;
                         break;
                     case 'left':
-                        player.velocity.x = -player.maxVelocity.x;
+                        player.linearVelocity.x = -player.maxVelocity.x;
                         break;
                     case 'stop':
-                        player.velocity.x = 0;
+                        player.linearVelocity.x = 0;
                         break;
                     case 'jump':
-                        player.velocity.y = 2;
+                        player.linearVelocity.y = 2;
                         break;
                 }
                 break;

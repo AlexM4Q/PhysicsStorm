@@ -1,24 +1,24 @@
-import Particle from "./particle";
-import {g} from "../../../constants";
 import Vector from "../../../data/vector";
 import Bullet from "./bullet";
 import {world} from "../../shared-context";
+import Box from "./physics/box";
+import {TYPE_PLAYER} from "../../game-object-types";
 
-export default class Player extends Particle {
+export default class Player extends Box {
+
     constructor() {
         super();
-        this.size = new Vector(5, 5);
-        this.position = new Vector(0, 0);
-    }
-
-    move(dt) {
-        super.move(dt);
-        const acceleration = this.acceleration.addY(g);
-        this.velocity = this.velocity.add(acceleration.factor(dt));
-        this.position = this.position.add(this.velocity.factor(dt));
+        this.type = TYPE_PLAYER;
+        this.maxVelocity = new Vector(0.5, 0.5);
     }
 
     shoot(target) {
         world.addObject(new Bullet(this.position, target));
     }
+
+    draw(context) {
+        context.fillStyle = this.color;
+        context.fillRect(this.position.x, this.position.y, this.size.x, this.size.y);
+    }
+
 }
