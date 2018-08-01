@@ -1,4 +1,4 @@
-import GameObject from "../game-object.js";
+import GameObject from "../game-object";
 import Vector from "../../../../data/vector";
 
 export default class Particle extends GameObject {

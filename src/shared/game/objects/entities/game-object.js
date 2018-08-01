@@ -1,7 +1,6 @@
 import Vector from "../../../data/vector";
 import uuidv4 from "uuid/v4";
-import {TYPE_GAME_OBJECT, TYPE_PLAYER} from "../../game-object-types";
-import Player from "./player";
+import {TYPE_GAME_OBJECT} from "../../game-object-types";
 
 export default class GameObject {
 
@@ -12,28 +11,7 @@ export default class GameObject {
         this.color = "#000000";
     }
 
-    static cast(obj) {
-        let cast;
-        switch (obj.type) {
-            case TYPE_GAME_OBJECT:
-                cast = new GameObject();
-                break;
-            case TYPE_PLAYER:
-                cast = new Player();
-                break;
-            default:
-                return undefined;
-        }
-
-        cast.updateBy(obj);
-        return cast;
-    }
-
     draw(context) {
-    }
-
-    updateBy(obj) {
-        Object.assign(this, obj);
     }
 
 }

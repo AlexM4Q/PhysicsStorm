@@ -1,8 +1,8 @@
 import GameClient from "./game-client";
 import Renderer from "./renderer";
-import GameObject from "../../shared/game/objects/entities/game-object";
 import {wsHost} from "../../shared/constants";
 import {world} from "../../shared/game/shared-context";
+import {cast} from "../../shared/game/utils/game-object-utils";
 
 class ClientContext {
 
@@ -21,7 +21,7 @@ class ClientContext {
 
             switch (data.type) {
                 case 'state':
-                    this.renderer.renders = data.state.map(r => GameObject.cast(r));
+                    this.renderer.renders = data.state.map(r => cast(r));
                     break;
             }
         };
