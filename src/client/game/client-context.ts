@@ -1,52 +1,55 @@
 import GameClient from "./game-client";
 import Renderer from "./renderer";
 import {wsHost} from "../../shared/constants";
-import {world} from "../../shared/game/shared-context";
-import {cast} from "../../shared/game/utils/game-object-utils";
+import {inject, injectable} from "inversify";
+import World from "../../shared/game/world";
+import {TYPES} from "../../shared/inversify.config";
 
-class ClientContext {
+@injectable()
+export default class ClientContext {
 
-    constructor() {
+    private client: GameClient;
+    private renderer: Renderer;
+
+    public constructor(@inject(TYPES.WORLD) private  world: World) {
         this.renderer = new Renderer();
         this.client = new GameClient(wsHost);
     }
 
-    startGame() {
+    public startGame(): void {
         const scene = document.getElementById("scene");
 
-        world.start();
+        this.world.start();
         this.renderer.start(scene);
         this.client.onMessage = (message) => {
             const data = JSON.parse(message.data);
 
             switch (data.type) {
                 case 'state':
-                    this.renderer.renders = data.state.map(r => cast(r));
+                    this.renderer.renders = data.state;
                     break;
             }
         };
     }
 
-    right() {
+    public right(): void {
         this.client.right();
     }
 
-    left() {
+    public left(): void {
         this.client.left();
     }
 
-    stop() {
+    public stop(): void {
         this.client.stop();
     }
 
-    jump() {
+    public jump(): void {
         this.client.jump();
     }
 
-    click(target) {
+    public click(target): void {
         this.client.click(target);
     }
 
 }
-
-export const context = new ClientContext();

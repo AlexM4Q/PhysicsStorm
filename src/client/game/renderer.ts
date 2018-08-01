@@ -1,12 +1,11 @@
 import {drawInterval} from "../../shared/constants";
+import GameObject from "../../shared/game/entities/base/game-object";
 
 export default class Renderer {
 
-    constructor() {
-        this._renders = [];
-    }
+    private _renders: GameObject[] = [];
 
-    start(scene) {
+    public start(scene) {
         const context = scene.getContext("2d");
         context.transform(1, 0, 0, -1, 0, scene.height);
 
@@ -17,7 +16,8 @@ export default class Renderer {
         }, drawInterval);
     }
 
-    set renders(renders) {
+    public set renders(renders: GameObject[]) {
         this._renders = renders;
     }
+
 }

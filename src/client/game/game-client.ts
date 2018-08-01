@@ -1,46 +1,50 @@
+import * as WebSocket from "ws";
+
 export default class GameClient {
+
+    private _socket: WebSocket;
 
     constructor(url) {
         this._socket = new WebSocket(url);
     }
 
-    set onMessage(onmessage) {
+    public set onMessage(onmessage) {
         this._socket.onmessage = onmessage;
     }
 
-    _send(data) {
+    private _send(data): void {
         this._socket.send(JSON.stringify(data));
     }
 
-    right() {
+    public right(): void {
         this._send({
             type: 'move',
             direction: 'right'
         });
     }
 
-    left() {
+    public left(): void {
         this._send({
             type: 'move',
             direction: 'left'
         });
     }
 
-    stop() {
+    public stop(): void {
         this._send({
             type: 'move',
             direction: 'stop'
         });
     }
 
-    jump() {
+    public jump(): void {
         this._send({
             type: 'move',
             direction: 'jump'
         });
     }
 
-    click(target) {
+    public click(target): void {
         this._send({
             type: 'click',
             target: target

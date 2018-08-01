@@ -1,31 +1,38 @@
-import uuidv4 from "uuid/v4";
-import WebSocketServer from "ws";
+import * as WebSocket from "ws";
+import Guid from "../../shared/utils/guid-utils";
 
 export default class GameServer {
-    constructor() {
-        this.clients = {};
 
-        const webSocketServer = new WebSocketServer.Server({
+    private _clients: any;
+    private onconnection: any;
+    private onmessage: any;
+    private onclose: any;
+
+    constructor() {
+        this._clients = {};
+
+        const webSocketServer = new WebSocket.Server({
             port: 8081
         });
 
         const thiz = this;
 
         webSocketServer.on('connection', function (ws) {
-            const id = uuidv4();
+            const id = Guid.newGuid();
 
             console.log(`User connected ${id}`);
 
-            thiz.clients[id] = ws;
+            thiz._clients[id] = ws;
             thiz.onconnection(id);
             ws.on('message', (message) => {
+                console.log(message);
                 thiz.onmessage({
                     id: id,
-                    data: JSON.parse(message)
+                    data: JSON.parse(message.toString())
                 });
             });
             ws.on('close', () => {
-                delete thiz.clients[id];
+                delete thiz._clients[id];
                 thiz.onclose(id);
             });
         });
@@ -44,8 +51,8 @@ export default class GameServer {
     }
 
     sendAll(message) {
-        for (const key in this.clients) {
-            this.clients[key].send(JSON.stringify(message));
+        for (const client of this._clients) {
+            client.send(JSON.stringify(message));
         }
     }
 }
