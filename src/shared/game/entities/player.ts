@@ -4,20 +4,22 @@ import RigidBody from "./physics/rigid-body";
 import Box from "./shapes/box";
 import World from "../world";
 import {inject, injectable} from "inversify";
-import {TYPES} from "../../inversify.config";
 
 @injectable()
 export default class Player extends RigidBody<Box> {
 
+    private readonly _world: World;
+
     private _maxVelocity: Vector;
 
-    public constructor(@inject(TYPES.WORLD) private world: World) {
+    public constructor(@inject(World) world: World) {
         super();
+        this._world = world;
         this._maxVelocity = new Vector(0.5, 0.5);
     }
 
     public shoot(target): void {
-        this.world.addObject(new Bullet(this.position, target));
+        this._world.addObject(new Bullet(this.position, target));
     }
 
     public draw(context): void {

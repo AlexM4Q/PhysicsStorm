@@ -1,8 +1,6 @@
-import * as WebSocket from "ws";
-
 export default class GameClient {
 
-    private _socket: WebSocket;
+    private readonly _socket: WebSocket;
 
     constructor(url) {
         this._socket = new WebSocket(url);

@@ -3,7 +3,6 @@ import Renderer from "./renderer";
 import {wsHost} from "../../shared/constants";
 import {inject, injectable} from "inversify";
 import World from "../../shared/game/world";
-import {TYPES} from "../../shared/inversify.config";
 
 @injectable()
 export default class ClientContext {
@@ -11,9 +10,9 @@ export default class ClientContext {
     private client: GameClient;
     private renderer: Renderer;
 
-    public constructor(@inject(TYPES.WORLD) private  world: World) {
-        this.renderer = new Renderer();
+    public constructor(@inject(World) private readonly world: World) {
         this.client = new GameClient(wsHost);
+        this.renderer = new Renderer();
     }
 
     public startGame(): void {

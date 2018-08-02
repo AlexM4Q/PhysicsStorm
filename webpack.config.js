@@ -6,33 +6,23 @@ const outputDirectory = "dist";
 
 module.exports = {
     entry: "./src/client/index.tsx",
-    output: {
-        path: path.join(__dirname, outputDirectory),
-        filename: "bundle.js"
-    },
     resolve: {
         extensions: [".ts", ".tsx", ".js"]
     },
     module: {
         rules: [
             {
-                test: /\.js$/,
-                exclude: /node_modules/,
-                use: {
-                    loader: "babel-loader"
-                }
+                test: /\.tsx?$/,
+                loader: "ts-loader",
+                exclude: /node_modules/
             },
             {
                 test: /\.css$/,
                 use: ["style-loader", "css-loader"]
-            },
-            {
-                test: /\.tsx?$/,
-                loader: "ts-loader",
-                exclude: /node_modules/
             }
         ]
     },
+    devtool: "inline-source-map",
     devServer: {
         port: 3000,
         open: true,
@@ -46,5 +36,10 @@ module.exports = {
             template: "./public/index.html",
             favicon: "./public/favicon.ico"
         })
-    ]
+    ],
+    output: {
+        path: path.join(__dirname, outputDirectory),
+        filename: "bundle.js"
+    },
+    target: 'web'
 };

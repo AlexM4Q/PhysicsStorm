@@ -1,13 +1,12 @@
 import {worldHeight} from "../../shared/constants";
 import Vector from "../../shared/data/vector";
 import ClientContext from "./client-context";
-import {TYPES} from "../../shared/inversify.config";
 import {inject, injectable} from "inversify";
 
 @injectable()
 export default class InputController {
 
-    public constructor(@inject(TYPES.CLIENT_CONTEXT) private context: ClientContext) {
+    public constructor(@inject(ClientContext) private readonly context: ClientContext) {
     }
 
     onKeyDown(event): void {

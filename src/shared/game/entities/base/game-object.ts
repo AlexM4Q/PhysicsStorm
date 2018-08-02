@@ -4,8 +4,8 @@ import Guid from "../../../utils/guid-utils";
 export default abstract class GameObject {
 
     public id: string = Guid.newGuid();
-    protected position: Vector;
-    protected color: string = "#000000";
+    public position: Vector;
+    public color: string = "#000000";
 
     public abstract draw(context): void;
 

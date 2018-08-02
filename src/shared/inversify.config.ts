@@ -1,9 +1,8 @@
+import "reflect-metadata";
 import {Container} from "inversify";
 import World from "../shared/game/world";
 
-export const TYPES: any = {
-    WORLD: Symbol.for(World.toString())
-};
+const container = new Container();
+container.bind<World>(World).toSelf().inSingletonScope();
 
-export const container = new Container();
-container.bind<World>(TYPES.WORLD).toSelf().inSingletonScope();
+export default container;

@@ -1,13 +1,13 @@
+import container from "../inversify.config";
 import GameServer from "./game-server";
 import Player from "../../shared/game/entities/player";
 import {inject, injectable} from "inversify";
-import {container, TYPES} from "../../shared/inversify.config";
 import World from "../../shared/game/world";
 
 @injectable()
 export default class ServerContext {
 
-    public constructor(@inject(TYPES.WORLD) private  world: World) {
+    public constructor(@inject(World) private readonly world: World) {
     }
 
     public startServer(): void {
@@ -30,7 +30,7 @@ export default class ServerContext {
 
         server.onMessage = (info) => {
             const data = info.data;
-            const player = this.world.players.filter(x => x.id === info.id)[0];
+            const player = this.world.objects.filter(x => x.id === info.id && x instanceof player)[0];
 
             switch (data.type) {
                 case 'move':

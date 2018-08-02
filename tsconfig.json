@@ -1,20 +1,24 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "jsx": "react",
     "module": "commonjs",
-    "lib": [
-      "es6",
-      "dom"
-    ],
+    "target": "es5",
+    "outDir": "./dist/",
+    "rootDir": "src",
+    "sourceMap": true,
+    "baseUrl": ".",
+    "jsx": "react",
     "types": [
       "reflect-metadata"
     ],
+    "typeRoots": [
+      "node_modules/@types"
+    ],
     "moduleResolution": "node",
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "removeComments": true
   },
   "exclude": [
-    "node_modules"
+    "./node_modules"
   ]
 }
