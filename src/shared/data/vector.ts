@@ -9,6 +9,10 @@ export default class Vector {
         this.y = y;
     }
 
+    public static parse(target: any): Vector {
+        return new Vector(target.x, target.y);
+    }
+
     public get length(): number {
         return Math.sqrt(this.x * this.x + this.y * this.y);
     }
@@ -44,5 +48,4 @@ export default class Vector {
     public factor(factor): Vector {
         return new Vector(this.x * factor, this.y * factor);
     }
-
 }

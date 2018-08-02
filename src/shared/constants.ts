@@ -1,5 +1,5 @@
-export const port: number = 8080;
-export const wsHost: string = `ws://localhost:${port}`;
+export const WS_PORT: number = 8081;
+export const wsHost: string = `ws://localhost:${WS_PORT}`;
 
 export const worldWidth = 500;
 export const worldHeight = 500;

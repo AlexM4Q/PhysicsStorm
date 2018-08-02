@@ -3,7 +3,7 @@ import * as mongoose from "mongoose";
 import * as bodyParser from "body-parser";
 import container from "./inversify.config";
 import ServerContext from "./game/server-context";
-import {port} from "../shared/constants";
+import {serverPort} from "./constants";
 
 class Server {
 
@@ -18,8 +18,9 @@ class Server {
         this.mongoSetup();
         this.routes();
 
-        this._app.listen(port, () => console.log(`Listening on port ${port}!`));
-        container.get<ServerContext>(ServerContext).startServer();
+        this._app.listen(serverPort, () => console.log(`Listening on port ${serverPort}!`));
+
+        container.get<ServerContext>(ServerContext).startServer(this._app);
     }
 
     private middleware(): void {
@@ -29,7 +30,7 @@ class Server {
     }
 
     private mongoSetup(): void {
-        mongoose.connect(this.dbUrl);
+        mongoose.connect(this.dbUrl, {useNewUrlParser: true});
     }
 
     private routes(): void {

@@ -3,6 +3,9 @@ import Renderer from "./renderer";
 import {wsHost} from "../../shared/constants";
 import {inject, injectable} from "inversify";
 import World from "../../shared/game/world";
+import GameObject from "../../shared/game/entities/base/game-object";
+import container from "../../server/inversify.config";
+import Player from "../../shared/game/entities/player";
 
 @injectable()
 export default class ClientContext {
@@ -20,12 +23,16 @@ export default class ClientContext {
 
         this.world.start();
         this.renderer.start(scene);
-        this.client.onMessage = (message) => {
-            const data = JSON.parse(message.data);
 
-            switch (data.type) {
+        const player = container.resolve(Player);
+        player.id = id;
+        this.world.addObject(player);
+
+        this.client.onMessage = (message) => {
+            switch (message.type) {
                 case 'state':
-                    this.renderer.renders = data.state;
+                    this.world.update(message.state as GameObject[]);
+                    this.renderer.renders = this.world.state;
                     break;
             }
         };

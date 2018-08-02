@@ -10,7 +10,7 @@ export default class World {
     private _objects: GameObject[] = [];
     private _lastUpdate: number;
 
-    public get state() {
+    public get state(): GameObject[] {
         return this._objects;
     }
 
@@ -20,14 +20,13 @@ export default class World {
             const dt = now - this._lastUpdate;
             this._lastUpdate = now;
 
-            for (let i = 0; i < this._objects.length; i++) {
-                const object: GameObject = this._objects[i];
+            for (let gameObject of this._objects) {
 
-                if (object instanceof Particle) {
-                    object.move(dt);
+                if (gameObject instanceof Particle) {
+                    gameObject.move(dt);
                 }
 
-                if (object.position.y < 0) object.position.y = 0;
+                if (gameObject.position.y < 0) gameObject.position.y = 0;
             }
         }, physicInterval);
     }
@@ -42,5 +41,16 @@ export default class World {
 
     public remove(id): void {
         this._objects = this._objects.filter(x => x.id !== id);
+    }
+
+    public update(state: GameObject[]): void {
+        for (let object of state) {
+            for (let gameObject of this._objects) {
+                if (object.id === gameObject.id) {
+                    gameObject.updateBy(object);
+                    break;
+                }
+            }
+        }
     }
 }

@@ -17,17 +17,17 @@ export default class App extends React.Component {
     }
 
     componentDidMount() {
-        document.addEventListener('keydown', this._inputController.onKeyDown);
-        document.addEventListener('keyup', this._inputController.onKeyUp);
-        document.addEventListener('click', this._inputController.onClick);
+        document.addEventListener('keydown', (e) => this._inputController.onKeyDown(e));
+        document.addEventListener('keyup', (e) => this._inputController.onKeyUp(e));
+        document.addEventListener('click', (e) => this._inputController.onClick(e));
 
         this._clientContext.startGame();
     }
 
     componentWillUnmount() {
-        document.removeEventListener('keydown', this._inputController.onKeyDown);
-        document.removeEventListener('keyup', this._inputController.onKeyUp);
-        document.removeEventListener('click', this._inputController.onClick);
+        document.removeEventListener('keydown', (e) => this._inputController.onKeyDown(e));
+        document.removeEventListener('keyup', (e) => this._inputController.onKeyUp(e));
+        document.removeEventListener('click', (e) => this._inputController.onClick(e));
     }
 
     render() {

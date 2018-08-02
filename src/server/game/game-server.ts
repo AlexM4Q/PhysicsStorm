@@ -1,37 +1,47 @@
-import * as WebSocket from "ws";
+import {createServer, Server} from "http";
 import Guid from "../../shared/utils/guid-utils";
+import * as SocketIO from "socket.io";
+import {Socket} from "socket.io";
+import {WS_PORT} from "../../shared/constants";
+import {Application} from "express";
 
 export default class GameServer {
 
-    private _clients: any;
+    private readonly server: Server;
+    private readonly io: SocketIO.Server;
+
+    private _clients: { [id: string]: Socket };
     private onconnection: any;
     private onmessage: any;
     private onclose: any;
 
-    constructor() {
+    constructor(app: Application) {
         this._clients = {};
 
-        const webSocketServer = new WebSocket.Server({
-            port: 8081
-        });
+        this.server = createServer(app);
+        this.io = SocketIO(this.server);
+
+        this.server.listen(WS_PORT);
 
         const thiz = this;
 
-        webSocketServer.on('connection', function (ws) {
+        this.io.on('connect', socket => {
             const id = Guid.newGuid();
 
             console.log(`User connected ${id}`);
 
-            thiz._clients[id] = ws;
+            thiz._clients[id] = socket;
             thiz.onconnection(id);
-            ws.on('message', (message) => {
+
+            socket.on('message', (message: any) => {
                 console.log(message);
                 thiz.onmessage({
                     id: id,
-                    data: JSON.parse(message.toString())
+                    data: message
                 });
             });
-            ws.on('close', () => {
+
+            socket.on('disconnect', () => {
                 delete thiz._clients[id];
                 thiz.onclose(id);
             });
@@ -50,9 +60,11 @@ export default class GameServer {
         this.onclose = onclose;
     }
 
-    sendAll(message) {
-        for (const client of this._clients) {
-            client.send(JSON.stringify(message));
+    public sendAll(message): void {
+        for (let id in this._clients) {
+            if (this._clients.hasOwnProperty(id)) {
+                this._clients[id].emit('message', message);
+            }
         }
     }
 }

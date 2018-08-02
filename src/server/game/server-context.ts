@@ -3,6 +3,8 @@ import GameServer from "./game-server";
 import Player from "../../shared/game/entities/player";
 import {inject, injectable} from "inversify";
 import World from "../../shared/game/world";
+import Vector from "../../shared/data/vector";
+import {Application} from "express";
 
 @injectable()
 export default class ServerContext {
@@ -10,8 +12,8 @@ export default class ServerContext {
     public constructor(@inject(World) private readonly world: World) {
     }
 
-    public startServer(): void {
-        const server = new GameServer();
+    public startServer(app: Application): void {
+        const server = new GameServer(app);
 
         this.world.start();
 
@@ -20,7 +22,7 @@ export default class ServerContext {
                 type: 'state',
                 state: this.world.state
             });
-        }, 10);
+        }, 100);
 
         server.onConnection = (id) => {
             const player = container.resolve(Player);
@@ -29,8 +31,8 @@ export default class ServerContext {
         };
 
         server.onMessage = (info) => {
-            const data = info.data;
-            const player = this.world.objects.filter(x => x.id === info.id && x instanceof player)[0];
+            const data: any = info.data;
+            const player: Player = this.world.objects.filter(x => x.id === info.id && x instanceof Player)[0] as Player;
 
             switch (data.type) {
                 case 'move':
@@ -50,7 +52,7 @@ export default class ServerContext {
                     }
                     break;
                 case 'click':
-                    player.shoot(data.target);
+                    player.shoot(Vector.parse(data.target));
                     break;
             }
         };

@@ -6,11 +6,10 @@ export default class Bullet extends Particle<Box> {
 
     private direction: Vector;
 
-    constructor(position, target) {
-        super();
+    constructor(position: Vector, target: Vector) {
+        super(new Box(new Vector(2, 2)));
         this.color = "#ff0000";
         this.position = position;
-        this.shape = new Box(new Vector(2, 2));
         this.linearVelocity = new Vector(1, 1);
         this.direction = target.subtract(position).normalize;
     }
