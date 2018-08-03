@@ -1,19 +1,17 @@
 import "./app.css";
 import * as React from "react";
-import ClientContext from "./game/client-context";
+import {clientContainer} from "./inversify.config";
+import {CLIENT_TYPES} from "./inversify.types";
 import InputController from "./game/input-controller";
-import container from "./inversify.config";
 
 export default class App extends React.Component {
 
-    private readonly _clientContext: ClientContext;
     private readonly _inputController: InputController;
 
     constructor(props) {
         super(props);
 
-        this._clientContext = container.get(ClientContext);
-        this._inputController = container.get(InputController);
+        this._inputController = clientContainer.get<InputController>(CLIENT_TYPES.InputController);
     }
 
     componentDidMount() {
@@ -21,7 +19,7 @@ export default class App extends React.Component {
         document.addEventListener('keyup', (e) => this._inputController.onKeyUp(e));
         document.addEventListener('click', (e) => this._inputController.onClick(e));
 
-        this._clientContext.startGame();
+        this._inputController.startGame();
     }
 
     componentWillUnmount() {

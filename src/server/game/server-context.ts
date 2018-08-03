@@ -1,4 +1,5 @@
-import container from "../inversify.config";
+import {serverContainer} from "../inversify.config";
+import SERVER_TYPES from "../inversify.types";
 import GameServer from "./game-server";
 import Player from "../../shared/game/entities/player";
 import {inject, injectable} from "inversify";
@@ -9,7 +10,7 @@ import {Application} from "express";
 @injectable()
 export default class ServerContext {
 
-    public constructor(@inject(World) private readonly world: World) {
+    public constructor(@inject(SERVER_TYPES.World) private readonly world: World) {
     }
 
     public startServer(app: Application): void {
@@ -25,7 +26,7 @@ export default class ServerContext {
         }, 100);
 
         server.onConnection = (id) => {
-            const player = container.resolve(Player);
+            const player = serverContainer.resolve(Player);
             player.id = id;
             this.world.addObject(player);
         };

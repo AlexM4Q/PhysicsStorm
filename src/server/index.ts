@@ -1,7 +1,8 @@
 import * as express from "express";
 import * as mongoose from "mongoose";
 import * as bodyParser from "body-parser";
-import container from "./inversify.config";
+import {serverContainer} from "./inversify.config";
+import SERVER_TYPES from "./inversify.types";
 import ServerContext from "./game/server-context";
 import {serverPort} from "./constants";
 
@@ -20,7 +21,7 @@ class Server {
 
         this._app.listen(serverPort, () => console.log(`Listening on port ${serverPort}!`));
 
-        container.get<ServerContext>(ServerContext).startServer(this._app);
+        serverContainer.get<ServerContext>(SERVER_TYPES.ServerContext).startServer(this._app);
     }
 
     private middleware(): void {

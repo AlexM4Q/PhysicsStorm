@@ -1,7 +1,8 @@
 import Vector from "../../../data/vector";
 import Shape from "./shape";
+import Updatable from "../base/updatable";
 
-export default class Box extends Shape {
+export default class Box extends Shape implements Updatable<Box> {
 
     private _size: Vector;
 
@@ -20,6 +21,10 @@ export default class Box extends Shape {
 
     public inertia(mass: number): number {
         return mass * (this._size.x * this._size.x + this._size.y * this._size.y) / 12
+    }
+
+    public updateBy(box: Box): void {
+        this._size.updateBy(box._size);
     }
 
 }

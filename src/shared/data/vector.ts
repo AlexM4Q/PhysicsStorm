@@ -1,4 +1,6 @@
-export default class Vector {
+import Updatable from "../game/entities/base/updatable";
+
+export default class Vector implements Updatable<Vector> {
 
     public x: number;
 
@@ -9,8 +11,9 @@ export default class Vector {
         this.y = y;
     }
 
-    public static parse(target: any): Vector {
-        return new Vector(target.x, target.y);
+    public updateBy(vector: Vector): void {
+        this.x = vector.x;
+        this.y = vector.y;
     }
 
     public get length(): number {
@@ -47,5 +50,9 @@ export default class Vector {
 
     public factor(factor): Vector {
         return new Vector(this.x * factor, this.y * factor);
+    }
+
+    public static parse(target: any): Vector {
+        return new Vector(target.x, target.y);
     }
 }

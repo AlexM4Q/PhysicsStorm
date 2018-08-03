@@ -3,9 +3,10 @@ import {g} from "../../../constants";
 import Vector from "../../../data/vector";
 import Shape from "../shapes/shape";
 import {injectable, unmanaged} from "inversify";
+import Updatable from "../base/updatable";
 
 @injectable()
-export default abstract class RigidBody<S extends Shape> extends Particle<S> {
+export default abstract class RigidBody<S extends Shape> extends Particle<S> implements Updatable<RigidBody<S>> {
 
     protected mass: number = 1;
     protected torque: number = 0;
@@ -29,6 +30,15 @@ export default abstract class RigidBody<S extends Shape> extends Particle<S> {
 
         this.angularVelocity += this.torque / this.inertia * dt;
         this.angle += this.angularVelocity * dt;
+    }
+
+    public updateBy(rigidBody: RigidBody<S>) {
+        super.updateBy(rigidBody);
+        this.mass = rigidBody.mass;
+        this.torque = rigidBody.torque;
+        this.inertia = rigidBody.inertia;
+        this.angularVelocity = rigidBody.angularVelocity;
+        this.angle = rigidBody.angle;
     }
 
 }

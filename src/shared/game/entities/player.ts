@@ -1,13 +1,15 @@
+import {injectable} from "inversify";
+import container from "../../inversify.config";
+import TYPES from "../../inversify.types";
 import Vector from "../../data/vector";
 import Bullet from "./bullet";
 import RigidBody from "./physics/rigid-body";
 import Box from "./shapes/box";
 import World from "../world";
-import {injectable} from "inversify";
-import container from "../../inversify.config";
+import Updatable from "./base/updatable";
 
 @injectable()
-export default class Player extends RigidBody<Box> {
+export default class Player extends RigidBody<Box> implements Updatable<Player> {
 
     public maxVelocity: Vector;
 
@@ -18,14 +20,8 @@ export default class Player extends RigidBody<Box> {
         this.maxVelocity = new Vector(0.5, 0.5);
     }
 
-    public static parse(target: any): Player {
-        const player = container.resolve(Player);
-        player.position = target.position;
-        return player;
-    }
-
     public shoot(target): void {
-        container.get(World).addObject(new Bullet(this.position, target));
+        container.get<World>(TYPES.World).addObject(new Bullet(this.position, target));
     }
 
     public draw(context): void {
@@ -33,6 +29,11 @@ export default class Player extends RigidBody<Box> {
 
         context.fillStyle = this.color;
         context.fillRect(this.position.x, this.position.y, size.x, size.y);
+    }
+
+    public updateBy(player: Player) {
+        super.updateBy(player);
+        this.maxVelocity.updateBy(player.maxVelocity)
     }
 
 }

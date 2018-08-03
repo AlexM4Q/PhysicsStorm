@@ -1,8 +1,9 @@
 import Particle from "./physics/particle";
 import Vector from "../../data/vector";
 import Box from "./shapes/box";
+import Updatable from "./base/updatable";
 
-export default class Bullet extends Particle<Box> {
+export default class Bullet extends Particle<Box> implements Updatable<Bullet> {
 
     private direction: Vector;
 
@@ -19,6 +20,10 @@ export default class Bullet extends Particle<Box> {
     }
 
     public draw(context): void {
+    }
+
+    public updateBy(bullet: Bullet): void {
+        super.updateBy(bullet);
     }
 
 }

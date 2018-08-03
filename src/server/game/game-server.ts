@@ -26,24 +26,29 @@ export default class GameServer {
         const thiz = this;
 
         this.io.on('connect', socket => {
-            const id = Guid.newGuid();
+            socket.on('register-request', (id) => {
+                if (!id) {
+                    id = Guid.newGuid();
+                    socket.emit('register-response', id);
 
-            console.log(`User connected ${id}`);
+                    console.log(`Registered new player ${id}`);
+                }
 
-            thiz._clients[id] = socket;
-            thiz.onconnection(id);
+                thiz._clients[id] = socket;
+                thiz.onconnection(id);
 
-            socket.on('message', (message: any) => {
-                console.log(message);
-                thiz.onmessage({
-                    id: id,
-                    data: message
+                socket.on('message', (message: any) => {
+                    thiz.onmessage({
+                        id: id,
+                        data: message
+                    });
                 });
-            });
 
-            socket.on('disconnect', () => {
-                delete thiz._clients[id];
-                thiz.onclose(id);
+                socket.on('disconnect', () => {
+                    thiz._clients[id].disconnect(true);
+                    delete thiz._clients[id];
+                    thiz.onclose(id);
+                });
             });
         });
     }

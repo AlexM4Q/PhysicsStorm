@@ -1,19 +1,24 @@
-import GameClient from "./game-client";
 import Renderer from "./renderer";
 import {wsHost} from "../../shared/constants";
 import {inject, injectable} from "inversify";
+import {clientContainer} from "../inversify.config";
+import {CLIENT_TYPES} from "../inversify.types";
+import GameClient from "./game-client";
 import World from "../../shared/game/world";
 import GameObject from "../../shared/game/entities/base/game-object";
-import container from "../../server/inversify.config";
 import Player from "../../shared/game/entities/player";
+import Logger from "../../shared/logging/logger";
+import ConsoleLogger from "../../shared/logging/console-logger";
 
 @injectable()
 export default class ClientContext {
 
-    private client: GameClient;
-    private renderer: Renderer;
+    private readonly client: GameClient;
+    private readonly renderer: Renderer;
 
-    public constructor(@inject(World) private readonly world: World) {
+    private player: Player;
+
+    public constructor(@inject(CLIENT_TYPES.World) private readonly world: World) {
         this.client = new GameClient(wsHost);
         this.renderer = new Renderer();
     }
@@ -24,9 +29,12 @@ export default class ClientContext {
         this.world.start();
         this.renderer.start(scene);
 
-        const player = container.resolve(Player);
-        player.id = id;
-        this.world.addObject(player);
+        this.player = clientContainer.resolve(Player);
+        this.world.addObject(this.player);
+
+        this.client.onRegister = (id) => {
+            this.player.id = id;
+        };
 
         this.client.onMessage = (message) => {
             switch (message.type) {

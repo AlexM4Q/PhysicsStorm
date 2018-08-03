@@ -1,9 +1,13 @@
 import Vector from "../../../data/vector";
 import Guid from "../../../utils/guid-utils";
 import {injectable} from "inversify";
+import Updatable from "./updatable";
 
+/**
+ * Игровой объект
+ */
 @injectable()
-export default abstract class GameObject {
+export default abstract class GameObject implements Updatable<GameObject> {
 
     public id: string;
     public position: Vector;
@@ -16,7 +20,8 @@ export default abstract class GameObject {
     public abstract draw(context): void;
 
     public updateBy(object: GameObject) {
-        this.position = object.position;
+        this.position.updateBy(object.position);
         this.color = object.color;
     }
+
 }

@@ -2,14 +2,19 @@ import {worldHeight} from "../../shared/constants";
 import Vector from "../../shared/data/vector";
 import ClientContext from "./client-context";
 import {inject, injectable} from "inversify";
+import {CLIENT_TYPES} from "../inversify.types";
 
 @injectable()
 export default class InputController {
 
-    public constructor(@inject(ClientContext) private readonly context: ClientContext) {
+    public constructor(@inject(CLIENT_TYPES.ClientContext) private readonly context: ClientContext) {
     }
 
-    onKeyDown(event): void {
+    public startGame(): void {
+        this.context.startGame();
+    }
+
+    public onKeyDown(event): void {
         switch (event.code) {
             case "KeyA":
                 this.context.left();
@@ -23,7 +28,7 @@ export default class InputController {
         }
     }
 
-    onKeyUp(event) {
+    public onKeyUp(event): void {
         switch (event.code) {
             case "KeyD":
             case "KeyA":
@@ -32,10 +37,9 @@ export default class InputController {
         }
     }
 
-    onClick(event) {
+    public onClick(event): void {
         if (event.path[0].id === 'scene') {
             this.context.click(new Vector(event.layerX, worldHeight - event.layerY));
         }
     }
-
 }
