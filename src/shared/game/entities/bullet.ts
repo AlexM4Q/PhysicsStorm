@@ -3,7 +3,7 @@ import Vector from "../../data/vector";
 import Box from "./shapes/box";
 import Updatable from "./base/updatable";
 
-export default class Bullet extends Particle<Box> implements Updatable<Bullet> {
+export default class Bullet extends Particle implements Updatable<Bullet> {
 
     private direction: Vector;
 
@@ -15,11 +15,12 @@ export default class Bullet extends Particle<Box> implements Updatable<Bullet> {
         this.direction = target.subtract(position).normalize;
     }
 
-    public move(dt): void {
+    public step(dt: number): void {
         this.position = this.position.add(this.linearVelocity.multiply(this.direction).factor(dt));
     }
 
-    public draw(context): void {
+    public draw(canvasContext: CanvasRenderingContext2D): void {
+        this._shape.draw(canvasContext, this.position);
     }
 
     public updateBy(bullet: Bullet): void {

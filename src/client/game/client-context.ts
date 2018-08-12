@@ -7,20 +7,21 @@ import GameClient from "./game-client";
 import World from "../../shared/game/world";
 import GameObject from "../../shared/game/entities/base/game-object";
 import Player from "../../shared/game/entities/player";
-import Logger from "../../shared/logging/logger";
-import ConsoleLogger from "../../shared/logging/console-logger";
+import Vector from "../../shared/data/vector";
 
 @injectable()
 export default class ClientContext {
 
     private readonly client: GameClient;
     private readonly renderer: Renderer;
-
-    private player: Player;
+    private readonly player: Player;
 
     public constructor(@inject(CLIENT_TYPES.World) private readonly world: World) {
         this.client = new GameClient(wsHost);
         this.renderer = new Renderer();
+        this.player = clientContainer.resolve(Player);
+
+        this.world.addObject(this.player);
     }
 
     public startGame(): void {
@@ -28,9 +29,6 @@ export default class ClientContext {
 
         this.world.start();
         this.renderer.start(scene);
-
-        this.player = clientContainer.resolve(Player);
-        this.world.addObject(this.player);
 
         this.client.onRegister = (id) => {
             this.player.id = id;
@@ -46,24 +44,28 @@ export default class ClientContext {
         };
     }
 
-    public right(): void {
-        this.client.right();
+    public right(inputNumber: number): void {
+        this.player.right();
+        this.client.right(inputNumber);
     }
 
-    public left(): void {
-        this.client.left();
+    public left(inputNumber: number): void {
+        this.player.left();
+        this.client.left(inputNumber);
     }
 
-    public stop(): void {
-        this.client.stop();
+    public stop(inputNumber: number): void {
+        this.player.stop();
+        this.client.stop(inputNumber);
     }
 
-    public jump(): void {
-        this.client.jump();
+    public jump(inputNumber: number): void {
+        this.player.jump();
+        this.client.jump(inputNumber);
     }
 
-    public click(target): void {
-        this.client.click(target);
+    public click(inputNumber: number, target: Vector): void {
+        this.client.click(inputNumber, target);
     }
 
 }

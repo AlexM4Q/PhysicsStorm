@@ -36,19 +36,19 @@ export default class ServerContext {
             const player: Player = this.world.objects.filter(x => x.id === info.id && x instanceof Player)[0] as Player;
 
             switch (data.type) {
-                case 'move':
+                case 'step':
                     switch (data.direction) {
                         case 'right':
-                            player.linearVelocity.x = player.maxVelocity.x;
+                            player.right();
                             break;
                         case 'left':
-                            player.linearVelocity.x = -player.maxVelocity.x;
+                            player.left();
                             break;
                         case 'stop':
-                            player.linearVelocity.x = 0;
+                            player.stop();
                             break;
                         case 'jump':
-                            player.linearVelocity.y = 2;
+                            player.jump();
                             break;
                     }
                     break;

@@ -3,6 +3,8 @@ import Particle from "./entities/physics/particle";
 import {physicInterval} from "../constants";
 import {injectable} from "inversify";
 import GameObject from "./entities/base/game-object";
+import Vector from "../data/vector";
+import RigidBody from "./entities/physics/rigid-body";
 
 @injectable()
 export default class World {
@@ -23,10 +25,16 @@ export default class World {
             for (let gameObject of this._objects) {
 
                 if (gameObject instanceof Particle) {
-                    gameObject.move(dt);
+                    gameObject.step(dt);
                 }
 
-                if (gameObject.position.y < 0) gameObject.position.y = 0;
+                if (gameObject.position.y < 0) {
+                    gameObject.position = new Vector(gameObject.position.x, 0);
+                    if (gameObject instanceof RigidBody) {
+                        const rigidBody = gameObject as RigidBody;
+                        rigidBody.linearVelocity = new Vector(rigidBody.linearVelocity.x, 0);
+                    }
+                }
             }
         }, physicInterval);
     }

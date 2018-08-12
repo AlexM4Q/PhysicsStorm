@@ -4,41 +4,91 @@ import Vector from "../../../data/vector";
 import Shape from "../shapes/shape";
 import {injectable, unmanaged} from "inversify";
 import Updatable from "../base/updatable";
+import Box from "../shapes/box";
+import GeometryUtils from "../../../utils/geometry-utils";
+import Circle from "../shapes/circle";
+import MassData from "../base/mass-data";
+import Material from "../material/material";
 
 @injectable()
-export default abstract class RigidBody<S extends Shape> extends Particle<S> implements Updatable<RigidBody<S>> {
+export default abstract class RigidBody extends Particle implements Updatable<RigidBody> {
 
-    protected mass: number = 1;
+    private _force: Vector;
+    protected _material: Material;
+    protected _massData: MassData;
     protected torque: number = 0;
-    protected inertia: number = 0;
     protected angularVelocity: number = 0;
     protected angle: number = 0;
 
-    protected constructor(@unmanaged() shape: S) {
+    protected constructor(@unmanaged() shape: Shape, @unmanaged() material: Material) {
         super(shape);
+
+        this._force = Vector.ZERO;
+        this._material = material;
+
+        const mass = shape.square() * material.density;
+        const inertia = shape.inertia(mass);
+        this._massData = new MassData(mass, inertia);
     }
 
-    public move(dt): void {
-        const force = new Vector(0, this.mass * g);
-        const acceleration = force.factor(1 / this.mass);
+    public addForce(force: Vector): void {
+        this._force = this._force.add(force);
+    }
 
-        this.linearVelocity = this.linearVelocity.add(acceleration.factor(dt));
-        this.position = this.position.add(this.linearVelocity.factor(dt));
+    public step(dt: number): void {
+        const force = new Vector(
+            this._force.x,
+            this._force.y + this._massData.mass * g
+        );
 
-        this.torque = this.shape.torque(force);
-        this.inertia = this.shape.inertia(this.mass);
+        this.linearVelocity = new Vector(
+            this.linearVelocity.x + dt * force.x * this._massData.inverse_mass,
+            this.linearVelocity.y + dt * force.y * this._massData.inverse_mass
+        );
 
-        this.angularVelocity += this.torque / this.inertia * dt;
+        this.torque = this._shape.torque(force);
+
+        this.position = new Vector(
+            this.position.x + this.linearVelocity.x * dt,
+            this.position.y + this.linearVelocity.y * dt
+        );
+
+        this.angularVelocity += this.torque / this._massData.inertia * dt;
         this.angle += this.angularVelocity * dt;
+
+        this._force = Vector.ZERO;
     }
 
-    public updateBy(rigidBody: RigidBody<S>) {
+    public updateBy(rigidBody: RigidBody): void {
         super.updateBy(rigidBody);
-        this.mass = rigidBody.mass;
+        this._massData.updateBy(rigidBody._massData);
         this.torque = rigidBody.torque;
-        this.inertia = rigidBody.inertia;
         this.angularVelocity = rigidBody.angularVelocity;
         this.angle = rigidBody.angle;
+    }
+
+    public collide(rigidBody: RigidBody): boolean {
+        if (this._shape instanceof Box) {
+            if (rigidBody._shape instanceof Box) {
+                return GeometryUtils.collideBoxes(this, rigidBody);
+            }
+
+            if (rigidBody._shape instanceof Circle) {
+                return GeometryUtils.collideBoxCircle(this, rigidBody);
+            }
+        }
+
+        if (this._shape instanceof Circle) {
+            if (rigidBody._shape instanceof Box) {
+                return GeometryUtils.collideBoxCircle(rigidBody, this);
+            }
+
+            if (rigidBody._shape instanceof Circle) {
+                return GeometryUtils.collideCircles(this, rigidBody);
+            }
+        }
+
+        return false;
     }
 
 }

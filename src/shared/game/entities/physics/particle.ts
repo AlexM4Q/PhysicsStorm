@@ -8,20 +8,24 @@ import Updatable from "../base/updatable";
  * Движимая частица с формой и цветом
  */
 @injectable()
-export default abstract class Particle<S extends Shape> extends GameObject implements Updatable<Particle<S>> {
+export default abstract class Particle extends GameObject implements Updatable<Particle> {
+
+    protected readonly _shape: Shape;
 
     public linearVelocity: Vector;
 
-    protected constructor(@unmanaged() protected readonly shape: S) {
+    protected constructor(@unmanaged() shape: Shape) {
         super();
+
+        this._shape = shape;
     }
 
-    public abstract move(dt): void;
+    public abstract step(dt: number): void;
 
-    public updateBy(particle: Particle<S>): void {
+    public updateBy(particle: Particle): void {
         super.updateBy(particle);
-        this.linearVelocity.updateBy(particle.linearVelocity);
-        this.shape.updateBy(particle.shape);
+        this._shape.updateBy(particle._shape);
+        this.linearVelocity = Vector.parse(particle.linearVelocity);
     }
 
 }

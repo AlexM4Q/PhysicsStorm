@@ -17,10 +17,10 @@ export default abstract class GameObject implements Updatable<GameObject> {
         this.id = Guid.newGuid();
     }
 
-    public abstract draw(context): void;
+    public abstract draw(canvasContext: CanvasRenderingContext2D): void;
 
-    public updateBy(object: GameObject) {
-        this.position.updateBy(object.position);
+    public updateBy(object: GameObject): void {
+        this.position = Vector.parse(object.position);
         this.color = object.color;
     }
 

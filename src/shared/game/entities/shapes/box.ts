@@ -6,13 +6,21 @@ export default class Box extends Shape implements Updatable<Box> {
 
     private _size: Vector;
 
-    constructor(size: Vector) {
+    public constructor(size: Vector) {
         super();
         this._size = size;
     }
 
     public get size(): Vector {
         return this._size;
+    }
+
+    public draw(canvasContext: CanvasRenderingContext2D, position: Vector): void {
+        canvasContext.fillRect(position.x, position.y, this._size.x, this._size.y);
+    }
+
+    public square(): number {
+        return this._size.x * this._size.y;
     }
 
     public torque(force: Vector): number {
@@ -24,7 +32,7 @@ export default class Box extends Shape implements Updatable<Box> {
     }
 
     public updateBy(box: Box): void {
-        this._size.updateBy(box._size);
+        this._size = Vector.parse(box._size);
     }
 
 }

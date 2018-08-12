@@ -1,58 +1,94 @@
-import Updatable from "../game/entities/base/updatable";
+export default class Vector {
 
-export default class Vector implements Updatable<Vector> {
+    public static readonly ZERO: Vector = new Vector(0, 0);
 
-    public x: number;
-
-    public y: number;
-
-    constructor(x = 0, y = 0) {
-        this.x = x;
-        this.y = y;
+    constructor(private readonly _x = 0, private readonly _y = 0) {
     }
 
-    public updateBy(vector: Vector): void {
-        this.x = vector.x;
-        this.y = vector.y;
+    public get x(): number {
+        return this._x;
     }
 
+    public get y(): number {
+        return this._y;
+    }
+
+    /**
+     * Длина вектора
+     * @returns {number}
+     */
     public get length(): number {
-        return Math.sqrt(this.x * this.x + this.y * this.y);
+        return Math.sqrt(this.lengthSquare);
     }
 
+    /**
+     * Длина вектора в квадрате
+     * @returns {number}
+     */
+    public get lengthSquare(): number {
+        return this._x * this._x + this._y * this._y;
+    }
+
+    /**
+     * Нормализованный вектор
+     * @returns {Vector}
+     */
     public get normalize(): Vector {
-        return new Vector(this.x, this.y).factor(1 / this.length);
+        const length = this.length;
+        return new Vector(this._x / length, this._y / length);
     }
 
-    public addX(value): Vector {
-        return new Vector(this.x + value, this.y);
+    /**
+     * Сложение векторов
+     * @param {Vector} vector Другой вектор
+     * @returns {Vector} Результат
+     */
+    public add(vector: Vector): Vector {
+        return new Vector(this._x + vector._x, this._y + vector._y);
     }
 
-    public addY(value): Vector {
-        return new Vector(this.x, this.y + value);
+    /**
+     * Вычитание векторов
+     * @param {Vector} vector Другой вектор
+     * @returns {Vector} Результат
+     */
+    public subtract(vector: Vector): Vector {
+        return new Vector(this._x - vector._x, this._y - vector._y);
     }
 
-    public add(vector): Vector {
-        return new Vector(this.x + vector.x, this.y + vector.y);
+    /**
+     * Умножение векторов
+     * @param {Vector} vector Другой вектор
+     * @returns {Vector} Результат
+     */
+    public multiply(vector: Vector): Vector {
+        return new Vector(this._x * vector._x, this._y * vector._y);
     }
 
-    public subtract(vector): Vector {
-        return new Vector(this.x - vector.x, this.y - vector.y);
+    /**
+     * Деление векторов
+     * @param {Vector} vector Другой вектор
+     * @returns {Vector} Результат
+     */
+    public divide(vector: Vector): Vector {
+        return new Vector(this._x / vector._x, this._y / vector._y);
     }
 
-    public multiply(vector): Vector {
-        return new Vector(this.x * vector.x, this.y * vector.y);
+    /**
+     * Умножение копонент вектора на множитель
+     * @param factor Множитель
+     * @returns {Vector} Результат
+     */
+    public factor(factor: number): Vector {
+        return new Vector(this._x * factor, this._y * factor);
     }
 
-    public divide(vector): Vector {
-        return new Vector(this.x / vector.x, this.y / vector.y);
-    }
-
-    public factor(factor): Vector {
-        return new Vector(this.x * factor, this.y * factor);
-    }
-
-    public static parse(target: any): Vector {
-        return new Vector(target.x, target.y);
+    /**
+     * Конвертирование произвольного объектв в вектор
+     * @param target Произвольный объект
+     * @returns {Vector} Результат
+     */
+    public static parse(target: Vector): Vector {
+        return new Vector(target._x, target._y);
     }
 }

@@ -1,6 +1,7 @@
 import {connect} from "socket.io-client";
 import ConsoleLogger from "../../shared/logging/console-logger";
 import Logger from "../../shared/logging/logger";
+import Vector from "../../shared/data/vector";
 
 export default class GameClient {
 
@@ -55,44 +56,46 @@ export default class GameClient {
         this._onRegister = onRegister;
     }
 
-    private _send(data): void {
+    private _sendInput(data: any, inputNumber: number): void {
         data.id = this._id;
+        data.time = Date.now();
+        data.inputNumber = inputNumber;
         this._socket.send(data);
     }
 
-    public right(): void {
-        this._send({
-            type: 'move',
+    public right(inputNumber: number): void {
+        this._sendInput({
+            type: 'step',
             direction: 'right'
-        });
+        }, inputNumber);
     }
 
-    public left(): void {
-        this._send({
-            type: 'move',
+    public left(inputNumber: number): void {
+        this._sendInput({
+            type: 'step',
             direction: 'left'
-        });
+        }, inputNumber);
     }
 
-    public stop(): void {
-        this._send({
-            type: 'move',
+    public stop(inputNumber: number): void {
+        this._sendInput({
+            type: 'step',
             direction: 'stop'
-        });
+        }, inputNumber);
     }
 
-    public jump(): void {
-        this._send({
-            type: 'move',
+    public jump(inputNumber: number): void {
+        this._sendInput({
+            type: 'step',
             direction: 'jump'
-        });
+        }, inputNumber);
     }
 
-    public click(target): void {
-        this._send({
+    public click(inputNumber: number, target: Vector): void {
+        this._sendInput({
             type: 'click',
             target: target
-        });
+        }, inputNumber);
     }
 
 }
