@@ -33,7 +33,7 @@ export default class ServerContext {
 
         server.onMessage = (info) => {
             const data: any = info.data;
-            const player: Player = this.world.objects.filter(x => x.id === info.id && x instanceof Player)[0] as Player;
+            const player: Player = this.world.particles.filter(x => x.id === info.id && x instanceof Player)[0] as Player;
 
             switch (data.type) {
                 case 'step':

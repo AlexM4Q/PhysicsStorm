@@ -1,13 +1,15 @@
 import Vector from "../../../data/vector";
 import Shape from "./shape";
 import Updatable from "../base/updatable";
+import Collidable from "./collidable";
+import Circle from "./circle";
 
-export default class Box extends Shape implements Updatable<Box> {
+export default class Box extends Shape implements Collidable, Updatable<Box> {
 
     private _size: Vector;
 
-    public constructor(size: Vector) {
-        super();
+    public constructor(position: Vector, size: Vector) {
+        super(position);
         this._size = size;
     }
 
@@ -15,8 +17,16 @@ export default class Box extends Shape implements Updatable<Box> {
         return this._size;
     }
 
-    public draw(canvasContext: CanvasRenderingContext2D, position: Vector): void {
-        canvasContext.fillRect(position.x, position.y, this._size.x, this._size.y);
+    public collideBox(box: Box): boolean {
+        return false;
+    }
+
+    public collideCircle(circle: Circle): boolean {
+        return undefined;
+    }
+
+    public draw(canvasContext: CanvasRenderingContext2D): void {
+        canvasContext.fillRect(this.position.x, this.position.y, this._size.x, this._size.y);
     }
 
     public square(): number {
@@ -32,6 +42,7 @@ export default class Box extends Shape implements Updatable<Box> {
     }
 
     public updateBy(box: Box): void {
+        super.updateBy(box);
         this._size = Vector.parse(box._size);
     }
 

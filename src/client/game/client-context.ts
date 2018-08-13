@@ -5,9 +5,9 @@ import {clientContainer} from "../inversify.config";
 import {CLIENT_TYPES} from "../inversify.types";
 import GameClient from "./game-client";
 import World from "../../shared/game/world";
-import GameObject from "../../shared/game/entities/base/game-object";
 import Player from "../../shared/game/entities/player";
 import Vector from "../../shared/data/vector";
+import Particle from "../../shared/game/entities/physics/particle";
 
 @injectable()
 export default class ClientContext {
@@ -37,7 +37,7 @@ export default class ClientContext {
         this.client.onMessage = (message) => {
             switch (message.type) {
                 case 'state':
-                    this.world.update(message.state as GameObject[]);
+                    this.world.update(message.state as Particle[]);
                     this.renderer.renders = this.world.state;
                     break;
             }

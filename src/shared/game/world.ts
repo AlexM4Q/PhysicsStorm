@@ -9,11 +9,11 @@ import RigidBody from "./entities/physics/rigid-body";
 @injectable()
 export default class World {
 
-    private _objects: GameObject[] = [];
+    private _particles: Particle[] = [];
     private _lastUpdate: number;
 
-    public get state(): GameObject[] {
-        return this._objects;
+    public get state(): Particle[] {
+        return this._particles;
     }
 
     public start(): void {
@@ -22,16 +22,16 @@ export default class World {
             const dt = now - this._lastUpdate;
             this._lastUpdate = now;
 
-            for (let gameObject of this._objects) {
+            for (let particle of this._particles) {
 
-                if (gameObject instanceof Particle) {
-                    gameObject.step(dt);
+                if (particle instanceof Particle) {
+                    particle.step(dt);
                 }
 
-                if (gameObject.position.y < 0) {
-                    gameObject.position = new Vector(gameObject.position.x, 0);
-                    if (gameObject instanceof RigidBody) {
-                        const rigidBody = gameObject as RigidBody;
+                if (particle.position.y < 0) {
+                    particle.position = new Vector(particle.position.x, 0);
+                    if (particle instanceof RigidBody) {
+                        const rigidBody = particle as RigidBody;
                         rigidBody.linearVelocity = new Vector(rigidBody.linearVelocity.x, 0);
                     }
                 }
@@ -39,21 +39,21 @@ export default class World {
         }, physicInterval);
     }
 
-    public get objects(): GameObject[] {
-        return this._objects;
+    public get particles(): GameObject[] {
+        return this._particles;
     }
 
     public addObject(object): void {
-        this._objects.push(object);
+        this._particles.push(object);
     }
 
     public remove(id): void {
-        this._objects = this._objects.filter(x => x.id !== id);
+        this._particles = this._particles.filter(x => x.id !== id);
     }
 
-    public update(state: GameObject[]): void {
+    public update(state: Particle[]): void {
         for (let object of state) {
-            for (let gameObject of this._objects) {
+            for (let gameObject of this._particles) {
                 if (object.id === gameObject.id) {
                     gameObject.updateBy(object);
                     break;

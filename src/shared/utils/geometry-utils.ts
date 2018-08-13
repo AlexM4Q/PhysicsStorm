@@ -1,17 +1,19 @@
-import RigidBody from "../game/entities/physics/rigid-body";
+import Shape from "../game/entities/shapes/shape";
+import Box from "../game/entities/shapes/box";
+import Circle from "../game/entities/shapes/circle";
 
 export default class GeometryUtils {
 
-    public static collideBoxes(box1: RigidBody, box2: RigidBody): boolean {
-        return true;
-    }
+    public static collide(shapeA: Shape, shapeB: Shape): boolean {
+        if (shapeB instanceof Box) {
+            return shapeA.collideBox(shapeB as Box);
+        }
 
-    public static collideBoxCircle(box: RigidBody, circle: RigidBody): boolean {
-        return true;
-    }
+        if (shapeB instanceof Circle) {
+            return shapeA.collideCircle(shapeB as Circle);
+        }
 
-    public static collideCircles(circle1: RigidBody, circle2: RigidBody): boolean {
-        return true;
+        return false;
     }
 
 }

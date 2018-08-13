@@ -20,6 +20,14 @@ export default abstract class Particle extends GameObject implements Updatable<P
         this._shape = shape;
     }
 
+    public get position() {
+        return this._shape.position;
+    }
+
+    public set position(value: Vector) {
+        this._shape.position = value;
+    }
+
     public abstract step(dt: number): void;
 
     public updateBy(particle: Particle): void {

@@ -8,7 +8,7 @@ export default class Bullet extends Particle implements Updatable<Bullet> {
     private direction: Vector;
 
     constructor(position: Vector, target: Vector) {
-        super(new Box(new Vector(2, 2)));
+        super(new Box(position, new Vector(2, 2)));
         this.color = "#ff0000";
         this.position = position;
         this.linearVelocity = new Vector(1, 1);
@@ -20,7 +20,7 @@ export default class Bullet extends Particle implements Updatable<Bullet> {
     }
 
     public draw(canvasContext: CanvasRenderingContext2D): void {
-        this._shape.draw(canvasContext, this.position);
+        this._shape.draw(canvasContext);
     }
 
     public updateBy(bullet: Bullet): void {
