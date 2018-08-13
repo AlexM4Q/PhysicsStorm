@@ -67,28 +67,4 @@ export default abstract class RigidBody extends Particle implements Updatable<Ri
         this.angle = rigidBody.angle;
     }
 
-    public collide(rigidBody: RigidBody): boolean {
-        if (this._shape instanceof Box) {
-            if (rigidBody._shape instanceof Box) {
-                return GeometryUtils.collideBoxes(this, rigidBody);
-            }
-
-            if (rigidBody._shape instanceof Circle) {
-                return GeometryUtils.collideBoxCircle(this, rigidBody);
-            }
-        }
-
-        if (this._shape instanceof Circle) {
-            if (rigidBody._shape instanceof Box) {
-                return GeometryUtils.collideBoxCircle(rigidBody, this);
-            }
-
-            if (rigidBody._shape instanceof Circle) {
-                return GeometryUtils.collideCircles(this, rigidBody);
-            }
-        }
-
-        return false;
-    }
-
 }

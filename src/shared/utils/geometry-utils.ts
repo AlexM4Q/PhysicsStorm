@@ -16,4 +16,8 @@ export default class GeometryUtils {
         return false;
     }
 
+    public static collideBoxBox(): boolean {
+        return false;
+    }
+
 }

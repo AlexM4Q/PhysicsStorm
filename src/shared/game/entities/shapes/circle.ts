@@ -1,6 +1,7 @@
 import Shape from "./shape";
 import Updatable from "../base/updatable";
 import Vector from "../../../data/vector";
+import Box from "./box";
 
 export default class Circle extends Shape implements Updatable<Circle> {
 
@@ -21,6 +22,14 @@ export default class Circle extends Shape implements Updatable<Circle> {
 
     public get radius(): number {
         return this._radius;
+    }
+
+    public collideBox(box: Box): boolean {
+        return false;
+    }
+
+    public collideCircle(circle: Circle): boolean {
+        return false;
     }
 
     public draw(canvasContext: CanvasRenderingContext2D): void {
