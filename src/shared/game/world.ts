@@ -1,10 +1,12 @@
 import "reflect-metadata";
-import Particle from "./entities/physics/particle";
+import Particle from "./physics/particle";
 import {physicInterval} from "../constants";
 import {injectable} from "inversify";
-import GameObject from "./entities/base/game-object";
+import GameObject from "./base/game-object";
 import Vector from "../data/vector";
-import RigidBody from "./entities/physics/rigid-body";
+import RigidBody from "./physics/rigid-body";
+import WorldGenerator from "./world-generator";
+import GeometryUtils from "../utils/geometry-utils";
 
 @injectable()
 export default class World {
@@ -17,6 +19,8 @@ export default class World {
     }
 
     public start(): void {
+        new WorldGenerator(this).generate();
+
         setInterval(() => {
             const now = Date.now();
             const dt = now - this._lastUpdate;
@@ -33,6 +37,12 @@ export default class World {
                     if (particle instanceof RigidBody) {
                         const rigidBody = particle as RigidBody;
                         rigidBody.linearVelocity = new Vector(rigidBody.linearVelocity.x, 0);
+                    }
+                }
+
+                for (let collide of this._particles) {
+                    if (GeometryUtils.collide(particle.shape, collide.shape)) {
+
                     }
                 }
             }

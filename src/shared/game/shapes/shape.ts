@@ -1,4 +1,4 @@
-import Vector from "../../../data/vector";
+import Vector from "../../data/vector";
 import Updatable from "../base/updatable";
 import Collidable from "./collidable";
 import Box from "./box";
@@ -8,7 +8,7 @@ export default abstract class Shape implements Collidable, Updatable<Shape> {
 
     public position: Vector;
 
-    constructor(position: Vector) {
+    protected constructor(position: Vector) {
         this.position = position;
     }
 

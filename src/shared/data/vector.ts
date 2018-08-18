@@ -84,6 +84,15 @@ export default class Vector {
     }
 
     /**
+     * Скалярное произведение
+     * @param {Vector} vector Другой вектор
+     * @returns {number} Результат
+     */
+    public dotProduct(vector: Vector): number {
+        return this._x * vector._x + this._y * vector._y;
+    }
+
+    /**
      * Конвертирование произвольного объектв в вектор
      * @param target Произвольный объект
      * @returns {Vector} Результат

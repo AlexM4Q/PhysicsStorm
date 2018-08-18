@@ -1,4 +1,4 @@
-import Updatable from "./updatable";
+import Updatable from "../base/updatable";
 
 export default class MassData implements Updatable<MassData> {
 

@@ -7,7 +7,7 @@ import GameClient from "./game-client";
 import World from "../../shared/game/world";
 import Player from "../../shared/game/entities/player";
 import Vector from "../../shared/data/vector";
-import Particle from "../../shared/game/entities/physics/particle";
+import Particle from "../../shared/game/physics/particle";
 
 @injectable()
 export default class ClientContext {

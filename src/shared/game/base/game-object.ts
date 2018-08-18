@@ -1,4 +1,4 @@
-import Guid from "../../../utils/guid-utils";
+import Guid from "../../utils/guid-utils";
 import {injectable} from "inversify";
 import Updatable from "./updatable";
 

@@ -1,5 +1,5 @@
 import {drawInterval} from "../../shared/constants";
-import GameObject from "../../shared/game/entities/base/game-object";
+import GameObject from "../../shared/game/base/game-object";
 
 export default class Renderer {
 

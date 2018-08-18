@@ -3,11 +3,11 @@ import container from "../../inversify.config";
 import TYPES from "../../inversify.types";
 import Vector from "../../data/vector";
 import Bullet from "./bullet";
-import RigidBody from "./physics/rigid-body";
-import Box from "./shapes/box";
+import RigidBody from "../physics/rigid-body";
+import Box from "../shapes/box";
 import World from "../world";
-import Updatable from "./base/updatable";
-import {METAL} from "./material/materials";
+import Updatable from "../base/updatable";
+import {METAL} from "../material/materials";
 
 @injectable()
 export default class Player extends RigidBody implements Updatable<Player> {
