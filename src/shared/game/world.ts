@@ -41,8 +41,9 @@ export default class World {
                 }
 
                 for (let collide of this._particles) {
+                    if (particle.id === collide.id) continue;
                     if (GeometryUtils.collide(particle.shape, collide.shape)) {
-
+                        console.log("collide!!");
                     }
                 }
             }

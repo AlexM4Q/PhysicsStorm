@@ -8,12 +8,10 @@ export default class WorldGenerator {
 
     public constructor(world: World) {
         this._world = world;
-
-        this.generate();
     }
 
     public generate(): void {
-        this._world.addObject(new Block(new Vector(50, 50), new Vector(100, 10)));
+        this._world.addObject(new Block(new Vector(100, 100), new Vector(100, 10)));
     }
 
 }
