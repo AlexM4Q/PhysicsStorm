@@ -10,9 +10,9 @@ import Updatable from "../base/updatable";
 @injectable()
 export default abstract class Particle extends GameObject implements Updatable<Particle> {
 
-    public readonly isStatic;
-
     protected readonly _shape: Shape;
+
+    public readonly isStatic;
 
     public linearVelocity: Vector;
 

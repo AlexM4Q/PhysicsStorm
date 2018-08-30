@@ -28,6 +28,13 @@ export default abstract class Shape implements Collidable, Updatable<Shape> {
     public abstract square(): number;
 
     /**
+     * Опорная функция
+     * @param {Vector} direction Направление
+     * @returns {number}
+     */
+    public abstract support(direction: Vector): Vector;
+
+    /**
      * Вращательный момент
      * @param {Vector} force Приложенная сила
      * @returns {number}

@@ -17,10 +17,10 @@ export default class GeometryUtils {
     }
 
     public static collideBoxBox(boxA: Box, boxB: Box): boolean {
-        return boxA.position.x + boxA.size.x >= boxB.position.x
-            && boxA.position.x <= boxB.position.x + boxB.size.x
-            && boxA.position.y + boxA.size.y >= boxB.position.y
-            && boxA.position.y <= boxB.position.y + boxB.size.y;
+        return boxA.position.x + boxA.halfSize.x >= boxB.position.x
+            && boxA.position.x <= boxB.position.x + boxB.halfSize.x
+            && boxA.position.y + boxA.halfSize.y >= boxB.position.y
+            && boxA.position.y <= boxB.position.y + boxB.halfSize.y;
     }
 
     public static collideBoxCircle(boxA: Box, circleB: Circle): boolean {

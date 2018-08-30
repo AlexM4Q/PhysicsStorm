@@ -41,6 +41,15 @@ export default class Circle extends Shape implements Updatable<Circle> {
         return Math.PI * this._radius * this._radius;
     }
 
+    public support(direction:Vector):Vector {
+        const coefficient = this.radius / direction.length;
+
+        return new Vector(
+            this.position.x + direction.x * coefficient,
+            this.position.y + direction.y * coefficient
+        );
+    }
+
     public torque(force: Vector): number {
         return force.y * this._radius + force.x * this._radius;
     }
