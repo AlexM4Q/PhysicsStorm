@@ -6,7 +6,7 @@ import {CLIENT_TYPES} from "../inversify.types";
 import GameClient from "./game-client";
 import World from "../../shared/game/world";
 import Player from "../../shared/game/entities/player";
-import Vector from "../../shared/data/vector";
+import Vector2 from "../../shared/data/vector2";
 import Particle from "../../shared/game/physics/particle";
 
 @injectable()
@@ -64,7 +64,7 @@ export default class ClientContext {
         this.client.jump(inputNumber);
     }
 
-    public click(inputNumber: number, target: Vector): void {
+    public click(inputNumber: number, target: Vector2): void {
         this.client.click(inputNumber, target);
     }
 

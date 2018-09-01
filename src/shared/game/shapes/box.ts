@@ -1,4 +1,4 @@
-import Vector from "../../data/vector";
+import Vector2 from "../../data/vector2";
 import Shape from "./shape";
 import Updatable from "../base/updatable";
 import Collidable from "./collidable";
@@ -7,14 +7,14 @@ import GeometryUtils from "../../utils/geometry-utils";
 
 export default class Box extends Shape implements Collidable, Updatable<Box> {
 
-    private _halfSize: Vector;
+    private _halfSize: Vector2;
 
-    public constructor(position: Vector, size: Vector) {
+    public constructor(position: Vector2, halfSize: Vector2) {
         super(position);
-        this._halfSize = size;
+        this._halfSize = halfSize;
     }
 
-    public get halfSize(): Vector {
+    public get halfSize(): Vector2 {
         return this._halfSize;
     }
 
@@ -34,18 +34,18 @@ export default class Box extends Shape implements Collidable, Updatable<Box> {
         return 4 * this._halfSize.x * this._halfSize.y;
     }
 
-    public support(direction: Vector): Vector {
+    public support(direction: Vector2): Vector2 {
         let x: number = this.position.x - this._halfSize.x;
         let y: number = this.position.y - this._halfSize.y;
         let furthestDistance: number = x * direction.x + y * direction.y;
-        let support: Vector = this.position;
+        let support: Vector2 = new Vector2(x, y);
 
         x = this.position.x - this._halfSize.x;
         y = this.position.y + this._halfSize.y;
         let distance: number = x * direction.x + y * direction.y;
         if (furthestDistance < distance) {
             furthestDistance = distance;
-            support = new Vector(x, y);
+            support = new Vector2(x, y);
         }
 
         x = this.position.x + this._halfSize.x;
@@ -53,20 +53,20 @@ export default class Box extends Shape implements Collidable, Updatable<Box> {
         distance = x * direction.x + y * direction.y;
         if (furthestDistance < distance) {
             furthestDistance = distance;
-            support = new Vector(x, y);
+            support = new Vector2(x, y);
         }
 
         x = this.position.x + this._halfSize.x;
         y = this.position.y + this._halfSize.y;
         distance = x * direction.x + y * direction.y;
         if (furthestDistance < distance) {
-            support = new Vector(x, y);
+            support = new Vector2(x, y);
         }
 
         return support;
     }
 
-    public torque(force: Vector): number {
+    public torque(force: Vector2): number {
         return force.y * this._halfSize.x - force.x * this._halfSize.y;
     }
 
@@ -76,7 +76,7 @@ export default class Box extends Shape implements Collidable, Updatable<Box> {
 
     public updateBy(box: Box): void {
         super.updateBy(box);
-        this._halfSize = Vector.parse(box._halfSize);
+        this._halfSize = Vector2.parse(box._halfSize);
     }
 
 }

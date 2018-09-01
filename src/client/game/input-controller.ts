@@ -1,5 +1,5 @@
 import {worldHeight} from "../../shared/constants";
-import Vector from "../../shared/data/vector";
+import Vector2 from "../../shared/data/vector2";
 import ClientContext from "./client-context";
 import {inject, injectable} from "inversify";
 import {CLIENT_TYPES} from "../inversify.types";
@@ -44,7 +44,7 @@ export default class InputController {
 
     public onClick(event: any): void {
         if (event.path[0].id === 'scene') {
-            this.context.click(this._inputNumber++, new Vector(event.layerX, worldHeight - event.layerY));
+            this.context.click(this._inputNumber++, new Vector2(event.layerX, worldHeight - event.layerY));
         }
     }
 }

@@ -1,4 +1,4 @@
-import Vector from "../../data/vector";
+import Vector2 from "../../data/vector2";
 import Updatable from "../base/updatable";
 import Collidable from "./collidable";
 import Box from "./box";
@@ -6,9 +6,9 @@ import Circle from "./circle";
 
 export default abstract class Shape implements Collidable, Updatable<Shape> {
 
-    public position: Vector;
+    public position: Vector2;
 
-    protected constructor(position: Vector) {
+    protected constructor(position: Vector2) {
         this.position = position;
     }
 
@@ -29,17 +29,17 @@ export default abstract class Shape implements Collidable, Updatable<Shape> {
 
     /**
      * Опорная функция
-     * @param {Vector} direction Направление
+     * @param {Vector2} direction Направление
      * @returns {number}
      */
-    public abstract support(direction: Vector): Vector;
+    public abstract support(direction: Vector2): Vector2;
 
     /**
      * Вращательный момент
-     * @param {Vector} force Приложенная сила
+     * @param {Vector2} force Приложенная сила
      * @returns {number}
      */
-    public abstract torque(force: Vector): number;
+    public abstract torque(force: Vector2): number;
 
     /**
      * Момент инерции
@@ -53,7 +53,7 @@ export default abstract class Shape implements Collidable, Updatable<Shape> {
      * @param {Shape} shape Другая фигура
      */
     public updateBy(shape: Shape): void {
-        this.position = Vector.parse(shape.position);
+        this.position = Vector2.parse(shape.position);
     }
 
 }

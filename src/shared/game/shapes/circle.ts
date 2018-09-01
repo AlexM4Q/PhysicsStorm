@@ -1,6 +1,6 @@
 import Shape from "./shape";
 import Updatable from "../base/updatable";
-import Vector from "../../data/vector";
+import Vector2 from "../../data/vector2";
 import Box from "./box";
 import GeometryUtils from "../../utils/geometry-utils";
 
@@ -8,10 +8,10 @@ export default class Circle extends Shape implements Updatable<Circle> {
 
     /**
      * Конструктор
-     * @param {Vector} position Координата
+     * @param {Vector2} position Координата
      * @param {number} radius Радиус
      */
-    public constructor(position: Vector, radius: number) {
+    public constructor(position: Vector2, radius: number) {
         super(position);
         this._radius = radius;
     }
@@ -34,23 +34,25 @@ export default class Circle extends Shape implements Updatable<Circle> {
     }
 
     public draw(canvasContext: CanvasRenderingContext2D): void {
-        canvasContext.fillRect(this.position.x, this.position.y, this._radius, this._radius);
+        canvasContext.beginPath();
+        canvasContext.arc(this.position.x, this.position.y, this._radius, 0, 2 * Math.PI);
+        canvasContext.stroke();
     }
 
     public square(): number {
         return Math.PI * this._radius * this._radius;
     }
 
-    public support(direction:Vector):Vector {
+    public support(direction: Vector2): Vector2 {
         const coefficient = this.radius / direction.length;
 
-        return new Vector(
+        return new Vector2(
             this.position.x + direction.x * coefficient,
             this.position.y + direction.y * coefficient
         );
     }
 
-    public torque(force: Vector): number {
+    public torque(force: Vector2): number {
         return force.y * this._radius + force.x * this._radius;
     }
 

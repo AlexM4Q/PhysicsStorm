@@ -3,10 +3,11 @@ import Particle from "./physics/particle";
 import {physicInterval} from "../constants";
 import {injectable} from "inversify";
 import GameObject from "./base/game-object";
-import Vector from "../data/vector";
+import Vector2 from "../data/vector2";
 import RigidBody from "./physics/rigid-body";
 import WorldGenerator from "./world-generator";
-import GeometryUtils from "../utils/geometry-utils";
+import GJK from "./shapes/geometry/gjk";
+import Player from "./entities/player";
 
 @injectable()
 export default class World {
@@ -33,17 +34,27 @@ export default class World {
                 }
 
                 if (particle.position.y < 0) {
-                    particle.position = new Vector(particle.position.x, 0);
+                    particle.position = new Vector2(particle.position.x, 0);
                     if (particle instanceof RigidBody) {
                         const rigidBody = particle as RigidBody;
-                        rigidBody.linearVelocity = new Vector(rigidBody.linearVelocity.x, 0);
+                        rigidBody.linearVelocity = new Vector2(rigidBody.linearVelocity.x, 0);
                     }
                 }
 
+                const gjk: GJK = new GJK();
                 for (let collide of this._particles) {
                     if (particle.id === collide.id) continue;
-                    if (GeometryUtils.collide(particle.shape, collide.shape)) {
-                        console.log("collide!!");
+                    let vector2 = gjk.intersect(particle.shape, collide.shape);
+                    if (vector2) {
+                        // if (GeometryUtils.collide(particle.shape, collide.shape)) {
+
+                        if (particle instanceof Player) {
+                            if (particle.position.y > 0)
+                                console.log(`p(${particle.position.x}:${particle.position.y}) v(${vector2.x}:${vector2.y})`);
+
+                            particle.position = new Vector2(particle.position.x - vector2.x, particle.position.y - vector2.y);
+                            particle._force = Vector2.ZERO;
+                        }
                     }
                 }
             }

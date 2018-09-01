@@ -1,6 +1,6 @@
 import World from "./world";
 import Block from "./entities/block";
-import Vector from "../data/vector";
+import Vector2 from "../data/vector2";
 
 export default class WorldGenerator {
 
@@ -11,7 +11,8 @@ export default class WorldGenerator {
     }
 
     public generate(): void {
-        this._world.addObject(new Block(new Vector(100, 100), new Vector(100, 10)));
+        this._world.addObject(new Block(new Vector2(200, 100), new Vector2(50, 10)));
+        this._world.addObject(new Block(new Vector2(300, 5), new Vector2(50, 10)));
     }
 
 }

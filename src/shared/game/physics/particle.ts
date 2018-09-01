@@ -1,5 +1,5 @@
 import GameObject from "../base/game-object";
-import Vector from "../../data/vector";
+import Vector2 from "../../data/vector2";
 import Shape from "../shapes/shape";
 import {injectable, unmanaged} from "inversify";
 import Updatable from "../base/updatable";
@@ -14,7 +14,7 @@ export default abstract class Particle extends GameObject implements Updatable<P
 
     public readonly isStatic;
 
-    public linearVelocity: Vector;
+    public linearVelocity: Vector2;
 
     protected constructor(@unmanaged() shape: Shape, @unmanaged() isStatic: boolean = false) {
         super();
@@ -27,11 +27,11 @@ export default abstract class Particle extends GameObject implements Updatable<P
         return this._shape;
     }
 
-    public get position(): Vector {
+    public get position(): Vector2 {
         return this._shape.position;
     }
 
-    public set position(value: Vector) {
+    public set position(value: Vector2) {
         this._shape.position = value;
     }
 
@@ -40,7 +40,7 @@ export default abstract class Particle extends GameObject implements Updatable<P
     public updateBy(particle: Particle): void {
         super.updateBy(particle);
         this._shape.updateBy(particle._shape);
-        this.linearVelocity = Vector.parse(particle.linearVelocity);
+        this.linearVelocity = Vector2.parse(particle.linearVelocity);
     }
 
 }

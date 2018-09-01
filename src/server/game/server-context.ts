@@ -4,7 +4,7 @@ import GameServer from "./game-server";
 import Player from "../../shared/game/entities/player";
 import {inject, injectable} from "inversify";
 import World from "../../shared/game/world";
-import Vector from "../../shared/data/vector";
+import Vector2 from "../../shared/data/vector2";
 import {Application} from "express";
 
 @injectable()
@@ -53,7 +53,7 @@ export default class ServerContext {
                     }
                     break;
                 case 'click':
-                    player.shoot(Vector.parse(data.target));
+                    player.shoot(Vector2.parse(data.target));
                     break;
             }
         };

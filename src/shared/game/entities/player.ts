@@ -1,13 +1,13 @@
 import {injectable} from "inversify";
 import container from "../../inversify.config";
 import TYPES from "../../inversify.types";
-import Vector from "../../data/vector";
+import Vector, {default as Vector2} from "../../data/vector2";
 import Bullet from "./bullet";
 import RigidBody from "../physics/rigid-body";
-import Box from "../shapes/box";
 import World from "../world";
 import Updatable from "../base/updatable";
 import {METAL} from "../material/materials";
+import Box from "../shapes/box";
 
 @injectable()
 export default class Player extends RigidBody implements Updatable<Player> {
@@ -16,9 +16,9 @@ export default class Player extends RigidBody implements Updatable<Player> {
     private _direction: number;
 
     public constructor() {
-        super(new Box(new Vector(), new Vector(50, 50)), METAL);
+        super(new Box(new Vector(), new Vector2(25, 25)), METAL);
         this.linearVelocity = new Vector();
-        this.maxVelocity = new Vector(1, 1);
+        this.maxVelocity = new Vector(0.1, 0.1);
     }
 
     public step(dt: number): void {
@@ -61,7 +61,7 @@ export default class Player extends RigidBody implements Updatable<Player> {
         this.addForce(new Vector(0, 5));
     }
 
-    public shoot(target): void {
+    public shoot(target: Vector2): void {
         container.get<World>(TYPES.World).addObject(new Bullet(this._shape.position, target));
     }
 

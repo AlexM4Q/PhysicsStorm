@@ -1,7 +1,7 @@
 import {connect} from "socket.io-client";
 import ConsoleLogger from "../../shared/logging/console-logger";
 import Logger from "../../shared/logging/logger";
-import Vector from "../../shared/data/vector";
+import Vector2 from "../../shared/data/vector2";
 
 export default class GameClient {
 
@@ -91,7 +91,7 @@ export default class GameClient {
         }, inputNumber);
     }
 
-    public click(inputNumber: number, target: Vector): void {
+    public click(inputNumber: number, target: Vector2): void {
         this._sendInput({
             type: 'click',
             target: target
