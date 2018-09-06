@@ -69,7 +69,7 @@ export default class GJK {
         return this.addSupport(this.direction) ? EvolveResult.StillEvolving : EvolveResult.NoIntersection;
     }
 
-    public test(shapeA: Shape, shapeB: Shape): boolean {
+    public overlap(shapeA: Shape, shapeB: Shape): boolean {
         this.vertices = [];
         this.shapeA = shapeA;
         this.shapeB = shapeB;
@@ -109,8 +109,8 @@ export default class GJK {
         return new Edge(closestDistance, closestNormal, closestIndex);
     }
 
-    public intersect(shapeA: Shape, shapeB: Shape): Vector2 {
-        if (!this.test(shapeA, shapeB)) {
+    public interpenetration(shapeA: Shape, shapeB: Shape): Vector2 {
+        if (!this.overlap(shapeA, shapeB)) {
             return null;
         }
 
@@ -119,22 +119,17 @@ export default class GJK {
         const e2: number = (this.vertices[0].x - this.vertices[2].x) * (this.vertices[0].y + this.vertices[2].y);
         const winding: AngularDirection = e0 + e1 + e2 >= 0 ? AngularDirection.Clockwise : AngularDirection.CounterClockwise;
 
-        let intersection: Vector2;
-        for (let i: number = 0; i < 32; i++) {
+        while (true) {
             const edge: Edge = this.findClosestEdge(winding);
             const support: Vector2 = this.support(edge.normal);
             const distance: number = support.dotProduct(edge.normal);
 
-            intersection = edge.normal.factor(distance);
-
-            if (Math.abs(distance - edge.distance) <= 0.000001) {
-                return intersection;
+            if (Math.abs(distance - edge.distance) <= 0.1) {
+                return edge.normal.factor(distance);
             } else {
                 this.vertices.splice(edge.index, 0, support);
             }
         }
-
-        return intersection;
     }
 
 }

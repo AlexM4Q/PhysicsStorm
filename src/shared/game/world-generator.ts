@@ -11,8 +11,8 @@ export default class WorldGenerator {
     }
 
     public generate(): void {
-        this._world.addObject(new Block(new Vector2(200, 100), new Vector2(50, 10)));
-        this._world.addObject(new Block(new Vector2(300, 5), new Vector2(50, 10)));
+        this._world.addObject(new Block(new Vector2(200, 100), new Vector2(50, 20)));
+        this._world.addObject(new Block(new Vector2(300, 5), new Vector2(50, 20)));
     }
 
 }

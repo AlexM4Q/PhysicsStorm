@@ -10,12 +10,20 @@ import Material from "../material/material";
 @injectable()
 export default abstract class RigidBody extends Particle implements Updatable<RigidBody> {
 
-    public _force: Vector2;
-    protected _material: Material;
-    protected _massData: MassData;
+    private _force: Vector2;
+    protected readonly _material: Material;
+    protected readonly _massData: MassData;
     protected torque: number = 0;
     protected angularVelocity: number = 0;
     protected angle: number = 0;
+
+    public get material(): Material {
+        return this._material;
+    }
+
+    public get massData(): MassData {
+        return this._massData;
+    }
 
     protected constructor(@unmanaged() shape: Shape, @unmanaged() material: Material, @unmanaged() isStatic: boolean = false) {
         super(shape, isStatic);

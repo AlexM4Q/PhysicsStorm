@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import Particle from "./physics/particle";
-import {physicInterval} from "../constants";
+import {g, physicInterval} from "../constants";
 import {injectable} from "inversify";
 import GameObject from "./base/game-object";
 import Vector2 from "../data/vector2";
@@ -21,6 +21,7 @@ export default class World {
 
     public start(): void {
         new WorldGenerator(this).generate();
+        const gjk: GJK = new GJK();
 
         setInterval(() => {
             const now = Date.now();
@@ -41,19 +42,23 @@ export default class World {
                     }
                 }
 
-                const gjk: GJK = new GJK();
                 for (let collide of this._particles) {
                     if (particle.id === collide.id) continue;
-                    let vector2 = gjk.intersect(particle.shape, collide.shape);
+                    let vector2 = gjk.interpenetration(particle.shape, collide.shape);
                     if (vector2) {
                         // if (GeometryUtils.collide(particle.shape, collide.shape)) {
 
                         if (particle instanceof Player) {
-                            if (particle.position.y > 0)
-                                console.log(`p(${particle.position.x}:${particle.position.y}) v(${vector2.x}:${vector2.y})`);
+                            // if (particle.position.y > 0)
 
                             particle.position = new Vector2(particle.position.x - vector2.x, particle.position.y - vector2.y);
-                            particle._force = Vector2.ZERO;
+                            // particle._force = Vector2.ZERO;
+
+                            if (vector2.y < 0) {
+                                let force = new Vector2(0, -particle.massData.mass * g);
+                                particle.addForce(force);
+                            }
+                            // console.log(`p(${particle.position.x}:${particle.position.y}) v(${vector2.x}:${vector2.y}) f(${force.x}:${force.y})`);
                         }
                     }
                 }
