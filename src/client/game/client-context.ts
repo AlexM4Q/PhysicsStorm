@@ -13,22 +13,21 @@ import Particle from "../../shared/game/physics/particle";
 export default class ClientContext {
 
     private readonly client: GameClient;
-    private readonly renderer: Renderer;
-    private readonly player: Player;
+    private renderer: Renderer;
+    private player: Player;
 
     public constructor(@inject(CLIENT_TYPES.World) private readonly world: World) {
+
         this.client = new GameClient(wsHost);
-        this.renderer = new Renderer();
         this.player = clientContainer.resolve(Player);
 
         this.world.addObject(this.player);
     }
 
     public startGame(): void {
-        const scene = document.getElementById("scene");
-
+        this.renderer = new Renderer(document.getElementById("scene") as HTMLCanvasElement);
+        this.world.onPhysicsUpdate = () => this.renderer.draw(this.world.particles);
         this.world.start();
-        this.renderer.start(scene);
 
         this.client.onRegister = (id) => {
             this.player.id = id;
@@ -37,8 +36,8 @@ export default class ClientContext {
         this.client.onMessage = (message) => {
             switch (message.type) {
                 case 'state':
-                    this.world.update(message.state as Particle[]);
-                    this.renderer.renders = this.world.state;
+                    // this.world.update(message.state as Particle[]);
+                    // this.renderer.draw(this.world.particles);
                     break;
             }
         };

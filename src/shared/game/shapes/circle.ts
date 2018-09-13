@@ -25,11 +25,11 @@ export default class Circle extends Shape implements Updatable<Circle> {
         return this._radius;
     }
 
-    public collideBox(box: Box): boolean {
+    public collideBox(box: Box): Vector2 {
         return GeometryUtils.collideBoxCircle(box, this);
     }
 
-    public collideCircle(circle: Circle): boolean {
+    public collideCircle(circle: Circle): Vector2 {
         return GeometryUtils.collideCircleCircle(this, circle);
     }
 

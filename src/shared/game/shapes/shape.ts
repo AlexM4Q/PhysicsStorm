@@ -12,9 +12,9 @@ export default abstract class Shape implements Collidable, Updatable<Shape> {
         this.position = position;
     }
 
-    public abstract collideBox(box: Box): boolean;
+    public abstract collideBox(box: Box): Vector2;
 
-    public abstract collideCircle(circle: Circle): boolean;
+    public abstract collideCircle(circle: Circle): Vector2;
 
     /**
      * Отрисовка фигуры

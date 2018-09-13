@@ -18,11 +18,11 @@ export default class Box extends Shape implements Collidable, Updatable<Box> {
         return this._halfSize;
     }
 
-    public collideBox(box: Box): boolean {
+    public collideBox(box: Box): Vector2 {
         return GeometryUtils.collideBoxBox(this, box);
     }
 
-    public collideCircle(circle: Circle): boolean {
+    public collideCircle(circle: Circle): Vector2 {
         return GeometryUtils.collideBoxCircle(this, circle);
     }
 

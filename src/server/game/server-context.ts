@@ -21,7 +21,7 @@ export default class ServerContext {
         setInterval(() => {
             server.sendAll({
                 type: 'state',
-                state: this.world.state
+                state: this.world.particles
             });
         }, 100);
 
