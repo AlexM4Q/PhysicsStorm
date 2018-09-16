@@ -60,7 +60,60 @@ export default class GeometryUtils {
     }
 
     public static collideBoxCircle(boxA: Box, circleB: Circle): Vector2 {
-        return GeometryUtils._gjk.interpenetration(boxA, circleB);
+        let dx;
+        if (boxA.position.x < circleB.position.x) {
+            const rightBox = boxA.position.x + boxA.halfSize.x;
+            const leftCircle = circleB.position.x - circleB.radius;
+
+            if (rightBox <= leftCircle) {
+                return null;
+            }
+
+            dx = leftCircle - rightBox;
+        } else {
+            const leftBox = boxA.position.x - boxA.halfSize.x;
+            const rightCircle = circleB.position.x + circleB.radius;
+
+            if (rightCircle <= leftBox) {
+                return null;
+            }
+
+            dx = rightCircle - leftBox;
+        }
+
+        let dy;
+        if (boxA.position.y < circleB.position.y) {
+            const topBox = boxA.position.y + boxA.halfSize.y;
+            const bottomCircle = circleB.position.y - circleB.radius;
+
+            if (topBox <= bottomCircle) {
+                return null;
+            }
+
+            dy = bottomCircle - topBox;
+        } else {
+            const bottomBox = boxA.position.y - boxA.halfSize.y;
+            const topCircle = circleB.position.y + circleB.radius;
+
+            if (topCircle <= bottomBox) {
+                return null;
+            }
+
+            dy = topCircle - bottomBox;
+        }
+
+        const absDx = Math.abs(dx);
+        const absDy = Math.abs(dy);
+
+        if (absDx < absDy) {
+            return new Vector2(dx, 0);
+        }
+
+        if (absDx > absDy) {
+            return new Vector2(0, dy);
+        }
+
+        return new Vector2(dx, dy);
     }
 
     public static collideCircleCircle(circleA: Circle, circleB: Circle): Vector2 {

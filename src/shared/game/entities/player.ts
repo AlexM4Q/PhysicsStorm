@@ -7,20 +7,20 @@ import RigidBody from "../physics/rigid-body";
 import World from "../world";
 import Updatable from "../base/updatable";
 import {METAL} from "../material/materials";
-import Box from "../shapes/box";
+import Circle from "../shapes/circle";
 
 @injectable()
 export default class Player extends RigidBody implements Updatable<Player> {
 
     public maxVelocity: number = 50;
 
-    public jumpStrangth: number = 10;
+    public jumpStrangth: number = 300;
 
-    private _direction: number;
+    private _direction: number = 0;
 
     public constructor() {
-        super(new Box(new Vector(), new Vector2(25, 25)), METAL);
-        this.linearVelocity = new Vector();
+        super(new Circle(new Vector(200, 500), 30), METAL);
+        // super(new Box(new Vector(), new Vector2(25, 25)), METAL);
     }
 
     public step(dt: number): void {
@@ -65,11 +65,6 @@ export default class Player extends RigidBody implements Updatable<Player> {
 
     public shoot(target: Vector2): void {
         container.get<World>(TYPES.World).addObject(new Bullet(this._shape.position, target));
-    }
-
-    public draw(canvasContext: CanvasRenderingContext2D): void {
-        canvasContext.fillStyle = this.color;
-        this._shape.draw(canvasContext);
     }
 
     public updateBy(player: Player) {

@@ -1,12 +1,11 @@
 import "reflect-metadata";
 import Particle from "./physics/particle";
-import {g, physicInterval} from "../constants";
+import {physicInterval} from "../constants";
 import {injectable} from "inversify";
 import GameObject from "./base/game-object";
 import Vector2 from "../data/vector2";
 import RigidBody from "./physics/rigid-body";
 import WorldGenerator from "./world-generator";
-import Player from "./entities/player";
 import GeometryUtils from "../utils/geometry-utils";
 
 @injectable()
@@ -37,6 +36,17 @@ export default class World {
         }, physicInterval);
     }
 
+    public update(state: Particle[]): void {
+        for (let object of state) {
+            for (let gameObject of this._particles) {
+                if (object.id === gameObject.id) {
+                    gameObject.updateBy(object);
+                    break;
+                }
+            }
+        }
+    }
+
     public addObject(object: Particle): void {
         this._particles.push(object);
     }
@@ -47,6 +57,9 @@ export default class World {
 
     public updatePhysics(dt: number): void {
         for (let particle of this._particles) {
+            if (particle.isStatic) {
+                continue;
+            }
 
             particle.step(dt);
 
@@ -60,22 +73,12 @@ export default class World {
 
             for (let collide of this._particles) {
                 if (particle.id === collide.id) continue;
-                let vector2 = GeometryUtils.collide(particle.shape, collide.shape);
+
+                const vector2 = GeometryUtils.collide(particle.shape, collide.shape);
                 if (vector2) {
-                    console.log(vector2);
-                    // if (GeometryUtils.collide(particle.shape, collide.shape)) {
-
-                    if (particle instanceof Player) {
-                        // if (particle.position.y > 0)
-
-                        particle.position = new Vector2(particle.position.x - vector2.x, particle.position.y - vector2.y);
-                        // particle._force = Vector2.ZERO;
-
-                        if (vector2.y < 0) {
-                            let force = new Vector2(0, -particle.massData.mass * g);
-                            particle.addForce(force);
-                        }
-                        // console.log(`p(${particle.position.x}:${particle.position.y}) v(${vector2.x}:${vector2.y}) f(${force.x}:${force.y})`);
+                    if (particle instanceof RigidBody) {
+                        particle.resolveCollision(vector2);
+                        World.resolveCollision(particle, collide as RigidBody, vector2);
                     }
                 }
             }
@@ -84,14 +87,22 @@ export default class World {
         this._onPhysicsUpdate && this._onPhysicsUpdate();
     }
 
-    public update(state: Particle[]): void {
-        for (let object of state) {
-            for (let gameObject of this._particles) {
-                if (object.id === gameObject.id) {
-                    gameObject.updateBy(object);
-                    break;
-                }
-            }
+    private static resolveCollision(a: RigidBody, b: RigidBody, penetration: Vector2): void {
+        const normal: Vector2 = penetration.normalized;
+
+        const relativeVelocity: Vector2 = b.linearVelocity.subtract(a.linearVelocity);
+        const velocityAlongNormal: number = relativeVelocity.dotProduct(normal);
+
+        if (velocityAlongNormal > 0) {
+            return;
         }
+
+        const restitution: number = Math.min(a.material.restitution, b.material.restitution);
+
+        const j: number = -(1 + restitution) * velocityAlongNormal / (a.massData.inverse_mass + b.massData.inverse_mass);
+
+        const impulse: Vector2 = normal.factor(j);
+        a.linearVelocity = a.linearVelocity.subtract(impulse.factor(a.massData.inverse_mass));
+        b.linearVelocity = b.linearVelocity.add(impulse.factor(b.massData.inverse_mass));
     }
 }

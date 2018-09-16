@@ -19,12 +19,4 @@ export default class Bullet extends RigidBody implements Updatable<Bullet> {
         this.position = this.position.add(this.linearVelocity.multiply(this.direction).factor(dt));
     }
 
-    public draw(canvasContext: CanvasRenderingContext2D): void {
-        this._shape.draw(canvasContext);
-    }
-
-    public updateBy(bullet: Bullet): void {
-        super.updateBy(bullet);
-    }
-
 }

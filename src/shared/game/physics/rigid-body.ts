@@ -11,67 +11,78 @@ import Material from "../material/material";
 export default abstract class RigidBody extends Particle implements Updatable<RigidBody> {
 
     private _force: Vector2;
+
     protected readonly _material: Material;
-    protected readonly _massData: MassData;
-    protected torque: number = 0;
-    protected angularVelocity: number = 0;
-    protected angle: number = 0;
 
     public get material(): Material {
         return this._material;
     }
 
+    protected readonly _massData: MassData;
+
     public get massData(): MassData {
         return this._massData;
+    }
+
+    protected _torque: number = 0;
+
+    protected _angularVelocity: number = 0;
+
+    protected _angle: number = 0;
+
+    protected _grounded: boolean = false;
+
+    public get grounded(): boolean {
+        return this._grounded;
     }
 
     protected constructor(@unmanaged() shape: Shape, @unmanaged() material: Material, @unmanaged() isStatic: boolean = false) {
         super(shape, isStatic);
 
-        if (this.isStatic) {
+        this._material = material;
+
+        if (isStatic) {
+            this._massData = new MassData();
             return;
         }
 
         this._force = Vector2.ZERO;
-        this._material = material;
 
         const mass = shape.square() * material.density;
         const inertia = shape.inertia(mass);
         this._massData = new MassData(mass, inertia);
     }
 
-    public addForce(force: Vector2): void {
-        if (this.isStatic) {
-            return;
-        }
-
-        this._force = this._force.add(force);
-    }
-
     public step(dt: number): void {
-        if (this.isStatic) {
+        if (this._isStatic) {
             return;
         }
 
-        const force = new Vector2(
-            this._force.x,
-            this._force.y + this._massData.mass * g
-        );
+        if (this.linearVelocity.y) {
+            this._grounded = false;
+        }
+
+        const force = this._grounded
+            ? this._force
+            : new Vector2(
+                this._force.x,
+                this._force.y + this._massData.mass * g
+            );
 
         this.linearVelocity = new Vector2(
             this.linearVelocity.x + dt * force.x * this._massData.inverse_mass,
             this.linearVelocity.y + dt * force.y * this._massData.inverse_mass
         );
 
-        this.torque = this._shape.torque(force);
+        this._torque = this._shape.torque(force);
 
         this.position = new Vector2(
             this.position.x + this.linearVelocity.x * dt,
             this.position.y + this.linearVelocity.y * dt
         );
 
-        this.angularVelocity += this.torque / this._massData.inertia * dt;
-        this.angle += this.angularVelocity * dt;
+        this._angularVelocity += this._torque / this._massData.inertia * dt;
+        this._angle += this._angularVelocity * dt;
 
         this._force = Vector2.ZERO;
     }
@@ -79,9 +90,29 @@ export default abstract class RigidBody extends Particle implements Updatable<Ri
     public updateBy(rigidBody: RigidBody): void {
         super.updateBy(rigidBody);
         this._massData.updateBy(rigidBody._massData);
-        this.torque = rigidBody.torque;
-        this.angularVelocity = rigidBody.angularVelocity;
-        this.angle = rigidBody.angle;
+        this._torque = rigidBody._torque;
+        this._angularVelocity = rigidBody._angularVelocity;
+        this._angle = rigidBody._angle;
+    }
+
+    public addForce(force: Vector2): void {
+        if (this._isStatic) {
+            return;
+        }
+
+        this._force = this._force.add(force);
+
+        if (force.y > 0) {
+            this._grounded = false;
+        }
+    }
+
+    public resolveCollision(penetration: Vector2): void {
+        this._shape.resolveCollision(penetration);
+
+        if (penetration.y < 0) {
+            this._grounded = true;
+        }
     }
 
 }

@@ -14,7 +14,7 @@ export default class MassData implements Updatable<MassData> {
     private _inertia: number;
     private _inverse_inertia: number;
 
-    constructor(mass: number, inertia: number) {
+    constructor(mass: number = 0, inertia: number = 0) {
         this.mass = mass;
         this.inertia = inertia;
     }
@@ -24,8 +24,13 @@ export default class MassData implements Updatable<MassData> {
     }
 
     public set mass(value: number) {
-        this._mass = value;
-        this._inverse_mass = 1 / value;
+        if (value) {
+            this._mass = value;
+            this._inverse_mass = 1 / value;
+        } else {
+            this._mass = 0;
+            this._inverse_mass = 0;
+        }
     }
 
     public get inverse_mass(): number {
@@ -37,8 +42,13 @@ export default class MassData implements Updatable<MassData> {
     }
 
     public set inertia(value: number) {
-        this._inertia = value;
-        this._inverse_inertia = 1 / value;
+        if (value) {
+            this._inertia = value;
+            this._inverse_inertia = 1 / value;
+        } else {
+            this._inertia = 0;
+            this._inverse_inertia = 0;
+        }
     }
 
     public get inverse_inertia(): number {

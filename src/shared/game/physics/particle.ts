@@ -12,17 +12,6 @@ export default abstract class Particle extends GameObject implements Updatable<P
 
     protected readonly _shape: Shape;
 
-    public readonly isStatic;
-
-    public linearVelocity: Vector2;
-
-    protected constructor(@unmanaged() shape: Shape, @unmanaged() isStatic: boolean = false) {
-        super();
-
-        this._shape = shape;
-        this.isStatic = isStatic;
-    }
-
     public get shape(): Shape {
         return this._shape;
     }
@@ -33,6 +22,26 @@ export default abstract class Particle extends GameObject implements Updatable<P
 
     public set position(value: Vector2) {
         this._shape.position = value;
+    }
+
+    protected readonly _isStatic;
+
+    public get isStatic(): boolean {
+        return this._isStatic;
+    }
+
+    public linearVelocity: Vector2 = Vector2.ZERO;
+
+    protected constructor(@unmanaged() shape: Shape, @unmanaged() isStatic: boolean = false) {
+        super();
+
+        this._shape = shape;
+        this._isStatic = isStatic;
+    }
+
+    public draw(canvasContext: CanvasRenderingContext2D): void {
+        canvasContext.fillStyle = this.color;
+        this._shape.draw(canvasContext);
     }
 
     public abstract step(dt: number): void;

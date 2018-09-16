@@ -9,6 +9,7 @@ import Updatable from "./updatable";
 export default abstract class GameObject implements Updatable<GameObject> {
 
     public id: string;
+
     public color: string = "#000000";
 
     protected constructor() {

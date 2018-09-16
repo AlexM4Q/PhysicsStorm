@@ -2,15 +2,15 @@ export default class Vector2 {
 
     public static readonly ZERO: Vector2 = new Vector2(0, 0);
 
-    constructor(private readonly _x = 0, private readonly _y = 0) {
-    }
-
     public get x(): number {
         return this._x;
     }
 
     public get y(): number {
         return this._y;
+    }
+
+    constructor(private readonly _x = 0, private readonly _y = 0) {
     }
 
     /**

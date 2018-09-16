@@ -12,6 +12,10 @@ export default abstract class Shape implements Collidable, Updatable<Shape> {
         this.position = position;
     }
 
+    public resolveCollision(penetration: Vector2): void {
+        this.position = this.position.subtract(penetration);
+    }
+
     public abstract collideBox(box: Box): Vector2;
 
     public abstract collideCircle(circle: Circle): Vector2;
@@ -55,5 +59,4 @@ export default abstract class Shape implements Collidable, Updatable<Shape> {
     public updateBy(shape: Shape): void {
         this.position = Vector2.parse(shape.position);
     }
-
 }
