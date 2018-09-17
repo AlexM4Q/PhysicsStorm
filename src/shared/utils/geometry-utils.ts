@@ -60,73 +60,72 @@ export default class GeometryUtils {
     }
 
     public static collideBoxCircle(boxA: Box, circleB: Circle): Vector2 {
-        let dx;
-        if (boxA.position.x < circleB.position.x) {
-            const rightBox = boxA.position.x + boxA.halfSize.x;
-            const leftCircle = circleB.position.x - circleB.radius;
-
-            if (rightBox <= leftCircle) {
+        let x: number;
+        const leftBox = boxA.position.x - boxA.halfSize.x;
+        if (leftBox > circleB.position.x) {
+            if (leftBox - circleB.position.x > circleB.radius) {
                 return null;
             }
 
-            dx = leftCircle - rightBox;
+            x = leftBox;
         } else {
-            const leftBox = boxA.position.x - boxA.halfSize.x;
-            const rightCircle = circleB.position.x + circleB.radius;
+            const rightBox = boxA.position.x + boxA.halfSize.x;
+            if (rightBox < circleB.position.x) {
+                if (circleB.position.x - rightBox > circleB.radius) {
+                    return null;
+                }
 
-            if (rightCircle <= leftBox) {
-                return null;
+                x = rightBox;
+            } else {
+                x = circleB.position.x;
             }
-
-            dx = rightCircle - leftBox;
         }
 
-        let dy;
-        if (boxA.position.y < circleB.position.y) {
-            const topBox = boxA.position.y + boxA.halfSize.y;
-            const bottomCircle = circleB.position.y - circleB.radius;
-
-            if (topBox <= bottomCircle) {
+        let y: number;
+        const topBox = boxA.position.y + boxA.halfSize.y;
+        if (topBox < circleB.position.y) {
+            if (circleB.position.y - topBox > circleB.radius) {
                 return null;
             }
 
-            dy = bottomCircle - topBox;
+            y = topBox;
         } else {
             const bottomBox = boxA.position.y - boxA.halfSize.y;
-            const topCircle = circleB.position.y + circleB.radius;
+            if (bottomBox > circleB.position.y) {
+                if (bottomBox - circleB.position.y > circleB.radius) {
+                    return null;
+                }
 
-            if (topCircle <= bottomBox) {
-                return null;
+                y = bottomBox;
+            } else {
+                y = circleB.position.y;
             }
-
-            dy = topCircle - bottomBox;
         }
 
-        const absDx = Math.abs(dx);
-        const absDy = Math.abs(dy);
+        const dx: number = x - circleB.position.x;
+        const dy: number = y - circleB.position.y;
+        const distance: number = Math.sqrt(dx * dx + dy * dy);
 
-        if (absDx < absDy) {
-            return new Vector2(dx, 0);
+        if (distance >= circleB.radius || !distance) {
+            return null;
         }
 
-        if (absDx > absDy) {
-            return new Vector2(0, dy);
-        }
+        const factor = circleB.radius / distance - 1;
 
-        return new Vector2(dx, dy);
+        return new Vector2(dx * factor, dy * factor);
     }
 
     public static collideCircleCircle(circleA: Circle, circleB: Circle): Vector2 {
         const dx = circleB.position.x - circleA.position.x;
         const dy = circleB.position.y - circleA.position.y;
         const radiusSum = circleA.radius + circleB.radius;
-        const distanceSquare = dx * dx + dy * dy;
+        const distance = Math.sqrt(dx * dx + dy * dy);
 
-        if (distanceSquare >= radiusSum * radiusSum) {
+        if (distance >= radiusSum) {
             return null;
         }
 
-        const factor = radiusSum / Math.sqrt(distanceSquare) - 1;
+        const factor = radiusSum / distance - 1;
 
         return new Vector2(dx * factor, dy * factor);
     }
