@@ -10,15 +10,7 @@ export default class Vector2 {
         return this._y;
     }
 
-    public set x(x : number) {
-        this._x = x;
-    }
-
-    public set y(y : number) {
-        this._y = y;
-    }
-
-    constructor(private  _x = 0, private  _y = 0) {
+    constructor(private readonly _x = 0, private readonly _y = 0) {
     }
 
     /**
@@ -107,6 +99,17 @@ export default class Vector2 {
      */
     public crossProduct(vector: Vector2): number {
         return this._x * vector._y - this._y * vector._x;
+    }
+
+    /**
+     * Расстояние до точки
+     * @param {Vector2} vector Другой вектор
+     * @returns {number} Результат
+     */
+    public distanceTo(vector: Vector2): number {
+        const dx = this._x - vector._x;
+        const dy = this._y - vector._y;
+        return Math.sqrt(dx * dx + dy * dy);
     }
 
     /**

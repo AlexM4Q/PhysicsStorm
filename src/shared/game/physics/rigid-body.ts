@@ -95,7 +95,7 @@ export default abstract class RigidBody extends Particle implements Updatable<Ri
         this._angle = rigidBody._angle;
     }
 
-    public addForce(force: Vector2): void {
+    public applyForce(force: Vector2): void {
         if (this._isStatic) {
             return;
         }
@@ -103,6 +103,21 @@ export default abstract class RigidBody extends Particle implements Updatable<Ri
         this._force = this._force.add(force);
 
         if (force.y > 0) {
+            this._grounded = false;
+        }
+    }
+
+    public applyImpulse(impulse: Vector2): void {
+        if (this._isStatic) {
+            return;
+        }
+
+        this.linearVelocity = new Vector2(
+            this.linearVelocity.x + impulse.x * this._massData.inverse_mass,
+            this.linearVelocity.y + impulse.y * this._massData.inverse_mass
+        );
+
+        if (impulse.y > 0) {
             this._grounded = false;
         }
     }

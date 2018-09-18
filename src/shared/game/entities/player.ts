@@ -14,13 +14,13 @@ export default class Player extends RigidBody implements Updatable<Player> {
 
     public maxVelocity: number = 50;
 
-    public jumpStrangth: number = 300;
+    public jumpStrength: number = 300;
 
     private _direction: number = 0;
 
     public constructor() {
         super(new Circle(new Vector(0, 0), 30), METAL);
-        // super(new Circle(new Vector(200, 500), 30), METAL);
+        // super(new Circle(new Vector(200, 1000), 30), METAL);
         // super(new Box(new Vector(), new Vector2(25, 25)), METAL);
     }
 
@@ -35,7 +35,7 @@ export default class Player extends RigidBody implements Updatable<Player> {
 
         switch (this._direction) {
             case 1:
-                this.addForce(new Vector(this.maxVelocity, 0));
+                this.applyForce(new Vector(this.maxVelocity, 0));
                 break;
             case 0:
                 if (this.linearVelocity.x !== 0) {
@@ -43,7 +43,7 @@ export default class Player extends RigidBody implements Updatable<Player> {
                 }
                 break;
             case -1:
-                this.addForce(new Vector(-this.maxVelocity, 0));
+                this.applyForce(new Vector(-this.maxVelocity, 0));
                 break;
         }
     }
@@ -61,7 +61,7 @@ export default class Player extends RigidBody implements Updatable<Player> {
     }
 
     public jump(): void {
-        this.addForce(new Vector(0, this.jumpStrangth));
+        this.applyForce(new Vector(0, this.jumpStrength));
     }
 
     public shoot(target: Vector2): void {
@@ -71,7 +71,7 @@ export default class Player extends RigidBody implements Updatable<Player> {
     public updateBy(player: Player) {
         super.updateBy(player);
         this.maxVelocity = player.maxVelocity;
-        this.jumpStrangth = player.jumpStrangth;
+        this.jumpStrength = player.jumpStrength;
     }
 
 }
