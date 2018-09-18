@@ -60,59 +60,65 @@ export default class GeometryUtils {
     }
 
     public static collideBoxCircle(boxA: Box, circleB: Circle): Vector2 {
-        let x: number;
-        const leftBox = boxA.position.x - boxA.halfSize.x;
-        if (leftBox > circleB.position.x) {
-            if (leftBox - circleB.position.x > circleB.radius) {
-                return null;
+        const n: Vector2 = circleB.position.subtract(boxA.position);
+
+        // Ближайшая к центру B точка A
+        let closest: Vector2 = n;
+
+        // Вычисление половины ширины вдоль каждой оси
+        const x_extent: number = boxA.halfSize.x;
+        const y_extent: number = boxA.halfSize.y;
+
+        // Ограничиваем точку ребром AABB
+        closest.x = closest.x < -x_extent ? -x_extent : x_extent < closest.x ? x_extent : closest.x;
+        closest.y = closest.y < -y_extent ? -y_extent : y_extent < closest.y ? y_extent : closest.y;
+
+        let inside: boolean = false;
+
+        // Окружность внутри AABB, поэтому нам нужно ограничить центр окружности
+        // до ближайшего ребра
+        if (n == closest) {
+            inside = true;
+
+            // Находим ближайшую ось
+            if (Math.abs(n.x) > Math.abs(n.y)) {
+                // Отсекаем до ближайшей ширины
+                if (closest.x > 0)
+                    closest.x = x_extent;
+                else
+                    closest.x = -x_extent;
             }
 
-            x = leftBox;
-        } else {
-            const rightBox = boxA.position.x + boxA.halfSize.x;
-            if (rightBox < circleB.position.x) {
-                if (circleB.position.x - rightBox > circleB.radius) {
-                    return null;
-                }
-
-                x = rightBox;
-            } else {
-                x = circleB.position.x;
-            }
-        }
-
-        let y: number;
-        const topBox = boxA.position.y + boxA.halfSize.y;
-        if (topBox < circleB.position.y) {
-            if (circleB.position.y - topBox > circleB.radius) {
-                return null;
-            }
-
-            y = topBox;
-        } else {
-            const bottomBox = boxA.position.y - boxA.halfSize.y;
-            if (bottomBox > circleB.position.y) {
-                if (bottomBox - circleB.position.y > circleB.radius) {
-                    return null;
-                }
-
-                y = bottomBox;
-            } else {
-                y = circleB.position.y;
+            // ось y короче
+            else {
+                // Отсекаем до ближайшей ширины
+                if (closest.y > 0)
+                    closest.y = y_extent;
+                else
+                    closest.y = -y_extent;
             }
         }
 
-        const dx: number = x - circleB.position.x;
-        const dy: number = y - circleB.position.y;
-        const distance: number = Math.sqrt(dx * dx + dy * dy);
+        const normal: Vector2 = n.subtract(closest);
+        let d: number = normal.lengthSquare;
+        const r = circleB.radius;
 
-        if (distance >= circleB.radius || !distance) {
+        // Если радиус меньше, чем расстояние до ближайшей точки и
+        // Окружность не находится внутри AABB
+        if (d > r * r && !inside)
             return null;
+
+        // Избегаем sqrt, пока он нам не понадобится
+        d = Math.sqrt(d);
+
+        // Если окружность была внутри AABB, то нормаль коллизии нужно отобразить
+        // в точку снаружи
+        if (inside) {
+            return n.factor(r - d);
         }
-
-        const factor = circleB.radius / distance - 1;
-
-        return new Vector2(dx * factor, dy * factor);
+        else {
+            return n.factor(d - r);
+        }
     }
 
     public static collideCircleCircle(circleA: Circle, circleB: Circle): Vector2 {

@@ -10,7 +10,15 @@ export default class Vector2 {
         return this._y;
     }
 
-    constructor(private readonly _x = 0, private readonly _y = 0) {
+    public set x(x : number) {
+        this._x = x;
+    }
+
+    public set y(y : number) {
+        this._y = y;
+    }
+
+    constructor(private  _x = 0, private  _y = 0) {
     }
 
     /**
