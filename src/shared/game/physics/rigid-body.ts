@@ -70,8 +70,8 @@ export default abstract class RigidBody extends Particle implements Updatable<Ri
             );
 
         this.linearVelocity = new Vector2(
-            this.linearVelocity.x + dt * force.x * this._massData.inverse_mass,
-            this.linearVelocity.y + dt * force.y * this._massData.inverse_mass
+            0.99 * this.linearVelocity.x + dt * force.x * this._massData.inverse_mass,
+            0.99 * this.linearVelocity.y + dt * force.y * this._massData.inverse_mass
         );
 
         this._torque = this._shape.torque(force);
