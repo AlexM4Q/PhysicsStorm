@@ -8,6 +8,7 @@ import World from "../world";
 import Updatable from "../base/updatable";
 import {METAL} from "../material/materials";
 import Circle from "../shapes/circle";
+import Box from "../shapes/box";
 
 @injectable()
 export default class Player extends RigidBody implements Updatable<Player> {
@@ -19,9 +20,9 @@ export default class Player extends RigidBody implements Updatable<Player> {
     private _direction: number = 0;
 
     public constructor() {
-        super(new Circle(new Vector(0, 0), 30), METAL);
+        // super(new Circle(new Vector(0, 0), 30), METAL);
         // super(new Circle(new Vector(200, 1000), 30), METAL);
-        // super(new Box(new Vector(), new Vector2(25, 25)), METAL);
+        super(new Box(new Vector(), new Vector2(25, 25)), METAL);
     }
 
     public step(dt: number): void {

@@ -58,29 +58,35 @@ export default abstract class RigidBody extends Particle implements Updatable<Ri
             return;
         }
 
-        if (this.linearVelocity.y) {
+        if (this.linearVelocity.y > 0 || this._force.y > 0) {
             this._grounded = false;
         }
 
-        const force = this._grounded
-            ? this._force
-            : new Vector2(
+        if (this.grounded) {
+            this._force = new Vector2(this._force.x,);
+
+            this.linearVelocity = new Vector2(
+                this.linearVelocity.x + dt * this._force.x * this._massData.inverse_mass,
+                0.001
+            );
+        } else {
+            this._force = new Vector2(
                 this._force.x,
                 this._force.y + this._massData.mass * g
             );
 
-        this.linearVelocity = new Vector2(
-            0.99 * this.linearVelocity.x + dt * force.x * this._massData.inverse_mass,
-            0.99 * this.linearVelocity.y + dt * force.y * this._massData.inverse_mass
-        );
-
-        this._torque = this._shape.torque(force);
+            this.linearVelocity = new Vector2(
+                this.linearVelocity.x + dt * this._force.x * this._massData.inverse_mass,
+                this.linearVelocity.y + dt * this._force.y * this._massData.inverse_mass
+            );
+        }
 
         this.position = new Vector2(
             this.position.x + this.linearVelocity.x * dt,
             this.position.y + this.linearVelocity.y * dt
         );
 
+        this._torque = this._shape.torque(this._force);
         this._angularVelocity += this._torque / this._massData.inertia * dt;
         this._angle += this._angularVelocity * dt;
 
@@ -122,8 +128,10 @@ export default abstract class RigidBody extends Particle implements Updatable<Ri
         }
     }
 
-    public resolveCollision(penetration: Vector2): void {
-        this._shape.resolveCollision(penetration);
+    public resolveCollision(penetration: Vector2, resolve: boolean = false): void {
+        if (resolve) {
+            this._shape.resolveCollision(penetration);
+        }
 
         if (penetration.y < 0) {
             this._grounded = true;

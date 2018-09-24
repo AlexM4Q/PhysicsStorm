@@ -12,7 +12,7 @@ export default class WorldGenerator {
     }
 
     public generate(): void {
-        this._world.addObject(new Block(new Vector2(worldWidth / 2, 100), new Vector2(worldWidth / 2 - 50, 20)));
+        this._world.addObject(new Block(new Vector2(worldWidth / 2, 150), new Vector2(worldWidth / 2 - 50, 20)));
     }
 
 }
