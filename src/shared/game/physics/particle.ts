@@ -1,6 +1,6 @@
 import GameObject from "../base/game-object";
 import Vector2 from "../../data/vector2";
-import Shape from "../shapes/shape";
+import Shape from "../geometry/shapes/shape";
 import {injectable, unmanaged} from "inversify";
 import Updatable from "../base/updatable";
 

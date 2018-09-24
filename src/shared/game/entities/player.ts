@@ -6,9 +6,9 @@ import Bullet from "./bullet";
 import RigidBody from "../physics/rigid-body";
 import World from "../world";
 import Updatable from "../base/updatable";
-import {METAL} from "../material/materials";
-import Circle from "../shapes/circle";
-import Box from "../shapes/box";
+import {METAL} from "../physics/material/materials";
+import Circle from "../geometry/shapes/circle";
+import Box from "../geometry/shapes/box";
 
 @injectable()
 export default class Player extends RigidBody implements Updatable<Player> {

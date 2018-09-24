@@ -1,9 +1,9 @@
-import Shape from "../game/shapes/shape";
-import Box from "../game/shapes/box";
-import Circle from "../game/shapes/circle";
-import Vector2 from "../data/vector2";
+import Shape from "./shapes/shape";
+import Box from "./shapes/box";
+import Circle from "./shapes/circle";
+import Vector2 from "../../data/vector2";
 
-export default class GeometryUtils {
+export default class CollisionDetector {
 
     public static collide(shapeA: Shape, shapeB: Shape): Vector2 {
         if (shapeB instanceof Box) {
@@ -18,7 +18,7 @@ export default class GeometryUtils {
     }
 
     public static collideBoxBox(boxA: Box, boxB: Box): Vector2 {
-        return GeometryUtils.collideBoxBoxAbstract(boxA.position, boxA.halfSize.x, boxA.halfSize.y, boxB.position, boxB.halfSize.x, boxB.halfSize.y);
+        return CollisionDetector.collideBoxBoxAbstract(boxA.position, boxA.halfSize.x, boxA.halfSize.y, boxB.position, boxB.halfSize.x, boxB.halfSize.y);
     }
 
     private static collideBoxBoxAbstract(positionA: Vector2, halfWidthA: number, halfHeightA: number, positionB: Vector2, halfWidthB: number, halfHeightB: number): Vector2 {
@@ -100,7 +100,7 @@ export default class GeometryUtils {
         }
 
         if (!(dx || dy)) {
-            return GeometryUtils.collideBoxBoxAbstract(boxA.position, boxA.halfSize.x, boxA.halfSize.y, circleB.position, circleB.radius, circleB.radius);
+            return CollisionDetector.collideBoxBoxAbstract(boxA.position, boxA.halfSize.x, boxA.halfSize.y, circleB.position, circleB.radius, circleB.radius);
         }
 
         const distance: number = Math.sqrt(dx * dx + dy * dy);

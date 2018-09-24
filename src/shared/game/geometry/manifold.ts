@@ -1,5 +1,5 @@
 import Vector2 from "../../data/vector2";
-import RigidBody from "./rigid-body";
+import RigidBody from "../physics/rigid-body";
 
 export default class Manifold {
 

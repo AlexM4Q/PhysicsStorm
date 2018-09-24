@@ -1,11 +1,11 @@
 import Particle from "./particle";
 import {g} from "../../constants";
 import Vector2 from "../../data/vector2";
-import Shape from "../shapes/shape";
+import Shape from "../geometry/shapes/shape";
 import {injectable, unmanaged} from "inversify";
 import Updatable from "../base/updatable";
 import MassData from "./mass-data";
-import Material from "../material/material";
+import Material from "./material/material";
 
 @injectable()
 export default abstract class RigidBody extends Particle implements Updatable<RigidBody> {
@@ -128,11 +128,7 @@ export default abstract class RigidBody extends Particle implements Updatable<Ri
         }
     }
 
-    public resolveCollision(penetration: Vector2, resolve: boolean = false): void {
-        if (resolve) {
-            this._shape.resolveCollision(penetration);
-        }
-
+    public handleCollision(penetration: Vector2): void {
         if (penetration.y < 0) {
             this._grounded = true;
         }

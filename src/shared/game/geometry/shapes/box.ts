@@ -1,9 +1,9 @@
-import Vector2 from "../../data/vector2";
+import Vector2 from "../../../data/vector2";
 import Shape from "./shape";
-import Updatable from "../base/updatable";
+import Updatable from "../../base/updatable";
 import Collidable from "./collidable";
 import Circle from "./circle";
-import GeometryUtils from "../../utils/geometry-utils";
+import GeometryUtils from "./geometry-utils";
 
 export default class Box extends Shape implements Collidable, Updatable<Box> {
 

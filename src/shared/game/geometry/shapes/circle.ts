@@ -1,8 +1,8 @@
 import Shape from "./shape";
-import Updatable from "../base/updatable";
-import Vector2 from "../../data/vector2";
+import Updatable from "../../base/updatable";
+import Vector2 from "../../../data/vector2";
 import Box from "./box";
-import GeometryUtils from "../../utils/geometry-utils";
+import GeometryUtils from "./geometry-utils";
 
 export default class Circle extends Shape implements Updatable<Circle> {
 

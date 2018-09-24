@@ -1,5 +1,5 @@
-import Vector2 from "../../data/vector2";
-import Updatable from "../base/updatable";
+import Vector2 from "../../../data/vector2";
+import Updatable from "../../base/updatable";
 import Collidable from "./collidable";
 import Box from "./box";
 import Circle from "./circle";
@@ -10,10 +10,6 @@ export default abstract class Shape implements Collidable, Updatable<Shape> {
 
     protected constructor(position: Vector2) {
         this.position = position;
-    }
-
-    public resolveCollision(penetration: Vector2): void {
-        this.position = this.position.subtract(penetration);
     }
 
     public abstract collideBox(box: Box): Vector2;

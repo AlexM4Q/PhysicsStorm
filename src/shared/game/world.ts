@@ -6,8 +6,9 @@ import GameObject from "./base/game-object";
 import Vector2 from "../data/vector2";
 import RigidBody from "./physics/rigid-body";
 import WorldGenerator from "./world-generator";
-import GeometryUtils from "../utils/geometry-utils";
-import Manifold from "./physics/collide";
+import CollisionResolver from "./geometry/collision-resolver";
+import Manifold from "./geometry/manifold";
+import CollisionDetector from "./geometry/collision-detector";
 
 @injectable()
 export default class World {
@@ -77,7 +78,7 @@ export default class World {
             for (let collide of this._particles) {
                 if (particle.id === collide.id) continue;
 
-                const penetration = GeometryUtils.collide(particle.shape, collide.shape);
+                const penetration = CollisionDetector.collide(particle.shape, collide.shape);
                 if (penetration && (penetration.x || penetration.x == 0) && (penetration.y || penetration.y == 0)) {
 
                     if (particle instanceof RigidBody && collide instanceof RigidBody) {
@@ -96,20 +97,9 @@ export default class World {
                 }
             }
 
-            const particle: RigidBody = manifold.a;
-            const collide: RigidBody = manifold.b;
-            const penetration: Vector2 = manifold.penetration;
+            CollisionResolver.resolve(manifold);
 
-            // if (collide.isStatic || collide.grounded) {
-            //     particle.resolveCollision(penetration, true);
-            // } else {
-            //     const halfPenetration: Vector2 = penetration.factor(0.5);
-            //     const minusHalfPenetration: Vector2 = halfPenetration.factor(-1);
-            //     particle.resolveCollision(halfPenetration, true);
-            //     collide.resolveCollision(minusHalfPenetration, true);
-            // }
-
-            World.resolveCollision(particle, collide, penetration);
+            // World.handleCollision(particle, collide, penetration);
         }
 
         if (this._onPhysicsUpdate) {

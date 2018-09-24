@@ -1,8 +1,8 @@
 import Vector2 from "../../data/vector2";
 import Updatable from "../base/updatable";
 import RigidBody from "../physics/rigid-body";
-import {METAL} from "../material/materials";
-import Box from "../shapes/box";
+import {METAL} from "../physics/material/materials";
+import Box from "../geometry/shapes/box";
 
 export default class Ball extends RigidBody implements Updatable<Ball> {
 
