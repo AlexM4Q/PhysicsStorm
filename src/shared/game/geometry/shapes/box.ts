@@ -3,7 +3,7 @@ import Shape from "./shape";
 import Updatable from "../../base/updatable";
 import Collidable from "./collidable";
 import Circle from "./circle";
-import GeometryUtils from "./geometry-utils";
+import CollisionDetector from "../collision-detector";
 
 export default class Box extends Shape implements Collidable, Updatable<Box> {
 
@@ -19,11 +19,11 @@ export default class Box extends Shape implements Collidable, Updatable<Box> {
     }
 
     public collideBox(box: Box): Vector2 {
-        return GeometryUtils.collideBoxBox(this, box);
+        return CollisionDetector.collideBoxBox(this, box);
     }
 
     public collideCircle(circle: Circle): Vector2 {
-        return GeometryUtils.collideBoxCircle(this, circle);
+        return CollisionDetector.collideBoxCircle(this, circle);
     }
 
     public draw(canvasContext: CanvasRenderingContext2D): void {

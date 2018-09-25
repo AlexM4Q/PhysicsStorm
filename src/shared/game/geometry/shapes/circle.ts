@@ -2,7 +2,7 @@ import Shape from "./shape";
 import Updatable from "../../base/updatable";
 import Vector2 from "../../../data/vector2";
 import Box from "./box";
-import GeometryUtils from "./geometry-utils";
+import CollisionDetector from "../collision-detector";
 
 export default class Circle extends Shape implements Updatable<Circle> {
 
@@ -26,11 +26,11 @@ export default class Circle extends Shape implements Updatable<Circle> {
     }
 
     public collideBox(box: Box): Vector2 {
-        return GeometryUtils.collideBoxCircle(box, this);
+        return CollisionDetector.collideBoxCircle(box, this);
     }
 
     public collideCircle(circle: Circle): Vector2 {
-        return GeometryUtils.collideCircleCircle(this, circle);
+        return CollisionDetector.collideCircleCircle(this, circle);
     }
 
     public draw(canvasContext: CanvasRenderingContext2D): void {
