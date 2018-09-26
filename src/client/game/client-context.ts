@@ -9,13 +9,14 @@ import Player from "../../shared/game/entities/player";
 import Vector2 from "../../shared/data/vector2";
 import Particle from "../../shared/game/physics/particle";
 import Ball from "../../shared/game/entities/ball";
+import WorldGenerator from "../../shared/game/world-generator";
 
 @injectable()
 export default class ClientContext {
 
     private readonly _client: GameClient;
+    private readonly _player: Player;
     private _renderer: Renderer;
-    private _player: Player;
 
     public constructor(@inject(CLIENT_TYPES.World) private readonly _world: World) {
 
@@ -26,8 +27,10 @@ export default class ClientContext {
     }
 
     public startGame(): void {
-        this._renderer = new Renderer(document.getElementById("scene") as HTMLCanvasElement);
-        this._world.onPhysicsUpdate = () => this._renderer.draw(this._world.particles);
+        const scene: HTMLCanvasElement = document.getElementById("scene") as HTMLCanvasElement;
+
+        this._renderer = new Renderer(scene);
+        this._world.onWorldUpdate = () => this._renderer.draw(this._world.particles);
         this._world.start();
 
         this._client.onRegister = (id) => {
@@ -38,7 +41,6 @@ export default class ClientContext {
             switch (message.type) {
                 case 'state':
                     // this._world.update(message.state as Particle[]);
-                    // this._renderer.draw(this._world.particles);
                     break;
             }
         };
@@ -65,8 +67,7 @@ export default class ClientContext {
     }
 
     public click(inputNumber: number, target: Vector2): void {
-        this._world.addObject(new Ball(target, Math.random() * 25 + 1));
-
+        this._world.addObject(WorldGenerator.createBall(target.x, target.y, Math.random() / 2));
 
         this._client.click(inputNumber, target);
     }

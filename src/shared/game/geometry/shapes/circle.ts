@@ -3,6 +3,7 @@ import Updatable from "../../base/updatable";
 import Vector2 from "../../../data/vector2";
 import Box from "./box";
 import CollisionDetector from "../collision-detector";
+import {metersToPixels} from "../../../utils/common-utils";
 
 export default class Circle extends Shape implements Updatable<Circle> {
 
@@ -35,7 +36,12 @@ export default class Circle extends Shape implements Updatable<Circle> {
 
     public draw(canvasContext: CanvasRenderingContext2D): void {
         canvasContext.beginPath();
-        canvasContext.arc(this.position.x, this.position.y, this._radius, 0, 2 * Math.PI);
+        canvasContext.arc(
+            metersToPixels(this.position.x),
+            metersToPixels(this.position.y),
+            metersToPixels(this._radius),
+            0, 2 * Math.PI
+        );
         canvasContext.stroke();
     }
 

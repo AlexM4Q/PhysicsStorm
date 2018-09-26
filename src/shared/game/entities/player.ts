@@ -13,16 +13,16 @@ import Box from "../geometry/shapes/box";
 @injectable()
 export default class Player extends RigidBody implements Updatable<Player> {
 
-    public maxVelocity: number = 50;
+    public maxVelocity: number = 0.01;
 
-    public jumpStrength: number = 300;
+    public jumpStrength: number = 0.005;
 
     private _direction: number = 0;
 
     public constructor() {
         // super(new Circle(new Vector(0, 0), 30), METAL);
         // super(new Circle(new Vector(200, 1000), 30), METAL);
-        super(new Box(new Vector(), new Vector2(25, 25)), METAL);
+        super(new Box(new Vector(), new Vector2(1, 1)), METAL);
     }
 
     public step(dt: number): void {
@@ -66,7 +66,7 @@ export default class Player extends RigidBody implements Updatable<Player> {
     }
 
     public shoot(target: Vector2): void {
-        container.get<World>(TYPES.World).addObject(new Bullet(this._shape.position, target));
+        // container.get<World>(TYPES.World).addObject(new Bullet(this._shape.position, target));
     }
 
     public updateBy(player: Player) {

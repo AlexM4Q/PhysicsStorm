@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import Particle from "./physics/particle";
-import {physicInterval} from "../constants";
+import {PHYSICS_INTERVAL} from "../constants";
 import {injectable} from "inversify";
 import GameObject from "./base/game-object";
 import Vector2 from "../data/vector2";
@@ -19,10 +19,10 @@ export default class World {
         return this._particles;
     }
 
-    private _onPhysicsUpdate: any;
+    private _onWorldUpdate: any;
 
-    public set onPhysicsUpdate(onPhysicsUpdate: any) {
-        this._onPhysicsUpdate = onPhysicsUpdate;
+    public set onWorldUpdate(onPhysicsUpdate: any) {
+        this._onWorldUpdate = onPhysicsUpdate;
     }
 
     public start(): void {
@@ -35,7 +35,7 @@ export default class World {
             lastUpdate = now;
 
             this.updatePhysics(dt / 1000);
-        }, physicInterval);
+        }, PHYSICS_INTERVAL);
     }
 
     public update(state: Particle[]): void {
@@ -46,6 +46,10 @@ export default class World {
                     break;
                 }
             }
+        }
+
+        if (this._onWorldUpdate) {
+            this._onWorldUpdate();
         }
     }
 
@@ -102,8 +106,8 @@ export default class World {
             // World.handleCollision(particle, collide, penetration);
         }
 
-        if (this._onPhysicsUpdate) {
-            this._onPhysicsUpdate();
+        if (this._onWorldUpdate) {
+            this._onWorldUpdate();
         }
     }
 

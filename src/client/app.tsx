@@ -3,7 +3,7 @@ import * as React from "react";
 import {clientContainer} from "./inversify.config";
 import {CLIENT_TYPES} from "./inversify.types";
 import InputController from "./game/input-controller";
-import {worldHeight, worldWidth} from "../shared/constants";
+import {WORLD_HEIGHT, WORLD_WIDTH} from "../shared/constants";
 
 export default class App extends React.Component {
 
@@ -31,7 +31,7 @@ export default class App extends React.Component {
 
     render() {
         return (
-            <canvas id="scene" width={worldWidth} height={worldHeight}/>
+            <canvas id="scene" width={WORLD_WIDTH} height={WORLD_HEIGHT}/>
         );
     }
 

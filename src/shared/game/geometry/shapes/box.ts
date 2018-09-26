@@ -4,6 +4,7 @@ import Updatable from "../../base/updatable";
 import Collidable from "./collidable";
 import Circle from "./circle";
 import CollisionDetector from "../collision-detector";
+import {metersToPixels} from "../../../utils/common-utils";
 
 export default class Box extends Shape implements Collidable, Updatable<Box> {
 
@@ -27,7 +28,12 @@ export default class Box extends Shape implements Collidable, Updatable<Box> {
     }
 
     public draw(canvasContext: CanvasRenderingContext2D): void {
-        canvasContext.fillRect(this.position.x - this._halfSize.x, this.position.y - this._halfSize.y, 2 * this._halfSize.x, 2 * this._halfSize.y);
+        canvasContext.fillRect(
+            metersToPixels(this.position.x - this._halfSize.x),
+            metersToPixels(this.position.y - this._halfSize.y),
+            metersToPixels(this._halfSize.x * 2),
+            metersToPixels(this._halfSize.y * 2)
+        );
     }
 
     public square(): number {

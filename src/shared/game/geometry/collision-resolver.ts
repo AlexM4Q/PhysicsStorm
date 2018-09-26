@@ -23,26 +23,32 @@ export default class CollisionResolver {
         let collidePenetrationY: number = 0;
 
         if (penetration.x < -CollisionResolver.PENETRATION_TOLERANCE || CollisionResolver.PENETRATION_TOLERANCE < penetration.x) {
-            if (collide.linearVelocity.x) {
+            if (particle.linearVelocity.x && collide.linearVelocity.x) {
                 const particleXAbsVelocity: number = Math.abs(particle.linearVelocity.x);
                 const collideXAbsVelocity: number = Math.abs(collide.linearVelocity.x);
                 const velocityXSum: number = particleXAbsVelocity + collideXAbsVelocity;
                 particlePenetrationX = penetration.x * particleXAbsVelocity / velocityXSum;
                 collidePenetrationX = -penetration.x * collideXAbsVelocity / velocityXSum;
-            } else {
+            } else if (particle.linearVelocity.x) {
                 particlePenetrationX = penetration.x;
+            } else {
+                collidePenetrationX = -penetration.x;
             }
         }
 
         if (penetration.y < -CollisionResolver.PENETRATION_TOLERANCE || CollisionResolver.PENETRATION_TOLERANCE < penetration.y) {
-            if (collide.linearVelocity.y && !collide.grounded) {
+            const particleYMovable: boolean = particle.linearVelocity.y && !particle.grounded;
+            const collideYMovable: boolean = collide.linearVelocity.y && !collide.grounded;
+            if (particleYMovable && collideYMovable) {
                 const particleYAbsVelocity: number = Math.abs(particle.linearVelocity.y);
                 const collideYAbsVelocity: number = Math.abs(collide.linearVelocity.y);
                 const velocityYSum: number = particleYAbsVelocity + collideYAbsVelocity;
                 particlePenetrationY = penetration.y * particleYAbsVelocity / velocityYSum;
                 collidePenetrationY = -penetration.y * collideYAbsVelocity / velocityYSum;
-            } else {
+            } else if (particleYMovable) {
                 particlePenetrationY = penetration.y;
+            } else {
+                collidePenetrationY = -penetration.y;
             }
         }
 
