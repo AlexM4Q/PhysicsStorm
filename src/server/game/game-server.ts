@@ -10,7 +10,7 @@ export default class GameServer {
     private readonly server: Server;
     private readonly io: SocketIO.Server;
 
-    private _clients: { [id: string]: Socket };
+    private readonly _clients: { [id: string]: Socket };
     private onconnection: any;
     private onmessage: any;
     private onclose: any;

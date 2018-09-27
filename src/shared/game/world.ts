@@ -101,60 +101,12 @@ export default class World {
                 }
             }
 
-            CollisionResolver.resolve(manifold);
-
-            // World.handleCollision(particle, collide, penetration);
+            CollisionResolver.resolveState(manifold);
+            CollisionResolver.resolveImpulse(manifold);
         }
 
         if (this._onWorldUpdate) {
             this._onWorldUpdate();
         }
-    }
-
-    private static resolveCollision(a: RigidBody, b: RigidBody, penetration: Vector2): void {
-        const normal: Vector2 = penetration.normalized;
-        const length: number = penetration.length;
-
-        let relativeVelocity: Vector2 = b.linearVelocity.subtract(a.linearVelocity);
-        let velocityAlongNormal: number = relativeVelocity.dotProduct(normal);
-        if (velocityAlongNormal > 0) {
-            return;
-        }
-
-        const restitution: number = Math.min(a.material.restitution, b.material.restitution);
-        const j: number = -(1 + restitution) * velocityAlongNormal / (a.massData.inverse_mass + b.massData.inverse_mass);
-
-        const impulse: Vector2 = normal.factor(j);
-        const massSum: number = 1 / (a.massData.mass + b.massData.mass);
-
-        a.applyImpulse(impulse.factor(-a.massData.mass * massSum));
-        b.applyImpulse(impulse.factor(b.massData.mass * massSum));
-
-        const percent: number = 1;
-        const slop: number = 0.01;
-        const correction: Vector2 = normal.factor(Math.max(length - slop, 0) * massSum * percent);
-        a.position = a.position.subtract(correction.factor(a.massData.mass));
-        b.position = b.position.add(correction.factor(b.massData.mass));
-
-        // if (!normal.x || !normal.y) {
-        //     return;
-        // }
-        //
-        // relativeVelocity = b.linearVelocity.subtract(a.linearVelocity);
-        // velocityAlongNormal = relativeVelocity.dotProduct(normal);
-        // const tangent: Vector2 = new Vector2(
-        //     relativeVelocity.x - normal.x * velocityAlongNormal,
-        //     relativeVelocity.y - normal.y * velocityAlongNormal
-        // ).normalized;
-        //
-        // const jt: number = -relativeVelocity.dotProduct(tangent) / (a.massData.inverse_mass + b.massData.inverse_mass);
-        // const mu: number = Math.sqrt(a.material.staticFriction * a.material.staticFriction + b.material.staticFriction * b.material.staticFriction);
-        //
-        // const frictionImpulse: Vector2 = Math.abs(jt) < j * mu
-        //     ? tangent.factor(jt)
-        //     : tangent.factor(-j * Math.sqrt(a.material.dynamicFriction * a.material.dynamicFriction + b.material.dynamicFriction * b.material.dynamicFriction));
-        //
-        // a.applyImpulse(frictionImpulse.factor(-1));
-        // b.applyImpulse(frictionImpulse);
     }
 }

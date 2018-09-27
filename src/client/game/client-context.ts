@@ -67,7 +67,7 @@ export default class ClientContext {
     }
 
     public click(inputNumber: number, target: Vector2): void {
-        this._world.addObject(WorldGenerator.createBall(target.x, target.y, Math.random() / 2));
+        this._world.addObject(WorldGenerator.createBall(target.x, target.y, Math.random() * 25 + 5));
 
         this._client.click(inputNumber, target);
     }

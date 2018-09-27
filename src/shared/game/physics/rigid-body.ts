@@ -63,11 +63,15 @@ export default abstract class RigidBody extends Particle implements Updatable<Ri
         }
 
         if (this.grounded) {
-            this._force = new Vector2(this._force.x,);
+            this._force = new Vector2(this._force.x);
 
             this.linearVelocity = new Vector2(
-                this.linearVelocity.x + dt * this._force.x * this._massData.inverse_mass,
-                0.001
+                this.linearVelocity.x + dt * this._force.x * this._massData.inverse_mass
+            );
+
+            this.position = new Vector2(
+                this.position.x + this.linearVelocity.x * dt,
+                this.position.y
             );
         } else {
             this._force = new Vector2(
@@ -79,18 +83,19 @@ export default abstract class RigidBody extends Particle implements Updatable<Ri
                 this.linearVelocity.x + dt * this._force.x * this._massData.inverse_mass,
                 this.linearVelocity.y + dt * this._force.y * this._massData.inverse_mass
             );
-        }
 
-        this.position = new Vector2(
-            this.position.x + this.linearVelocity.x * dt,
-            this.position.y + this.linearVelocity.y * dt
-        );
+            this.position = new Vector2(
+                this.position.x + this.linearVelocity.x * dt,
+                this.position.y + this.linearVelocity.y * dt
+            );
+        }
 
         this._torque = this._shape.torque(this._force);
         this._angularVelocity += this._torque / this._massData.inertia * dt;
         this._angle += this._angularVelocity * dt;
 
         this._force = Vector2.ZERO;
+        this._grounded = false;
     }
 
     public updateBy(rigidBody: RigidBody): void {
@@ -107,10 +112,6 @@ export default abstract class RigidBody extends Particle implements Updatable<Ri
         }
 
         this._force = this._force.add(force);
-
-        if (force.y > 0) {
-            this._grounded = false;
-        }
     }
 
     public applyImpulse(impulse: Vector2): void {
@@ -122,15 +123,17 @@ export default abstract class RigidBody extends Particle implements Updatable<Ri
             this.linearVelocity.x + impulse.x * this._massData.inverse_mass,
             this.linearVelocity.y + impulse.y * this._massData.inverse_mass
         );
-
-        if (impulse.y > 0) {
-            this._grounded = false;
-        }
     }
 
     public handleCollision(penetration: Vector2): void {
         if (penetration.y < 0) {
             this._grounded = true;
+        }
+
+        if (penetration.x < 0 && this.linearVelocity.x < 0) {
+            this.linearVelocity = new Vector2(0, this.linearVelocity.y);
+        } else if (penetration.x > 0 && this.linearVelocity.x > 0) {
+            this.linearVelocity = new Vector2(0, this.linearVelocity.y);
         }
     }
 

@@ -113,6 +113,17 @@ export default class Vector2 {
     }
 
     /**
+     * Создает новый вектор с координатами преобразованными заданной функцией
+     * @param f функция преобразования
+     * @returns {number} Преобразованный вектор
+     */
+    public change(f: any): Vector2 {
+        if (f && typeof f == 'function') {
+            return new Vector2(f(this._x), f(this._y));
+        }
+    }
+
+    /**
      * Конвертирование произвольного объектв в вектор
      * @param target Произвольный объект
      * @returns {Vector2} Результат

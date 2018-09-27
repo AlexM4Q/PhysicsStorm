@@ -13,9 +13,9 @@ import Box from "../geometry/shapes/box";
 @injectable()
 export default class Player extends RigidBody implements Updatable<Player> {
 
-    public maxVelocity: number = 0.01;
+    public maxVelocity: number = 0.005;
 
-    public jumpStrength: number = 0.005;
+    public jumpStrength: number = 0.0075;
 
     private _direction: number = 0;
 
@@ -23,6 +23,7 @@ export default class Player extends RigidBody implements Updatable<Player> {
         // super(new Circle(new Vector(0, 0), 30), METAL);
         // super(new Circle(new Vector(200, 1000), 30), METAL);
         super(new Box(new Vector(), new Vector2(1, 1)), METAL);
+        this.color = "#ABCDEF";
     }
 
     public step(dt: number): void {

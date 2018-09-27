@@ -4,7 +4,7 @@ import * as bodyParser from "body-parser";
 import {serverContainer} from "./inversify.config";
 import SERVER_TYPES from "./inversify.types";
 import ServerContext from "./game/server-context";
-import {serverPort} from "./constants";
+import {SERVER_PORT} from "./constants";
 
 class Server {
 
@@ -19,7 +19,7 @@ class Server {
         this.mongoSetup();
         this.routes();
 
-        this._app.listen(serverPort, () => console.log(`Listening on port ${serverPort}!`));
+        this._app.listen(SERVER_PORT, () => console.log(`Listening on port ${SERVER_PORT}!`));
 
         serverContainer.get<ServerContext>(SERVER_TYPES.ServerContext).startServer(this._app);
     }
