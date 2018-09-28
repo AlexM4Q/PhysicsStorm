@@ -93,14 +93,14 @@ export default class CollisionResolver {
             return;
         }
 
-        const restitution: number = Math.min(a.material.restitution, b.material.restitution);
+        const restitution: number = (a.material.restitution + b.material.restitution) / 2;
         const j: number = -(1 + restitution) * velocityAlongNormal / (a.massData.inverse_mass + b.massData.inverse_mass);
 
         const impulse: Vector2 = normal.factor(j);
         const massSum: number = 1 / (a.massData.mass + b.massData.mass);
 
-        a.applyImpulse(impulse.factor(-a.massData.mass * massSum));
-        b.applyImpulse(impulse.factor(b.massData.mass * massSum));
+        a.applyImpulse(impulse.factor(-b.massData.mass * massSum));
+        b.applyImpulse(impulse.factor(a.massData.mass * massSum));
 
         const percent: number = 0.1;
         const slop: number = 0.01;

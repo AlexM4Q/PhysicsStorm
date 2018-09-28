@@ -100,7 +100,7 @@ export default class CollisionDetector {
         }
 
         if (!(dx || dy)) {
-            return CollisionDetector.collideBoxBoxAbstract(boxA.position, boxA.halfSize.x, boxA.halfSize.y, circleB.position, circleB.radius, circleB.radius);
+            return CollisionDetector.collideBoxBoxAbstract(circleB.position, circleB.radius, circleB.radius, boxA.position, boxA.halfSize.x, boxA.halfSize.y);
         }
 
         const distance: number = Math.sqrt(dx * dx + dy * dy);
