@@ -50,7 +50,7 @@
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
     "dev:client": "webpack-dev-server --mode development --content-base ./dist --hot --inline --colors --port 3000 --open",
     "dev:server": "nodemon",
-    "dev:test": "mocha -r ts-node/register test/**/*.spec.ts",
+    "dev:test": "mocha -r ts-node/register tests/**/*.spec.ts",
     "prod:build": "webpack --mode production",
     "prod:start": "node src/server/index.ts"
   }

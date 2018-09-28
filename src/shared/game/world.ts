@@ -62,10 +62,13 @@ export default class World {
     }
 
     public updatePhysics(dt: number): void {
+        const particles = this._particles;
+        // const particles = this._particles.sort((a, b) => b.position.y - a.position.y);
+        // const particles = this._particles.sort((a, b) => a.position.y - b.position.y);
         const manifolds: Manifold[] = [];
 
-        for (let particle of this._particles) {
-            if (particle.isStatic) {
+        for (let particle of particles) {
+            if (particle.isStatic || !(particle instanceof RigidBody)) {
                 continue;
             }
 
@@ -73,21 +76,17 @@ export default class World {
 
             if (particle.position.y < 0) {
                 particle.position = new Vector2(particle.position.x, 0);
-                if (particle instanceof RigidBody) {
-                    const rigidBody = particle as RigidBody;
-                    rigidBody.linearVelocity = new Vector2(rigidBody.linearVelocity.x, 0);
-                }
+                particle.linearVelocity = new Vector2(particle.linearVelocity.x, 0);
             }
 
-            for (let collide of this._particles) {
-                if (particle.id === collide.id) continue;
+            for (let collide of particles) {
+                if (particle.id === collide.id || !(collide instanceof RigidBody)) {
+                    continue;
+                }
 
                 const penetration = CollisionDetector.collide(particle.shape, collide.shape);
-                if (penetration && (penetration.x || penetration.x == 0) && (penetration.y || penetration.y == 0)) {
-
-                    if (particle instanceof RigidBody && collide instanceof RigidBody) {
-                        manifolds.push(new Manifold(particle, collide, penetration));
-                    }
+                if (penetration && (penetration.x || penetration.y)) {
+                    manifolds.push(new Manifold(particle, collide, penetration));
                 }
             }
         }

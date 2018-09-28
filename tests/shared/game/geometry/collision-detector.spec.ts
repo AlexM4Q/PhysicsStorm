@@ -211,25 +211,25 @@ describe('CollisionDetector', () => {
             expect(penetration.x).to.closeTo(0, FLOAT_TOLERANCE);
             expect(penetration.y).to.closeTo(11, FLOAT_TOLERANCE);
         });
-        it('should return (-9;0) when circle center inside right right top', () => {
+        it('should return (-12;-9) when circle center inside right right top', () => {
             const circle: Circle = new Circle(new Vector2(4, 3), 10);
             const penetration: Vector2 = CollisionDetector.collideCircleCircle(circle, centerCircle);
             expect(penetration.x).to.closeTo(-12, FLOAT_TOLERANCE);
             expect(penetration.y).to.closeTo(-9, FLOAT_TOLERANCE);
         });
-        it('should return (0;-9) when circle center inside left top top', () => {
+        it('should return (9;-12) when circle center inside left top top', () => {
             const circle: Circle = new Circle(new Vector2(-3, 4), 10);
             const penetration: Vector2 = CollisionDetector.collideCircleCircle(circle, centerCircle);
             expect(penetration.x).to.closeTo(9, FLOAT_TOLERANCE);
             expect(penetration.y).to.closeTo(-12, FLOAT_TOLERANCE);
         });
-        it('should return (9;0) when circle center inside left left bottom', () => {
+        it('should return (12;-9) when circle center inside left left bottom', () => {
             const circle: Circle = new Circle(new Vector2(-4, 3), 10);
             const penetration: Vector2 = CollisionDetector.collideCircleCircle(circle, centerCircle);
             expect(penetration.x).to.closeTo(12, FLOAT_TOLERANCE);
             expect(penetration.y).to.closeTo(-9, FLOAT_TOLERANCE);
         });
-        it('should return (0;9) when circle center inside right bottom bottom', () => {
+        it('should return (-9;12) when circle center inside right bottom bottom', () => {
             const circle: Circle = new Circle(new Vector2(3, -4), 10);
             const penetration: Vector2 = CollisionDetector.collideCircleCircle(circle, centerCircle);
             expect(penetration.x).to.closeTo(-9, FLOAT_TOLERANCE);

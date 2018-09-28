@@ -32,6 +32,8 @@ export default abstract class RigidBody extends Particle implements Updatable<Ri
 
     protected _grounded: boolean = false;
 
+    protected _rotary: boolean = false;
+
     public get grounded(): boolean {
         return this._grounded;
     }
@@ -62,7 +64,7 @@ export default abstract class RigidBody extends Particle implements Updatable<Ri
             this._grounded = false;
         }
 
-        if (this.grounded) {
+        if (this._grounded) {
             this._force = new Vector2(this._force.x);
 
             this.linearVelocity = new Vector2(
@@ -90,9 +92,11 @@ export default abstract class RigidBody extends Particle implements Updatable<Ri
             );
         }
 
-        this._torque = this._shape.torque(this._force);
-        this._angularVelocity += this._torque / this._massData.inertia * dt;
-        this._angle += this._angularVelocity * dt;
+        if (this._rotary) {
+            this._torque = this._shape.torque(this._force);
+            this._angularVelocity += this._torque / this._massData.inertia * dt;
+            this._angle += this._angularVelocity * dt;
+        }
 
         this._force = Vector2.ZERO;
         this._grounded = false;
@@ -128,12 +132,6 @@ export default abstract class RigidBody extends Particle implements Updatable<Ri
     public handleCollision(penetration: Vector2): void {
         if (penetration.y < 0) {
             this._grounded = true;
-        }
-
-        if (penetration.x < 0 && this.linearVelocity.x < 0) {
-            this.linearVelocity = new Vector2(0, this.linearVelocity.y);
-        } else if (penetration.x > 0 && this.linearVelocity.x > 0) {
-            this.linearVelocity = new Vector2(0, this.linearVelocity.y);
         }
     }
 
