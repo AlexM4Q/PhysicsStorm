@@ -2,27 +2,25 @@ import {injectable} from "inversify";
 import container from "../../inversify.config";
 import TYPES from "../../inversify.types";
 import Vector, {default as Vector2} from "../../data/vector2";
-import Bullet from "./bullet";
 import RigidBody from "../physics/rigid-body";
 import World from "../world";
 import Updatable from "../base/updatable";
 import {METAL} from "../physics/material/materials";
-import Circle from "../geometry/shapes/circle";
 import Box from "../geometry/shapes/box";
+import WorldGenerator from "../world-generator";
 
 @injectable()
 export default class Player extends RigidBody implements Updatable<Player> {
 
-    public maxVelocity: number = 0.005;
+    public readonly maxVelocity: number = 0.0025;
 
-    public jumpStrength: number = 0.0075;
+    public readonly jumpStrength: number = 0.0075;
 
     private _direction: number = 0;
 
     public constructor() {
-        // super(new Circle(new Vector(0, 0), 30), METAL);
-        // super(new Circle(new Vector(200, 1000), 30), METAL);
         super(new Box(new Vector(), new Vector2(1, 1)), METAL);
+
         this.color = "#ABCDEF";
     }
 
@@ -40,8 +38,8 @@ export default class Player extends RigidBody implements Updatable<Player> {
                 this.applyForce(new Vector(this.maxVelocity, 0));
                 break;
             case 0:
-                if (this.linearVelocity.x !== 0) {
-                    this.linearVelocity = new Vector(this.linearVelocity.x * 0.8, this.linearVelocity.y);
+                if (this.linearVelocity.x) {
+                    this.linearVelocity = new Vector(0, this.linearVelocity.y);
                 }
                 break;
             case -1:
@@ -67,13 +65,15 @@ export default class Player extends RigidBody implements Updatable<Player> {
     }
 
     public shoot(target: Vector2): void {
+        container.get<World>(TYPES.World).addObject(WorldGenerator.createRandomStone(target.x, target.y));
         // container.get<World>(TYPES.World).addObject(new Bullet(this._shape.position, target));
+        // this._world.addObject(WorldGenerator.createBall(target.x, target.y, Math.random() * 25 + 5));
     }
 
     public updateBy(player: Player) {
         super.updateBy(player);
-        this.maxVelocity = player.maxVelocity;
-        this.jumpStrength = player.jumpStrength;
+
+        this._direction = player._direction;
     }
 
 }

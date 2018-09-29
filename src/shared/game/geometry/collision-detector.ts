@@ -2,16 +2,24 @@ import Shape from "./shapes/shape";
 import Box from "./shapes/box";
 import Circle from "./shapes/circle";
 import Vector2 from "../../data/vector2";
+import Polygon from "./shapes/polygon";
+import GJK from "./gjk";
 
 export default class CollisionDetector {
 
+    private static readonly gjk: GJK = new GJK();
+
     public static collide(shapeA: Shape, shapeB: Shape): Vector2 {
         if (shapeB instanceof Box) {
-            return shapeA.collideBox(shapeB as Box);
+            return shapeA.collideBox(shapeB);
         }
 
         if (shapeB instanceof Circle) {
-            return shapeA.collideCircle(shapeB as Circle);
+            return shapeA.collideCircle(shapeB);
+        }
+
+        if (shapeB instanceof Polygon) {
+            return shapeA.collidePolygon(shapeB);
         }
 
         return null;
@@ -100,7 +108,7 @@ export default class CollisionDetector {
         }
 
         if (!(dx || dy)) {
-            return CollisionDetector.collideBoxBoxAbstract(circleB.position, circleB.radius, circleB.radius, boxA.position, boxA.halfSize.x, boxA.halfSize.y);
+            return CollisionDetector.collideBoxBoxAbstract(boxA.position, boxA.halfSize.x, boxA.halfSize.y, circleB.position, circleB.radius, circleB.radius);
         }
 
         const distance: number = Math.sqrt(dx * dx + dy * dy);
@@ -108,7 +116,7 @@ export default class CollisionDetector {
             return null;
         }
 
-        const factor = circleB.radius / distance - 1;
+        const factor = 1 - circleB.radius / distance;
 
         return new Vector2(dx * factor, dy * factor);
     }
@@ -126,6 +134,10 @@ export default class CollisionDetector {
         const factor: number = radiusSum / distance - 1;
 
         return new Vector2(dx * factor, dy * factor);
+    }
+
+    public static collideShapeShape(shapeA: Shape, shapeB: Shape): Vector2 {
+        return CollisionDetector.gjk.interpenetration(shapeA, shapeB);
     }
 
 }

@@ -3,10 +3,13 @@ import Updatable from "../../base/updatable";
 import Collidable from "./collidable";
 import Box from "./box";
 import Circle from "./circle";
+import Polygon from "./polygon";
 
 export default abstract class Shape implements Collidable, Updatable<Shape> {
 
     public position: Vector2;
+
+    public angle: number = 0;
 
     protected constructor(position: Vector2) {
         this.position = position;
@@ -16,10 +19,22 @@ export default abstract class Shape implements Collidable, Updatable<Shape> {
 
     public abstract collideCircle(circle: Circle): Vector2;
 
+    public abstract collidePolygon(circle: Polygon): Vector2;
+
     /**
      * Отрисовка фигуры
      */
     public abstract draw(canvasContext: CanvasRenderingContext2D): void;
+
+    /**
+     * Вращает Фигуру на заданный угол в радианах
+     * @param {number} value Угол вращения в радианах
+     */
+    public rotate(value: number): void {
+        this.angle += value;
+
+        console.log(this.angle);
+    }
 
     /**
      * Площадь фигуры
@@ -35,11 +50,27 @@ export default abstract class Shape implements Collidable, Updatable<Shape> {
     public abstract support(direction: Vector2): Vector2;
 
     /**
-     * Вращательный момент
+     * Момент силы
      * @param {Vector2} force Приложенная сила
      * @returns {number}
      */
     public abstract torque(force: Vector2): number;
+
+    /**
+     * Момент импульса
+     * @param {Vector2} impulse Приложенный импульс
+     * @returns {number}
+     */
+    public angularMomentum(impulse: Vector2): number {
+        const target: Vector2 = this.support(impulse);
+        const radius: Vector2 = new Vector2(
+            this.position.x + target.x,
+            this.position.y + target.y
+        );
+
+        let number = radius.crossProduct(impulse);
+        return number;
+    }
 
     /**
      * Момент инерции

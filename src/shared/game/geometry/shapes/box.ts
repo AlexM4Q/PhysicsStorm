@@ -5,6 +5,7 @@ import Collidable from "./collidable";
 import Circle from "./circle";
 import CollisionDetector from "../collision-detector";
 import {metersToPixels} from "../../../utils/common-utils";
+import Polygon from "./polygon";
 
 export default class Box extends Shape implements Collidable, Updatable<Box> {
 
@@ -27,6 +28,10 @@ export default class Box extends Shape implements Collidable, Updatable<Box> {
         return CollisionDetector.collideBoxCircle(this, circle);
     }
 
+    public collidePolygon(polygon: Polygon): Vector2 {
+        return CollisionDetector.collideShapeShape(this, polygon);
+    }
+
     public draw(canvasContext: CanvasRenderingContext2D): void {
         canvasContext.fillRect(
             metersToPixels(this.position.x - this._halfSize.x),
@@ -44,14 +49,16 @@ export default class Box extends Shape implements Collidable, Updatable<Box> {
         let x: number = this.position.x - this._halfSize.x;
         let y: number = this.position.y - this._halfSize.y;
         let furthestDistance: number = x * direction.x + y * direction.y;
-        let support: Vector2 = new Vector2(x, y);
+        let furthestX: number = x;
+        let furthestY: number = y;
 
         x = this.position.x - this._halfSize.x;
         y = this.position.y + this._halfSize.y;
         let distance: number = x * direction.x + y * direction.y;
         if (furthestDistance < distance) {
             furthestDistance = distance;
-            support = new Vector2(x, y);
+            furthestX = x;
+            furthestY = y;
         }
 
         x = this.position.x + this._halfSize.x;
@@ -59,17 +66,19 @@ export default class Box extends Shape implements Collidable, Updatable<Box> {
         distance = x * direction.x + y * direction.y;
         if (furthestDistance < distance) {
             furthestDistance = distance;
-            support = new Vector2(x, y);
+            furthestX = x;
+            furthestY = y;
         }
 
         x = this.position.x + this._halfSize.x;
         y = this.position.y + this._halfSize.y;
         distance = x * direction.x + y * direction.y;
         if (furthestDistance < distance) {
-            support = new Vector2(x, y);
+            furthestX = x;
+            furthestY = y;
         }
 
-        return support;
+        return new Vector2(furthestX, furthestY);
     }
 
     public torque(force: Vector2): number {

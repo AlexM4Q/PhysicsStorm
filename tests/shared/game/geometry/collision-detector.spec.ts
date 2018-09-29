@@ -1,11 +1,10 @@
 import 'mocha';
 import {expect} from 'chai';
-import CollisionDetector from "../../../../src/shared/game/geometry/collision-detector";
+import {FLOAT_TOLERANCE} from "../../../constants";
 import Vector2 from "../../../../src/shared/data/vector2";
+import CollisionDetector from "../../../../src/shared/game/geometry/collision-detector";
 import Box from "../../../../src/shared/game/geometry/shapes/box";
 import Circle from "../../../../src/shared/game/geometry/shapes/circle";
-
-const FLOAT_TOLERANCE: number = 10E-6;
 
 describe('CollisionDetector', () => {
     describe('collideBoxBox', () => {
@@ -87,77 +86,77 @@ describe('CollisionDetector', () => {
     describe('collideBoxCircle', () => {
         const centerBox: Box = new Box(Vector2.ZERO, new Vector2(10, 10));
 
-        it('should return (-1;0) when circle center outside right', () => {
+        it('should return (1;0) when circle center outside right', () => {
             const circle: Circle = new Circle(new Vector2(24, 0), 15);
-            const penetration: Vector2 = CollisionDetector.collideBoxCircle(centerBox, circle);
-            expect(penetration.x).to.closeTo(-1, FLOAT_TOLERANCE);
-            expect(penetration.y).to.closeTo(0, FLOAT_TOLERANCE);
-        });
-        it('should return (1;0) when circle center outside left', () => {
-            const circle: Circle = new Circle(new Vector2(-24, 0), 15);
             const penetration: Vector2 = CollisionDetector.collideBoxCircle(centerBox, circle);
             expect(penetration.x).to.closeTo(1, FLOAT_TOLERANCE);
             expect(penetration.y).to.closeTo(0, FLOAT_TOLERANCE);
         });
-        it('should return (0;-1) when circle center outside top', () => {
-            const circle: Circle = new Circle(new Vector2(0, 24), 15);
+        it('should return (-1;0) when circle center outside left', () => {
+            const circle: Circle = new Circle(new Vector2(-24, 0), 15);
             const penetration: Vector2 = CollisionDetector.collideBoxCircle(centerBox, circle);
-            expect(penetration.x).to.closeTo(0, FLOAT_TOLERANCE);
-            expect(penetration.y).to.closeTo(-1, FLOAT_TOLERANCE);
+            expect(penetration.x).to.closeTo(-1, FLOAT_TOLERANCE);
+            expect(penetration.y).to.closeTo(0, FLOAT_TOLERANCE);
         });
-        it('should return (0;1) when circle center outside bottom', () => {
-            const circle: Circle = new Circle(new Vector2(0, -24), 15);
+        it('should return (0;1) when circle center outside top', () => {
+            const circle: Circle = new Circle(new Vector2(0, 24), 15);
             const penetration: Vector2 = CollisionDetector.collideBoxCircle(centerBox, circle);
             expect(penetration.x).to.closeTo(0, FLOAT_TOLERANCE);
             expect(penetration.y).to.closeTo(1, FLOAT_TOLERANCE);
         });
-        it('should return (-11;0) when circle center inside right', () => {
-            const circle: Circle = new Circle(new Vector2(14, 0), 15);
+        it('should return (0;-1) when circle center outside bottom', () => {
+            const circle: Circle = new Circle(new Vector2(0, -24), 15);
             const penetration: Vector2 = CollisionDetector.collideBoxCircle(centerBox, circle);
-            expect(penetration.x).to.closeTo(-11, FLOAT_TOLERANCE);
-            expect(penetration.y).to.closeTo(0, FLOAT_TOLERANCE);
+            expect(penetration.x).to.closeTo(0, FLOAT_TOLERANCE);
+            expect(penetration.y).to.closeTo(-1, FLOAT_TOLERANCE);
         });
-        it('should return (11;0) when circle center inside left', () => {
-            const circle: Circle = new Circle(new Vector2(-14, 0), 15);
+        it('should return (11;0) when circle center inside right', () => {
+            const circle: Circle = new Circle(new Vector2(14, 0), 15);
             const penetration: Vector2 = CollisionDetector.collideBoxCircle(centerBox, circle);
             expect(penetration.x).to.closeTo(11, FLOAT_TOLERANCE);
             expect(penetration.y).to.closeTo(0, FLOAT_TOLERANCE);
         });
-        it('should return (0;-11) when circle center inside top', () => {
-            const circle: Circle = new Circle(new Vector2(0, 14), 15);
+        it('should return (-11;0) when circle center inside left', () => {
+            const circle: Circle = new Circle(new Vector2(-14, 0), 15);
             const penetration: Vector2 = CollisionDetector.collideBoxCircle(centerBox, circle);
-            expect(penetration.x).to.closeTo(0, FLOAT_TOLERANCE);
-            expect(penetration.y).to.closeTo(-11, FLOAT_TOLERANCE);
+            expect(penetration.x).to.closeTo(-11, FLOAT_TOLERANCE);
+            expect(penetration.y).to.closeTo(0, FLOAT_TOLERANCE);
         });
-        it('should return (0;11) when circle center inside bottom', () => {
-            const circle: Circle = new Circle(new Vector2(0, -14), 15);
+        it('should return (0;11) when circle center inside top', () => {
+            const circle: Circle = new Circle(new Vector2(0, 14), 15);
             const penetration: Vector2 = CollisionDetector.collideBoxCircle(centerBox, circle);
             expect(penetration.x).to.closeTo(0, FLOAT_TOLERANCE);
             expect(penetration.y).to.closeTo(11, FLOAT_TOLERANCE);
         });
-        it('should return (-9;0) when circle center outside right right top', () => {
-            const circle: Circle = new Circle(new Vector2(14, 5), 13);
-            const penetration: Vector2 = CollisionDetector.collideBoxCircle(centerBox, circle);
-            expect(penetration.x).to.closeTo(-9, FLOAT_TOLERANCE);
-            expect(penetration.y).to.closeTo(0, FLOAT_TOLERANCE);
-        });
-        it('should return (0;-9) when circle center outside left top top', () => {
-            const circle: Circle = new Circle(new Vector2(-5, 14), 13);
+        it('should return (0;-11) when circle center inside bottom', () => {
+            const circle: Circle = new Circle(new Vector2(0, -14), 15);
             const penetration: Vector2 = CollisionDetector.collideBoxCircle(centerBox, circle);
             expect(penetration.x).to.closeTo(0, FLOAT_TOLERANCE);
-            expect(penetration.y).to.closeTo(-9, FLOAT_TOLERANCE);
+            expect(penetration.y).to.closeTo(-11, FLOAT_TOLERANCE);
         });
-        it('should return (9;0) when circle center outside left left bottom', () => {
-            const circle: Circle = new Circle(new Vector2(-14, 5), 13);
+        it('should return (9;0) when circle center outside right right top', () => {
+            const circle: Circle = new Circle(new Vector2(14, 5), 13);
             const penetration: Vector2 = CollisionDetector.collideBoxCircle(centerBox, circle);
             expect(penetration.x).to.closeTo(9, FLOAT_TOLERANCE);
             expect(penetration.y).to.closeTo(0, FLOAT_TOLERANCE);
         });
-        it('should return (0;9) when circle center outside right bottom bottom', () => {
-            const circle: Circle = new Circle(new Vector2(5, -14), 13);
+        it('should return (0;9) when circle center outside left top top', () => {
+            const circle: Circle = new Circle(new Vector2(-5, 14), 13);
             const penetration: Vector2 = CollisionDetector.collideBoxCircle(centerBox, circle);
             expect(penetration.x).to.closeTo(0, FLOAT_TOLERANCE);
             expect(penetration.y).to.closeTo(9, FLOAT_TOLERANCE);
+        });
+        it('should return (-9;0) when circle center outside left left bottom', () => {
+            const circle: Circle = new Circle(new Vector2(-14, 5), 13);
+            const penetration: Vector2 = CollisionDetector.collideBoxCircle(centerBox, circle);
+            expect(penetration.x).to.closeTo(-9, FLOAT_TOLERANCE);
+            expect(penetration.y).to.closeTo(0, FLOAT_TOLERANCE);
+        });
+        it('should return (0;-9) when circle center outside right bottom bottom', () => {
+            const circle: Circle = new Circle(new Vector2(5, -14), 13);
+            const penetration: Vector2 = CollisionDetector.collideBoxCircle(centerBox, circle);
+            expect(penetration.x).to.closeTo(0, FLOAT_TOLERANCE);
+            expect(penetration.y).to.closeTo(-9, FLOAT_TOLERANCE);
         });
     });
     describe('collideCircleCircle', () => {

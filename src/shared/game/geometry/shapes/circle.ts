@@ -4,6 +4,7 @@ import Vector2 from "../../../data/vector2";
 import Box from "./box";
 import CollisionDetector from "../collision-detector";
 import {metersToPixels} from "../../../utils/common-utils";
+import Polygon from "./polygon";
 
 export default class Circle extends Shape implements Updatable<Circle> {
 
@@ -27,11 +28,16 @@ export default class Circle extends Shape implements Updatable<Circle> {
     }
 
     public collideBox(box: Box): Vector2 {
-        return CollisionDetector.collideBoxCircle(box, this);
+        const penetration: Vector2 = CollisionDetector.collideBoxCircle(box, this);
+        return penetration ? penetration.factor(-1) : null;
     }
 
     public collideCircle(circle: Circle): Vector2 {
         return CollisionDetector.collideCircleCircle(this, circle);
+    }
+
+    public collidePolygon(polygon: Polygon): Vector2 {
+        return CollisionDetector.collideShapeShape(this, polygon);
     }
 
     public draw(canvasContext: CanvasRenderingContext2D): void {
