@@ -33,11 +33,11 @@ export default abstract class Shape implements Collidable, Updatable<Shape> {
     public rotate(value: number): void {
         this.angle += value;
 
-        console.log(this.angle);
+        // console.log(this.angle);
     }
 
     /**
-     * Площадь фигуры
+     * Площадь фигуры в м^2
      * @returns {number}
      */
     public abstract square(): number;
@@ -62,14 +62,11 @@ export default abstract class Shape implements Collidable, Updatable<Shape> {
      * @returns {number}
      */
     public angularMomentum(impulse: Vector2): number {
-        const target: Vector2 = this.support(impulse);
-        const radius: Vector2 = new Vector2(
-            this.position.x + target.x,
-            this.position.y + target.y
-        );
-
-        let number = radius.crossProduct(impulse);
-        return number;
+        const support = this.support(impulse);
+        const radius = support.subtract(this.position);
+        const product = radius.crossProduct(impulse);
+        console.log(`(${impulse.x}:${impulse.y}), ${support.x}:${support.y}), ${radius.x}:${radius.y}), ${product}`);
+        return product;
     }
 
     /**

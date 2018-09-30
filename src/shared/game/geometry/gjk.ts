@@ -76,7 +76,7 @@ export default class GJK {
 
         let iterations: number = GJK.MAX_ITERATIONS;
         let result: EvolveResult = EvolveResult.StillEvolving;
-        while (iterations-- > 0 && result === EvolveResult.StillEvolving) {
+        while (iterations-- && result === EvolveResult.StillEvolving) {
             result = this.evolveSimplex();
         }
 
@@ -119,17 +119,24 @@ export default class GJK {
         const e2: number = (this.vertices[0].x - this.vertices[2].x) * (this.vertices[0].y + this.vertices[2].y);
         const winding: AngularDirection = e0 + e1 + e2 >= 0 ? AngularDirection.Clockwise : AngularDirection.CounterClockwise;
 
-        while (true) {
+        let intersection: Vector2;
+        let iterations: number = GJK.MAX_ITERATIONS;
+
+        while (iterations--) {
             const edge: Edge = this.findClosestEdge(winding);
             const support: Vector2 = this.support(edge.normal);
             const distance: number = support.dotProduct(edge.normal);
 
-            if (Math.abs(distance - edge.distance) <= 0.1) {
-                return edge.normal.factor(distance);
+            intersection = edge.normal.factor(distance);
+
+            if (Math.abs(distance - edge.distance) <= 0.001) {
+                break;
             } else {
                 this.vertices.splice(edge.index, 0, support);
             }
         }
+
+        return intersection;
     }
 
 }

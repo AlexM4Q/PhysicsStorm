@@ -79,13 +79,13 @@ export default class WorldGenerator {
         const vertices: Vector2[] = [];
 
         vertices.push(new Vector2(0, 10));
-        vertices.push(new Vector2(7, 7));
+        // vertices.push(new Vector2(7, 7));
         vertices.push(new Vector2(10, 0));
-        vertices.push(new Vector2(7, -7));
+        // vertices.push(new Vector2(7, -7));
         vertices.push(new Vector2(0, -10));
-        vertices.push(new Vector2(-7, -7));
+        // vertices.push(new Vector2(-7, -7));
         vertices.push(new Vector2(-10, 0));
-        vertices.push(new Vector2(-7, 7));
+        // vertices.push(new Vector2(-7, 7));
 
         return WorldGenerator.createStone(x, y, vertices);
     }

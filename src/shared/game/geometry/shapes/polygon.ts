@@ -105,7 +105,7 @@ export default class Polygon extends Shape implements Collidable, Updatable<Poly
     }
 
     public inertia(mass: number): number {
-        return 0.00000001;
+        return 0.001;
         // return mass * (this._halfSize.x * this._halfSize.x + this._halfSize.y * this._halfSize.y) / 6
     }
 

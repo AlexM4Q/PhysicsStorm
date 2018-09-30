@@ -91,9 +91,15 @@ export default class CollisionResolver {
         const penetration: Vector2 = manifold.penetration;
         const normal: Vector2 = penetration.normalized;
 
-        let relativeVelocity: Vector2 = b.linearVelocity.subtract(a.linearVelocity);
-        let velocityAlongNormal: number = relativeVelocity.dotProduct(normal);
-        if (velocityAlongNormal > 0) {
+        const aAngular: Vector2 = a.position.subtract(a.shape.support(normal)).cross(a.angularVelocity);
+        const bAngular: Vector2 = b.position.subtract(b.shape.support(normal)).cross(b.angularVelocity);
+        const relativeVelocity: Vector2 = new Vector2(
+            b.linearVelocity.x - a.linearVelocity.x + bAngular.x - aAngular.x,
+            b.linearVelocity.y - a.linearVelocity.y + bAngular.y - aAngular.y
+        );
+
+        const velocityAlongNormal: number = relativeVelocity.dotProduct(normal);
+        if (velocityAlongNormal >= 0) {
             return;
         }
 

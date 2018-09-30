@@ -8,13 +8,14 @@ import Updatable from "../base/updatable";
 import {METAL} from "../physics/material/materials";
 import Box from "../geometry/shapes/box";
 import WorldGenerator from "../world-generator";
+import Stone from "./stone";
 
 @injectable()
 export default class Player extends RigidBody implements Updatable<Player> {
 
-    public readonly maxVelocity: number = 0.0025;
+    public readonly maxVelocity: number = 15;
 
-    public readonly jumpStrength: number = 0.0075;
+    public readonly jumpStrength: number = 100;
 
     private _direction: number = 0;
 
@@ -35,7 +36,7 @@ export default class Player extends RigidBody implements Updatable<Player> {
 
         switch (this._direction) {
             case 1:
-                this.applyForce(new Vector(this.maxVelocity, 0));
+                this.applyImpulse(new Vector(this.maxVelocity, 0));
                 break;
             case 0:
                 if (this.linearVelocity.x) {
@@ -43,7 +44,7 @@ export default class Player extends RigidBody implements Updatable<Player> {
                 }
                 break;
             case -1:
-                this.applyForce(new Vector(-this.maxVelocity, 0));
+                this.applyImpulse(new Vector(-this.maxVelocity, 0));
                 break;
         }
     }
@@ -61,11 +62,13 @@ export default class Player extends RigidBody implements Updatable<Player> {
     }
 
     public jump(): void {
-        this.applyForce(new Vector(0, this.jumpStrength));
+        this.applyImpulse(new Vector(0, this.jumpStrength));
     }
 
     public shoot(target: Vector2): void {
-        container.get<World>(TYPES.World).addObject(WorldGenerator.createRandomStone(target.x, target.y));
+        const stone: Stone = WorldGenerator.createRandomStone(target.x, target.y);
+        stone.shape.rotate(Math.PI / 8);
+        container.get<World>(TYPES.World).addObject(stone);
         // container.get<World>(TYPES.World).addObject(new Bullet(this._shape.position, target));
         // this._world.addObject(WorldGenerator.createBall(target.x, target.y, Math.random() * 25 + 5));
     }

@@ -32,11 +32,15 @@ export default abstract class RigidBody extends Particle implements Updatable<Ri
         return this._grounded;
     }
 
+    protected _angularVelocity: number;
+
+    public get angularVelocity(): number {
+        return this._angularVelocity;
+    }
+
     protected _torque: number;
 
     protected _angularMomentum: number;
-
-    protected _angularVelocity: number;
 
     protected _rotary: boolean;
 
@@ -44,6 +48,7 @@ export default abstract class RigidBody extends Particle implements Updatable<Ri
         super(shape, isStatic);
 
         this._material = material;
+        this._angularVelocity = 0;
 
         if (isStatic) {
             this._massData = new MassData();
@@ -60,7 +65,6 @@ export default abstract class RigidBody extends Particle implements Updatable<Ri
         this._grounded = false;
         this._torque = 0;
         this._angularMomentum = 0;
-        this._angularVelocity = 0;
         this._rotary = false;
     }
 
@@ -69,7 +73,7 @@ export default abstract class RigidBody extends Particle implements Updatable<Ri
             return;
         }
 
-        if (this.linearVelocity.y > 0 || this._force.y > 0) {
+        if (this._force.y > 0 || this._impulse.y > 0) {
             this._grounded = false;
         }
 
@@ -123,10 +127,13 @@ export default abstract class RigidBody extends Particle implements Updatable<Ri
             return;
         }
 
-        this._impulse = this._impulse.add(impulse);
+        if (impulse.x || impulse.y) {
+            this._impulse = this._impulse.add(impulse);
 
-        if (this._rotary) {
-            this._angularMomentum += this._shape.angularMomentum(impulse);
+            if (this._rotary) {
+                this._angularMomentum += this._shape.angularMomentum(impulse);
+                console.log(this._angularMomentum);
+            }
         }
     }
 

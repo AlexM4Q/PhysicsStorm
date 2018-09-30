@@ -102,6 +102,13 @@ export default class Vector2 {
     }
 
     /**
+     * @param value
+     */
+    public cross(value: number): Vector2 {
+        return new Vector2(-value * this._y, value * this._x);
+    }
+
+    /**
      * Расстояние до точки
      * @param {Vector2} vector Другой вектор
      * @returns {number} Результат
