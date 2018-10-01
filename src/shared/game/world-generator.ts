@@ -5,6 +5,7 @@ import {WORLD_WIDTH} from "../constants";
 import {pixelsToMeters} from "../utils/common-utils";
 import Ball from "./entities/ball";
 import Stone from "./entities/stone";
+import Cube from "./entities/cube";
 
 export default class WorldGenerator {
 
@@ -39,7 +40,7 @@ export default class WorldGenerator {
     }
 
     /**
-     * Создает блок по координатам и размерам
+     * Создает шар по координатам и радиусу
      * @param x координата X в пикселях
      * @param y координата Y в пикселях
      * @param radius радиус в пикселях
@@ -51,6 +52,26 @@ export default class WorldGenerator {
                 pixelsToMeters(y)
             ),
             pixelsToMeters(radius)
+        );
+    }
+
+    /**
+     * Создает кубик по координатам и размерам
+     * @param x координата X в пикселях
+     * @param y координата Y в пикселях
+     * @param halfWidth ширина в пикселях
+     * @param halfHeight высота в пикселях
+     */
+    public static createCube(x: number, y: number, halfWidth: number, halfHeight: number): Cube {
+        return new Cube(
+            new Vector2(
+                pixelsToMeters(x),
+                pixelsToMeters(y)
+            ),
+            new Vector2(
+                pixelsToMeters(halfWidth),
+                pixelsToMeters(halfHeight)
+            )
         );
     }
 

@@ -8,6 +8,12 @@ import Polygon from "./polygon";
 
 export default class Circle extends Shape implements Updatable<Circle> {
 
+    private _radius: number;
+
+    public get radius(): number {
+        return this._radius;
+    }
+
     /**
      * Конструктор
      * @param {Vector2} position Координата
@@ -15,16 +21,8 @@ export default class Circle extends Shape implements Updatable<Circle> {
      */
     public constructor(position: Vector2, radius: number) {
         super(position);
+
         this._radius = radius;
-    }
-
-    /**
-     * Радиус
-     */
-    private _radius: number;
-
-    public get radius(): number {
-        return this._radius;
     }
 
     public collideBox(box: Box): Vector2 {
@@ -48,7 +46,7 @@ export default class Circle extends Shape implements Updatable<Circle> {
             metersToPixels(this._radius),
             0, 2 * Math.PI
         );
-        canvasContext.stroke();
+        canvasContext.fill();
     }
 
     public square(): number {
@@ -74,7 +72,10 @@ export default class Circle extends Shape implements Updatable<Circle> {
 
     public updateBy(circle: Circle): void {
         super.updateBy(circle);
-        this._radius = circle._radius;
+
+        if (this._radius !== undefined) {
+            this._radius = circle._radius;
+        }
     }
 
 }

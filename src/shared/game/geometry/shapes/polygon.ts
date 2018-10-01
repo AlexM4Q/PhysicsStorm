@@ -40,7 +40,7 @@ export default class Polygon extends Shape implements Collidable, Updatable<Poly
             metersToPixels(this.position.y + this._vertices[0].y)
         );
 
-        for (let i = 1; i < this._vertices.length; i++) {
+        for (let i: number = 1; i < this._vertices.length; i++) {
             canvasContext.lineTo(
                 metersToPixels(this.position.x + this._vertices[i].x),
                 metersToPixels(this.position.y + this._vertices[i].y)
@@ -55,10 +55,10 @@ export default class Polygon extends Shape implements Collidable, Updatable<Poly
         super.rotate(value);
 
         const count: number = this._vertices.length;
-        for (let i: number = 0; i < count; i++) {
-            const cos: number = Math.cos(value);
-            const sin: number = Math.sin(value);
 
+        const cos: number = Math.cos(value);
+        const sin: number = Math.sin(value);
+        for (let i: number = 0; i < count; i++) {
             this._vertices.push(new Vector2(
                 this._vertices[i].x * cos - this._vertices[i].y * sin,
                 this._vertices[i].y * cos + this._vertices[i].x * sin
@@ -85,7 +85,7 @@ export default class Polygon extends Shape implements Collidable, Updatable<Poly
         let furthestX: number;
         let furthestY: number;
 
-        for (let i = 0; i < this._vertices.length; i++) {
+        for (let i: number = 0; i < this._vertices.length; i++) {
             const x: number = this.position.x + this._vertices[i].x;
             const y: number = this.position.y + this._vertices[i].y;
             const distance: number = x * direction.x + y * direction.y;
@@ -105,7 +105,7 @@ export default class Polygon extends Shape implements Collidable, Updatable<Poly
     }
 
     public inertia(mass: number): number {
-        return 0.001;
+        return 0.01;
         // return mass * (this._halfSize.x * this._halfSize.x + this._halfSize.y * this._halfSize.y) / 6
     }
 

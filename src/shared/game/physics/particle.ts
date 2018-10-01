@@ -48,8 +48,14 @@ export default abstract class Particle extends GameObject implements Updatable<P
 
     public updateBy(particle: Particle): void {
         super.updateBy(particle);
-        this._shape.updateBy(particle._shape);
-        this.linearVelocity = Vector2.parse(particle.linearVelocity);
+
+        if (particle._shape !== undefined) {
+            this._shape.updateBy(particle._shape);
+        }
+
+        if (particle.linearVelocity !== undefined) {
+            this.linearVelocity = Vector2.parse(particle.linearVelocity);
+        }
     }
 
 }

@@ -8,14 +8,19 @@ import Updatable from "../base/updatable";
 import {METAL} from "../physics/material/materials";
 import Box from "../geometry/shapes/box";
 import WorldGenerator from "../world-generator";
-import Stone from "./stone";
 
 @injectable()
 export default class Player extends RigidBody implements Updatable<Player> {
 
-    public readonly maxVelocity: number = 15;
+    public static readonly MAX_VELOCITY: number = 15;
 
-    public readonly jumpStrength: number = 100;
+    public static readonly JUMP_STRENGTH: number = 100;
+
+    public static readonly LEFT_IMPULSE: Vector2 = new Vector2(-Player.MAX_VELOCITY, 0);
+
+    public static readonly RIGHT_IMPULSE: Vector2 = new Vector2(Player.MAX_VELOCITY, 0);
+
+    public static readonly JUMP_IMPULSE: Vector2 = new Vector2(0, Player.JUMP_STRENGTH);
 
     private _direction: number = 0;
 
@@ -28,15 +33,15 @@ export default class Player extends RigidBody implements Updatable<Player> {
     public step(dt: number): void {
         super.step(dt);
 
-        if (this.linearVelocity.x > this.maxVelocity) {
-            this.linearVelocity = new Vector(this.maxVelocity, this.linearVelocity.y);
-        } else if (this.linearVelocity.x < -this.maxVelocity) {
-            this.linearVelocity = new Vector(-this.maxVelocity, this.linearVelocity.y);
+        if (this.linearVelocity.x > Player.MAX_VELOCITY) {
+            this.linearVelocity = new Vector(Player.MAX_VELOCITY, this.linearVelocity.y);
+        } else if (this.linearVelocity.x < -Player.MAX_VELOCITY) {
+            this.linearVelocity = new Vector(-Player.MAX_VELOCITY, this.linearVelocity.y);
         }
 
         switch (this._direction) {
             case 1:
-                this.applyImpulse(new Vector(this.maxVelocity, 0));
+                this.applyImpulse(Player.RIGHT_IMPULSE);
                 break;
             case 0:
                 if (this.linearVelocity.x) {
@@ -44,7 +49,7 @@ export default class Player extends RigidBody implements Updatable<Player> {
                 }
                 break;
             case -1:
-                this.applyImpulse(new Vector(-this.maxVelocity, 0));
+                this.applyImpulse(Player.LEFT_IMPULSE);
                 break;
         }
     }
@@ -62,21 +67,30 @@ export default class Player extends RigidBody implements Updatable<Player> {
     }
 
     public jump(): void {
-        this.applyImpulse(new Vector(0, this.jumpStrength));
+        this.applyImpulse(Player.JUMP_IMPULSE);
     }
 
     public shoot(target: Vector2): void {
-        const stone: Stone = WorldGenerator.createRandomStone(target.x, target.y);
-        stone.shape.rotate(Math.PI / 8);
-        container.get<World>(TYPES.World).addObject(stone);
+        const number = Math.random();
+        if (number < 0.5) {
+            // const stone: Stone = WorldGenerator.createRandomStone(target.x, target.y);
+            // stone.shape.rotate(Math.PI * Math.random());
+            // container.get<World>(TYPES.World).addObject(stone);
+            // } else if (number < 0.6) {
+            container.get<World>(TYPES.World).addObject(WorldGenerator.createCube(target.x, target.y, Math.random() * 25 + 5, Math.random() * 25 + 5));
+        } else {
+            container.get<World>(TYPES.World).addObject(WorldGenerator.createBall(target.x, target.y, Math.random() * 25 + 5));
+        }
+
         // container.get<World>(TYPES.World).addObject(new Bullet(this._shape.position, target));
-        // this._world.addObject(WorldGenerator.createBall(target.x, target.y, Math.random() * 25 + 5));
     }
 
     public updateBy(player: Player) {
         super.updateBy(player);
 
-        this._direction = player._direction;
+        if (this._direction !== undefined) {
+            this._direction = player._direction;
+        }
     }
 
 }

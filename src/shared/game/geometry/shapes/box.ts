@@ -13,6 +13,7 @@ export default class Box extends Shape implements Collidable, Updatable<Box> {
 
     public constructor(position: Vector2, halfSize: Vector2) {
         super(position);
+
         this._halfSize = halfSize;
     }
 
@@ -91,7 +92,10 @@ export default class Box extends Shape implements Collidable, Updatable<Box> {
 
     public updateBy(box: Box): void {
         super.updateBy(box);
-        this._halfSize = Vector2.parse(box._halfSize);
+
+        if (box._halfSize != undefined) {
+            this._halfSize = Vector2.parse(box._halfSize);
+        }
     }
 
 }

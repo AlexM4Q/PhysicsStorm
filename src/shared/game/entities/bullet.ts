@@ -10,13 +10,22 @@ export default class Bullet extends RigidBody implements Updatable<Bullet> {
 
     public constructor(position: Vector2, target: Vector2) {
         super(new Box(position, new Vector2(2, 2)), METAL);
+
         this.color = "#ff0000";
-        this.linearVelocity = new Vector2(1, 1);
+        this.linearVelocity = Vector2.ZERO;
         this.direction = target.subtract(position).normalized;
     }
 
     public step(dt: number): void {
         this.position = this.position.add(this.linearVelocity.multiply(this.direction).factor(dt));
+    }
+
+    public updateBy(bullet: Bullet): void {
+        super.updateBy(bullet);
+
+        if (this.direction !== undefined) {
+            this.direction = Vector2.parse(bullet.direction);
+        }
     }
 
 }

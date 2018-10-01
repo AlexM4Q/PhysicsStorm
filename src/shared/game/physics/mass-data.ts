@@ -56,10 +56,21 @@ export default class MassData implements Updatable<MassData> {
     }
 
     public updateBy(massData: MassData): void {
-        this._mass = massData._mass;
-        this._inverse_mass = massData._inverse_mass;
-        this._inertia = massData._inertia;
-        this._inverse_inertia = massData._inverse_inertia;
+        if (massData._mass !== undefined) {
+            this._mass = massData._mass;
+        }
+
+        if (massData._inverse_mass !== undefined) {
+            this._inverse_mass = massData._inverse_mass;
+        }
+
+        if (massData._inertia !== undefined) {
+            this._inertia = massData._inertia;
+        }
+
+        if (massData._inverse_inertia !== undefined) {
+            this._inverse_inertia = massData._inverse_inertia;
+        }
     }
 
 }

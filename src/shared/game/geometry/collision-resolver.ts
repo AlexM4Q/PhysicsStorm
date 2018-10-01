@@ -91,26 +91,30 @@ export default class CollisionResolver {
         const penetration: Vector2 = manifold.penetration;
         const normal: Vector2 = penetration.normalized;
 
-        const aAngular: Vector2 = a.position.subtract(a.shape.support(normal)).cross(a.angularVelocity);
-        const bAngular: Vector2 = b.position.subtract(b.shape.support(normal)).cross(b.angularVelocity);
-        const relativeVelocity: Vector2 = new Vector2(
-            b.linearVelocity.x - a.linearVelocity.x + bAngular.x - aAngular.x,
-            b.linearVelocity.y - a.linearVelocity.y + bAngular.y - aAngular.y
+        // const aAngular: Vector2 = a.position.subtract(a.shape.support(normal)).cross(a.angularVelocity);
+        // const bAngular: Vector2 = b.position.subtract(b.shape.support(normal)).cross(b.angularVelocity);
+        let relativeVelocity: Vector2 = new Vector2(
+            b.linearVelocity.x - a.linearVelocity.x /*+ bAngular.x - aAngular.x*/,
+            b.linearVelocity.y - a.linearVelocity.y /*+ bAngular.y - aAngular.y*/
         );
 
-        const velocityAlongNormal: number = relativeVelocity.dotProduct(normal);
+        let velocityAlongNormal: number = relativeVelocity.dotProduct(normal);
         if (velocityAlongNormal >= 0) {
             return;
         }
 
-        const restitution: number = (a.material.restitution + b.material.restitution) / 2;
+        const restitution: number = Math.min(a.material.restitution + b.material.restitution);
         const j: number = -(1 + restitution) * velocityAlongNormal / (a.massData.inverse_mass + b.massData.inverse_mass);
 
         const impulse: Vector2 = normal.factor(j);
         const massSum: number = 1 / (a.massData.mass + b.massData.mass);
 
-        a.applyImpulse(impulse.factor(-b.massData.mass * massSum));
-        b.applyImpulse(impulse.factor(a.massData.mass * massSum));
+        if (b.isStatic) {
+            a.applyImpulse(impulse.factor(-a.massData.mass * massSum));
+        } else {
+            a.applyImpulse(impulse.factor(-b.massData.mass * massSum));
+            b.applyImpulse(impulse.factor(a.massData.mass * massSum));
+        }
 
         // const length: number = penetration.length;
         // const percent: number = 0.5;
@@ -122,7 +126,7 @@ export default class CollisionResolver {
         // if (!normal.x || !normal.y) {
         //     return;
         // }
-        //
+
         // relativeVelocity = b.linearVelocity.subtract(a.linearVelocity);
         // velocityAlongNormal = relativeVelocity.dotProduct(normal);
         // const tangent: Vector2 = new Vector2(

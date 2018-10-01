@@ -10,6 +10,12 @@ import Material from "./material/material";
 @injectable()
 export default abstract class RigidBody extends Particle implements Updatable<RigidBody> {
 
+    private static readonly FORCE_TOLERANCE: number = 0.025;
+
+    private static readonly IMPULSE_TOLERANCE: number = 0.025;
+
+    private readonly _isRotary: boolean;
+
     private _force: Vector2;
 
     private _impulse: Vector2;
@@ -42,9 +48,7 @@ export default abstract class RigidBody extends Particle implements Updatable<Ri
 
     protected _angularMomentum: number;
 
-    protected _rotary: boolean;
-
-    protected constructor(@unmanaged() shape: Shape, @unmanaged() material: Material, @unmanaged() isStatic: boolean = false) {
+    protected constructor(@unmanaged() shape: Shape, @unmanaged() material: Material, @unmanaged() isStatic: boolean = false, @unmanaged() isRotary: boolean = false) {
         super(shape, isStatic);
 
         this._material = material;
@@ -65,7 +69,7 @@ export default abstract class RigidBody extends Particle implements Updatable<Ri
         this._grounded = false;
         this._torque = 0;
         this._angularMomentum = 0;
-        this._rotary = false;
+        this._isRotary = isRotary;
     }
 
     public step(dt: number): void {
@@ -73,13 +77,13 @@ export default abstract class RigidBody extends Particle implements Updatable<Ri
             return;
         }
 
-        if (this._force.y > 0 || this._impulse.y > 0) {
+        if (this._force.y > RigidBody.FORCE_TOLERANCE || this._impulse.y > RigidBody.IMPULSE_TOLERANCE) {
             this._grounded = false;
         }
 
         if (this._grounded) {
             this.linearVelocity = new Vector2(
-                this.linearVelocity.x + (dt * this._force.x + this._impulse.x) * this._massData.inverse_mass
+                0.95 * this.linearVelocity.x + (dt * this._force.x + this._impulse.x) * this._massData.inverse_mass
             );
 
             this.position = new Vector2(
@@ -88,8 +92,8 @@ export default abstract class RigidBody extends Particle implements Updatable<Ri
             );
         } else {
             this.linearVelocity = new Vector2(
-                this.linearVelocity.x + this._massData.inverse_mass * (this._impulse.x + dt * this._force.x),
-                this.linearVelocity.y + this._massData.inverse_mass * (this._impulse.y + dt * (this._force.y + this._massData.mass * g))
+                0.99 * this.linearVelocity.x + this._massData.inverse_mass * (this._impulse.x + dt * this._force.x),
+                0.99 * this.linearVelocity.y + this._massData.inverse_mass * (this._impulse.y + dt * (this._force.y + this._massData.mass * g))
             );
 
             this.position = new Vector2(
@@ -98,7 +102,7 @@ export default abstract class RigidBody extends Particle implements Updatable<Ri
             );
         }
 
-        if (this._rotary) {
+        if (this._isRotary && (this._torque || this._angularMomentum)) {
             this._angularVelocity += this._massData.inverse_inertia * (this._angularMomentum + this._torque * dt);
             this._shape.rotate(this._angularVelocity * dt);
             this._torque = 0;
@@ -115,10 +119,12 @@ export default abstract class RigidBody extends Particle implements Updatable<Ri
             return;
         }
 
-        this._force = this._force.add(force);
+        if (force.x || force.y) {
+            this._force = this._force.add(force);
 
-        if (this._rotary) {
-            this._torque += this._shape.torque(force);
+            if (this._isRotary) {
+                this._torque += this._shape.torque(force);
+            }
         }
     }
 
@@ -130,9 +136,8 @@ export default abstract class RigidBody extends Particle implements Updatable<Ri
         if (impulse.x || impulse.y) {
             this._impulse = this._impulse.add(impulse);
 
-            if (this._rotary) {
+            if (this._isRotary) {
                 this._angularMomentum += this._shape.angularMomentum(impulse);
-                console.log(this._angularMomentum);
             }
         }
     }
@@ -147,8 +152,7 @@ export default abstract class RigidBody extends Particle implements Updatable<Ri
         super.updateBy(rigidBody);
 
         this._massData.updateBy(rigidBody._massData);
-        this._torque = rigidBody._torque;
-        this._angularMomentum = rigidBody._angularMomentum;
+        this._grounded = rigidBody._grounded;
         this._angularVelocity = rigidBody._angularVelocity;
     }
 

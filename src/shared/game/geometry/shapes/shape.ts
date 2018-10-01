@@ -32,8 +32,6 @@ export default abstract class Shape implements Collidable, Updatable<Shape> {
      */
     public rotate(value: number): void {
         this.angle += value;
-
-        // console.log(this.angle);
     }
 
     /**
@@ -63,9 +61,9 @@ export default abstract class Shape implements Collidable, Updatable<Shape> {
      */
     public angularMomentum(impulse: Vector2): number {
         const support = this.support(impulse);
-        const radius = support.subtract(this.position);
+        const radius = this.position.subtract(support);
         const product = radius.crossProduct(impulse);
-        console.log(`(${impulse.x}:${impulse.y}), ${support.x}:${support.y}), ${radius.x}:${radius.y}), ${product}`);
+        console.log(`(${impulse.x}:${impulse.y}), (${support.x}:${support.y}), (${radius.x}:${radius.y}), ${product}`);
         return product;
     }
 
@@ -81,6 +79,12 @@ export default abstract class Shape implements Collidable, Updatable<Shape> {
      * @param {Shape} shape Другая фигура
      */
     public updateBy(shape: Shape): void {
-        this.position = Vector2.parse(shape.position);
+        if (shape.position !== undefined) {
+            this.position = Vector2.parse(shape.position);
+        }
+
+        if (shape.angle !== undefined) {
+            this.angle = shape.angle;
+        }
     }
 }
