@@ -30,11 +30,11 @@ export default class GameServer {
 
         const thiz = this;
 
-        this.io.on('connect', socket => {
-            socket.on('register-request', (id) => {
+        this.io.on("connect", socket => {
+            socket.on("register-request", (id) => {
                 if (!id) {
                     id = EntityFactory.newGuidTyped(TYPES.Player);
-                    socket.emit('register-response', id);
+                    socket.emit("register-response", id);
 
                     GameServer.log.debug(`Registered new player ${id}`);
                 }
@@ -42,19 +42,19 @@ export default class GameServer {
                 thiz._clients[id] = socket;
                 thiz.onconnection(id);
 
-                socket.on('message', (message: any) => {
+                socket.on("message", (message: any) => {
                     thiz.onmessage({
                         id: id,
                         data: message
                     });
                 });
 
-                socket.on('disconnect', () => {
+                socket.on("disconnect", () => {
                     thiz._clients[id].disconnect(true);
                     delete thiz._clients[id];
                     thiz.onclose(id);
                     this.sendAll({
-                        type: 'delete',
+                        type: "delete",
                         id: id
                     });
                 });
@@ -75,9 +75,9 @@ export default class GameServer {
     }
 
     public sendAll(message: any): void {
-        for (let id in this._clients) {
+        for (const id in this._clients) {
             if (this._clients.hasOwnProperty(id)) {
-                this._clients[id].emit('message', message);
+                this._clients[id].emit("message", message);
             }
         }
     }

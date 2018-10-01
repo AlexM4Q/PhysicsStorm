@@ -70,7 +70,7 @@ export default class Polygon extends Shape implements Collidable, Updatable<Poly
         let total: number = 0;
 
         for (let i: number = 0; i < this._vertices.length; i++) {
-            total += i == this._vertices.length - 1
+            total += i === this._vertices.length - 1
                 ? (this._vertices[i].x * this._vertices[0].y - this._vertices[0].x * this._vertices[i].y) * 0.5
                 : (this._vertices[i].x * this._vertices[i + 1].y - this._vertices[i + 1].x * this._vertices[i].y) * 0.5;
         }
@@ -83,9 +83,9 @@ export default class Polygon extends Shape implements Collidable, Updatable<Poly
         let furthestX: number;
         let furthestY: number;
 
-        for (let i: number = 0; i < this._vertices.length; i++) {
-            const x: number = this.position.x + this._vertices[i].x;
-            const y: number = this.position.y + this._vertices[i].y;
+        for (const vertex of this._vertices) {
+            const x: number = this.position.x + vertex.x;
+            const y: number = this.position.y + vertex.y;
             const distance: number = x * direction.x + y * direction.y;
 
             if (furthestDistance < distance) {

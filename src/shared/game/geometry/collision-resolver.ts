@@ -93,18 +93,18 @@ export default class CollisionResolver {
 
         // const aAngular: Vector2 = a.position.subtract(a.shape.support(normal)).cross(a.angularVelocity);
         // const bAngular: Vector2 = b.position.subtract(b.shape.support(normal)).cross(b.angularVelocity);
-        let relativeVelocity: Vector2 = new Vector2(
+        const relativeVelocity: Vector2 = new Vector2(
             b.linearVelocity.x - a.linearVelocity.x /*+ bAngular.x - aAngular.x*/,
             b.linearVelocity.y - a.linearVelocity.y /*+ bAngular.y - aAngular.y*/
         );
 
-        let velocityAlongNormal: number = relativeVelocity.dotProduct(normal);
+        const velocityAlongNormal: number = relativeVelocity.dotProduct(normal);
         if (velocityAlongNormal >= 0) {
             return;
         }
 
         const restitution: number = Math.min(a.material.restitution + b.material.restitution);
-        const j: number = -(1 + restitution) * velocityAlongNormal / (a.massData.inverse_mass + b.massData.inverse_mass);
+        const j: number = -(1 + restitution) * velocityAlongNormal / (a.massData.inverseMass + b.massData.inverseMass);
 
         const impulse: Vector2 = normal.factor(j);
         const massSum: number = 1 / (a.massData.mass + b.massData.mass);
@@ -134,7 +134,7 @@ export default class CollisionResolver {
         //     relativeVelocity.y - normal.y * velocityAlongNormal
         // ).normalized;
         //
-        // const jt: number = -relativeVelocity.dotProduct(tangent) / (a.massData.inverse_mass + b.massData.inverse_mass);
+        // const jt: number = -relativeVelocity.dotProduct(tangent) / (a.massData.inverseMass + b.massData.inverseMass);
         // const mu: number = Math.sqrt(a.material.staticFriction * a.material.staticFriction + b.material.staticFriction * b.material.staticFriction);
         //
         // const frictionImpulse: Vector2 = Math.abs(jt) < j * mu

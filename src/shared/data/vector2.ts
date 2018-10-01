@@ -125,7 +125,7 @@ export default class Vector2 {
      * @returns {number} Преобразованный вектор
      */
     public change(f: any): Vector2 {
-        if (f && typeof f == 'function') {
+        if (f && typeof f === "function") {
             return new Vector2(f(this._x), f(this._y));
         }
     }

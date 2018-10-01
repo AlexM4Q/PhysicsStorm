@@ -30,30 +30,65 @@ export default class GameClient {
             reconnectionAttempts: Infinity
         });
 
-        this._socket.on('connect', () => {
+        this._socket.on("connect", () => {
             GameClient.log.debug("Connected to server");
 
-            this._socket.emit('register-request', this._id);
+            this._socket.emit("register-request", this._id);
         });
 
-        this._socket.on('register-response', (id) => {
+        this._socket.on("register-response", (id) => {
             GameClient.log.debug(`Registered as ${id}`);
 
             this._id = id;
             this._onRegister(id);
         });
 
-        this._socket.on('disconnect', () => {
+        this._socket.on("disconnect", () => {
             setTimeout(() => this.connect(url), 5000);
         });
     }
 
     public set onMessage(onmessage) {
-        this._socket.on('message', onmessage);
+        this._socket.on("message", onmessage);
     }
 
     public set onRegister(onRegister) {
         this._onRegister = onRegister;
+    }
+
+    public right(inputNumber: number): void {
+        this._sendInput({
+            type: "step",
+            direction: "right"
+        }, inputNumber);
+    }
+
+    public left(inputNumber: number): void {
+        this._sendInput({
+            type: "step",
+            direction: "left"
+        }, inputNumber);
+    }
+
+    public stop(inputNumber: number): void {
+        this._sendInput({
+            type: "step",
+            direction: "stop"
+        }, inputNumber);
+    }
+
+    public jump(inputNumber: number): void {
+        this._sendInput({
+            type: "step",
+            direction: "jump"
+        }, inputNumber);
+    }
+
+    public click(inputNumber: number, target: Vector2): void {
+        this._sendInput({
+            type: "click",
+            target: target
+        }, inputNumber);
     }
 
     private _sendInput(data: any, inputNumber: number): void {
@@ -61,41 +96,6 @@ export default class GameClient {
         data.time = Date.now();
         data.inputNumber = inputNumber;
         this._socket.send(data);
-    }
-
-    public right(inputNumber: number): void {
-        this._sendInput({
-            type: 'step',
-            direction: 'right'
-        }, inputNumber);
-    }
-
-    public left(inputNumber: number): void {
-        this._sendInput({
-            type: 'step',
-            direction: 'left'
-        }, inputNumber);
-    }
-
-    public stop(inputNumber: number): void {
-        this._sendInput({
-            type: 'step',
-            direction: 'stop'
-        }, inputNumber);
-    }
-
-    public jump(inputNumber: number): void {
-        this._sendInput({
-            type: 'step',
-            direction: 'jump'
-        }, inputNumber);
-    }
-
-    public click(inputNumber: number, target: Vector2): void {
-        this._sendInput({
-            type: 'click',
-            target: target
-        }, inputNumber);
     }
 
 }

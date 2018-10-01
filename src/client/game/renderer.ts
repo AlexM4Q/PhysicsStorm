@@ -15,7 +15,7 @@ export default class Renderer {
     public draw(renders: GameObject[]): void {
         this._context.clearRect(0, 0, this._scene.width, this._scene.height);
 
-        for (let render of renders) {
+        for (const render of renders) {
             render.draw(this._context);
         }
     }

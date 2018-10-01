@@ -41,8 +41,8 @@ export default class World {
 
     public update(state: Particle[]): void {
         stateCycle:
-            for (let object of state) {
-                for (let gameObject of this._gameObjects) {
+            for (const object of state) {
+                for (const gameObject of this._gameObjects) {
                     if (object.id === gameObject.id) {
                         gameObject.updateBy(object);
                         continue stateCycle;
@@ -74,7 +74,7 @@ export default class World {
         // const gameObjects = this._gameObjects.sort((a, b) => a.position.y - b.position.y);
         const manifolds: Manifold[] = [];
 
-        for (let particle of particles) {
+        for (const particle of particles) {
             if (particle.isStatic || !(particle instanceof RigidBody)) {
                 continue;
             }
@@ -86,7 +86,7 @@ export default class World {
                 particle.linearVelocity = new Vector2(particle.linearVelocity.x, 0);
             }
 
-            for (let collide of particles) {
+            for (const collide of particles) {
                 if (particle.id === collide.id || !(collide instanceof RigidBody)) {
                     continue;
                 }
@@ -98,18 +98,19 @@ export default class World {
             }
         }
 
-        filter:for (let i = 0; i < manifolds.length; i++) {
-            const manifold: Manifold = manifolds[i];
-            for (let j = i + 1; j < manifolds.length; j++) {
-                const duplicate: Manifold = manifolds[j];
-                if (manifold.a.id == duplicate.b.id && manifold.b.id == duplicate.a.id) {
-                    continue filter;
+        filter:
+            for (let i: number = 0; i < manifolds.length; i++) {
+                const manifold: Manifold = manifolds[i];
+                for (let j: number = i + 1; j < manifolds.length; j++) {
+                    const duplicate: Manifold = manifolds[j];
+                    if (manifold.a.id === duplicate.b.id && manifold.b.id === duplicate.a.id) {
+                        continue filter;
+                    }
                 }
-            }
 
-            CollisionResolver.resolveState(manifold);
-            CollisionResolver.resolveImpulse(manifold);
-        }
+                CollisionResolver.resolveState(manifold);
+                CollisionResolver.resolveImpulse(manifold);
+            }
 
         if (this._onWorldUpdate) {
             this._onWorldUpdate();

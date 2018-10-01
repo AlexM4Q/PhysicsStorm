@@ -83,7 +83,7 @@ export default abstract class RigidBody extends Particle implements Updatable<Ri
 
         if (this._grounded) {
             this.linearVelocity = new Vector2(
-                0.95 * this.linearVelocity.x + (dt * this._force.x + this._impulse.x) * this._massData.inverse_mass
+                0.95 * this.linearVelocity.x + (dt * this._force.x + this._impulse.x) * this._massData.inverseMass
             );
 
             this.position = new Vector2(
@@ -92,8 +92,8 @@ export default abstract class RigidBody extends Particle implements Updatable<Ri
             );
         } else {
             this.linearVelocity = new Vector2(
-                0.99 * this.linearVelocity.x + this._massData.inverse_mass * (this._impulse.x + dt * this._force.x),
-                0.99 * this.linearVelocity.y + this._massData.inverse_mass * (this._impulse.y + dt * (this._force.y + this._massData.mass * g))
+                0.99 * this.linearVelocity.x + this._massData.inverseMass * (this._impulse.x + dt * this._force.x),
+                0.99 * this.linearVelocity.y + this._massData.inverseMass * (this._impulse.y + dt * (this._force.y + this._massData.mass * g))
             );
 
             this.position = new Vector2(
@@ -103,7 +103,7 @@ export default abstract class RigidBody extends Particle implements Updatable<Ri
         }
 
         if (this._isRotary && (this._torque || this._angularMomentum)) {
-            this._angularVelocity += this._massData.inverse_inertia * (this._angularMomentum + this._torque * dt);
+            this._angularVelocity += this._massData.inverseInertia * (this._angularMomentum + this._torque * dt);
             this._shape.rotate(this._angularVelocity * dt);
             this._torque = 0;
             this._angularMomentum = 0;

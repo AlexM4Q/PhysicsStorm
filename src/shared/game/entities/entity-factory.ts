@@ -14,7 +14,7 @@ export default class EntityFactory {
     private static readonly log: Logger = new ConsoleLogger(EntityFactory);
 
     public static newGuidTyped(type: string): string {
-        return Guid.newGuid('xxxxxxxx-tttt-4xxx-yxxx-xxxxxxxxxxxx').replace('tttt', type);
+        return Guid.newGuid("xxxxxxxx-tttt-4xxx-yxxx-xxxxxxxxxxxx").replace("tttt", type);
     }
 
     public static getType(guid: string): string {

@@ -24,7 +24,7 @@ export default class ServerContext {
 
         setInterval(() => {
             server.sendAll({
-                type: 'state',
+                type: "state",
                 state: this._world.gameObjects
             });
         }, 100);
@@ -40,23 +40,23 @@ export default class ServerContext {
             const player: Player = this._world.gameObjects.filter(x => x.id === info.id && x instanceof Player)[0] as Player;
 
             switch (data.type) {
-                case 'step':
+                case "step":
                     switch (data.direction) {
-                        case 'right':
+                        case "right":
                             player.right();
                             break;
-                        case 'left':
+                        case "left":
                             player.left();
                             break;
-                        case 'stop':
+                        case "stop":
                             player.stop();
                             break;
-                        case 'jump':
+                        case "jump":
                             player.jump();
                             break;
                     }
                     break;
-                case 'click':
+                case "click":
                     const target: Vector2 = Vector2.parse(data.target);
 
                     const object: Particle = Math.random() < 0.5

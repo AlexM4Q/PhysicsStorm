@@ -70,6 +70,7 @@ export default class Player extends RigidBody implements Updatable<Player> {
     }
 
     public shoot(target: Vector2): void {
+        //
     }
 
     public updateBy(player: Player) {
