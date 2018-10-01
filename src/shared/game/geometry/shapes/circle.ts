@@ -8,7 +8,7 @@ import Polygon from "./polygon";
 
 export default class Circle extends Shape implements Updatable<Circle> {
 
-    private _radius: number;
+    protected _radius: number;
 
     public get radius(): number {
         return this._radius;
@@ -68,14 +68,6 @@ export default class Circle extends Shape implements Updatable<Circle> {
 
     public inertia(mass: number): number {
         return mass * this._radius * this._radius / 2
-    }
-
-    public updateBy(circle: Circle): void {
-        super.updateBy(circle);
-
-        if (this._radius !== undefined) {
-            this._radius = circle._radius;
-        }
     }
 
 }

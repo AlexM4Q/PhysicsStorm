@@ -1,4 +1,3 @@
-import Guid from "../../utils/guid-utils";
 import {injectable} from "inversify";
 import Updatable from "./updatable";
 
@@ -12,14 +11,10 @@ export default abstract class GameObject implements Updatable<GameObject> {
 
     public color: string = "#000000";
 
-    protected constructor() {
-        this.id = Guid.newGuid();
-    }
-
     public abstract draw(canvasContext: CanvasRenderingContext2D): void;
 
-    public updateBy(object: GameObject): void {
-        this.color = object.color;
+    public updateBy(gameObject: GameObject): void {
+        this.color = gameObject.color;
     }
 
 }

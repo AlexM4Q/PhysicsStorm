@@ -9,16 +9,16 @@ import Polygon from "./polygon";
 
 export default class Box extends Shape implements Collidable, Updatable<Box> {
 
-    private _halfSize: Vector2;
+    private readonly _halfSize: Vector2;
+
+    public get halfSize(): Vector2 {
+        return this._halfSize;
+    }
 
     public constructor(position: Vector2, halfSize: Vector2) {
         super(position);
 
         this._halfSize = halfSize;
-    }
-
-    public get halfSize(): Vector2 {
-        return this._halfSize;
     }
 
     public collideBox(box: Box): Vector2 {
@@ -88,14 +88,6 @@ export default class Box extends Shape implements Collidable, Updatable<Box> {
 
     public inertia(mass: number): number {
         return mass * (this._halfSize.x * this._halfSize.x + this._halfSize.y * this._halfSize.y) / 6
-    }
-
-    public updateBy(box: Box): void {
-        super.updateBy(box);
-
-        if (box._halfSize != undefined) {
-            this._halfSize = Vector2.parse(box._halfSize);
-        }
     }
 
 }

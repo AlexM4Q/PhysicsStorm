@@ -1,11 +1,11 @@
 export default interface Logger {
 
-    debug(message: string): void;
+    debug(message: any): void;
 
-    info(message: string): void;
+    info(message: any): void;
 
-    warn(message: string): void;
+    warn(message: any): void;
 
-    error(message: string): void;
+    error(message: any): void;
 
 }

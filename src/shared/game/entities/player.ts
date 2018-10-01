@@ -1,13 +1,11 @@
 import {injectable} from "inversify";
-import container from "../../inversify.config";
-import TYPES from "../../inversify.types";
 import Vector, {default as Vector2} from "../../data/vector2";
 import RigidBody from "../physics/rigid-body";
-import World from "../world";
 import Updatable from "../base/updatable";
 import {METAL} from "../physics/material/materials";
 import Box from "../geometry/shapes/box";
-import WorldGenerator from "../world-generator";
+import EntityFactory from "./entity-factory";
+import TYPES from "../../inversify.types";
 
 @injectable()
 export default class Player extends RigidBody implements Updatable<Player> {
@@ -27,6 +25,7 @@ export default class Player extends RigidBody implements Updatable<Player> {
     public constructor() {
         super(new Box(new Vector(), new Vector2(1, 1)), METAL);
 
+        this.id = EntityFactory.newGuidTyped(TYPES.Player);
         this.color = "#ABCDEF";
     }
 
@@ -71,18 +70,6 @@ export default class Player extends RigidBody implements Updatable<Player> {
     }
 
     public shoot(target: Vector2): void {
-        const number = Math.random();
-        if (number < 0.5) {
-            // const stone: Stone = WorldGenerator.createRandomStone(target.x, target.y);
-            // stone.shape.rotate(Math.PI * Math.random());
-            // container.get<World>(TYPES.World).addObject(stone);
-            // } else if (number < 0.6) {
-            container.get<World>(TYPES.World).addObject(WorldGenerator.createCube(target.x, target.y, Math.random() * 25 + 5, Math.random() * 25 + 5));
-        } else {
-            container.get<World>(TYPES.World).addObject(WorldGenerator.createBall(target.x, target.y, Math.random() * 25 + 5));
-        }
-
-        // container.get<World>(TYPES.World).addObject(new Bullet(this._shape.position, target));
     }
 
     public updateBy(player: Player) {

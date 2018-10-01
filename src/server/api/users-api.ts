@@ -7,9 +7,9 @@ export class UsersApi {
 
     constructor() {
         this.router = Router();
-        this.router.post('/', this.post);
-        this.router.get('/', this.getAll);
-        this.router.get('/:id', this.getOne);
+        // this.router.post('/', this.post);
+        // this.router.get('/', this.getAll);
+        // this.router.get('/:id', this.getOne);
     }
 
     public post(req: Request, res: Response) {

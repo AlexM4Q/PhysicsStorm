@@ -9,7 +9,7 @@ import Box from "./box";
 
 export default class Polygon extends Shape implements Collidable, Updatable<Polygon> {
 
-    private readonly _vertices: Vector2[];
+    private _vertices: Vector2[];
 
     public get vertices(): Vector2[] {
         return this._vertices;
@@ -59,13 +59,11 @@ export default class Polygon extends Shape implements Collidable, Updatable<Poly
         const cos: number = Math.cos(value);
         const sin: number = Math.sin(value);
         for (let i: number = 0; i < count; i++) {
-            this._vertices.push(new Vector2(
+            this._vertices[i] = new Vector2(
                 this._vertices[i].x * cos - this._vertices[i].y * sin,
                 this._vertices[i].y * cos + this._vertices[i].x * sin
-            ));
+            );
         }
-
-        this._vertices.splice(0, count);
     }
 
     public square(): number {
@@ -111,6 +109,8 @@ export default class Polygon extends Shape implements Collidable, Updatable<Poly
 
     public updateBy(polygon: Polygon): void {
         super.updateBy(polygon);
+
+        this._vertices = polygon._vertices.map(Vector2.parse);
     }
 
 }

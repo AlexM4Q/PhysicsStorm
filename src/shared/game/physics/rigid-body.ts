@@ -151,7 +151,6 @@ export default abstract class RigidBody extends Particle implements Updatable<Ri
     public updateBy(rigidBody: RigidBody): void {
         super.updateBy(rigidBody);
 
-        this._massData.updateBy(rigidBody._massData);
         this._grounded = rigidBody._grounded;
         this._angularVelocity = rigidBody._angularVelocity;
     }

@@ -2,7 +2,6 @@ import Vector2 from "../../shared/data/vector2";
 import ClientContext from "./client-context";
 import {inject, injectable} from "inversify";
 import {CLIENT_TYPES} from "../inversify.types";
-import {pixelsToMeters} from "../../shared/utils/common-utils";
 import {WORLD_HEIGHT} from "../../shared/constants";
 
 @injectable()

@@ -5,7 +5,7 @@ import Vector2 from "../../shared/data/vector2";
 
 export default class GameClient {
 
-    private static readonly log: Logger = new ConsoleLogger("GameClient");
+    private static readonly log: Logger = new ConsoleLogger(GameClient);
 
     private _id: string;
     private _socket: any;

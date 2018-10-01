@@ -9,14 +9,15 @@ import WorldGenerator from "./world-generator";
 import CollisionResolver from "./geometry/collision-resolver";
 import Manifold from "./geometry/manifold";
 import CollisionDetector from "./geometry/collision-detector";
+import EntityFactory from "./entities/entity-factory";
 
 @injectable()
 export default class World {
 
-    private _particles: Particle[] = [];
+    private _gameObjects: Particle[] = [];
 
-    public get particles(): GameObject[] {
-        return this._particles;
+    public get gameObjects(): GameObject[] {
+        return this._gameObjects;
     }
 
     private _onWorldUpdate: any;
@@ -39,14 +40,20 @@ export default class World {
     }
 
     public update(state: Particle[]): void {
-        for (let object of state) {
-            for (let gameObject of this._particles) {
-                if (object.id === gameObject.id) {
-                    gameObject.updateBy(object);
-                    break;
+        stateCycle:
+            for (let object of state) {
+                for (let gameObject of this._gameObjects) {
+                    if (object.id === gameObject.id) {
+                        gameObject.updateBy(object);
+                        continue stateCycle;
+                    }
                 }
+
+                const newObject = EntityFactory.createFrom(object);
+                newObject.id = object.id;
+                newObject.updateBy(object);
+                this.addObject(newObject);
             }
-        }
 
         if (this._onWorldUpdate) {
             this._onWorldUpdate();
@@ -54,17 +61,17 @@ export default class World {
     }
 
     public addObject(object: Particle): void {
-        this._particles.push(object);
+        this._gameObjects.push(object);
     }
 
     public remove(id: string): void {
-        this._particles = this._particles.filter(x => x.id !== id);
+        this._gameObjects = this._gameObjects.filter(x => x.id !== id);
     }
 
     public updatePhysics(dt: number): void {
-        const particles = this._particles;
-        // const particles = this._particles.sort((a, b) => b.position.y - a.position.y);
-        // const particles = this._particles.sort((a, b) => a.position.y - b.position.y);
+        const particles = this._gameObjects;
+        // const gameObjects = this._gameObjects.sort((a, b) => b.position.y - a.position.y);
+        // const gameObjects = this._gameObjects.sort((a, b) => a.position.y - b.position.y);
         const manifolds: Manifold[] = [];
 
         for (let particle of particles) {

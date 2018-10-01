@@ -1,11 +1,16 @@
 import {createServer, Server} from "http";
-import Guid from "../../shared/utils/guid-utils";
 import * as SocketIO from "socket.io";
 import {Socket} from "socket.io";
 import {WS_PORT} from "../../shared/constants";
 import {Application} from "express";
+import Logger from "../../shared/logging/logger";
+import ConsoleLogger from "../../shared/logging/console-logger";
+import EntityFactory from "../../shared/game/entities/entity-factory";
+import TYPES from "../../shared/inversify.types";
 
 export default class GameServer {
+
+    private static readonly log: Logger = new ConsoleLogger(GameServer);
 
     private readonly server: Server;
     private readonly io: SocketIO.Server;
@@ -28,10 +33,10 @@ export default class GameServer {
         this.io.on('connect', socket => {
             socket.on('register-request', (id) => {
                 if (!id) {
-                    id = Guid.newGuid();
+                    id = EntityFactory.newGuidTyped(TYPES.Player);
                     socket.emit('register-response', id);
 
-                    console.log(`Registered new player ${id}`);
+                    GameServer.log.debug(`Registered new player ${id}`);
                 }
 
                 thiz._clients[id] = socket;
@@ -48,6 +53,10 @@ export default class GameServer {
                     thiz._clients[id].disconnect(true);
                     delete thiz._clients[id];
                     thiz.onclose(id);
+                    this.sendAll({
+                        type: 'delete',
+                        id: id
+                    });
                 });
             });
         });
@@ -65,7 +74,7 @@ export default class GameServer {
         this.onclose = onclose;
     }
 
-    public sendAll(message): void {
+    public sendAll(message: any): void {
         for (let id in this._clients) {
             if (this._clients.hasOwnProperty(id)) {
                 this._clients[id].emit('message', message);
