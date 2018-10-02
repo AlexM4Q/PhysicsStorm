@@ -62,12 +62,11 @@
   },
   "scripts": {
     "test": "mocha -r ts-node/register tests/**/*.spec.ts",
-    "dev:start": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
     "dev:client": "webpack-dev-server --mode development --content-base ./build --hot --inline --colors --port 3000 --open",
     "dev:server": "nodemon",
     "clean": "if exist build rmdir /s /q build",
-    "build": "npm run clean && npm run build:types && npm run build:js && npm run webpack",
-    "build:types": "tsc --emitDeclarationOnly",
+    "build": "npm run clean && npm run build:ts && npm run build:js && npm run webpack",
+    "build:ts": "tsc --emitDeclarationOnly",
     "build:js": "babel ./src --out-dir ./build --extensions \".ts,.tsx\" --source-maps inline",
     "webpack": "webpack --mode production",
     "start": "ts-node ./src/server/index.ts"
