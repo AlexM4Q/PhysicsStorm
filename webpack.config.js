@@ -1,6 +1,9 @@
 const path = require("path");
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
+const sourceDirectory = path.resolve(__dirname, "source");
 const outputDirectory = path.resolve(__dirname, "build");
 const nodeModulesDirectory = path.resolve(__dirname, "node_modules");
 
@@ -13,8 +16,8 @@ module.exports = {
     resolve: {
         extensions: [".ts", ".tsx", ".js"],
         modules: [
-            path.resolve(__dirname, "./src"),
-            path.resolve(__dirname, "./node_modules"),
+            sourceDirectory,
+            nodeModulesDirectory,
         ]
     },
     module: {
@@ -46,6 +49,16 @@ module.exports = {
         }
     },
     plugins: [
+        new CleanWebpackPlugin(outputDirectory),
+        new UglifyJsPlugin({
+            include: outputDirectory,
+            exclude: [
+                sourceDirectory,
+                nodeModulesDirectory
+            ],
+            parallel: true,
+            sourceMap: true
+        }),
         new HtmlWebpackPlugin({
             template: "./public/index.html",
             favicon: "./public/favicon.ico"
