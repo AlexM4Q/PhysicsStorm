@@ -68,7 +68,7 @@
     "dev:start": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
     "dev:client": "webpack-dev-server --mode development --content-base ./build --hot --inline --colors --port 3000 --open",
     "dev:server": "nodemon",
-    "clean": "rm -rf build && mkdir build",
+    "clean": "if exist build rmdir /s /q build",
     "build": "npm run clean && npm run build:types && npm run build:js",
     "build:types": "tsc --emitDeclarationOnly",
     "build:js": "babel ./src --out-dir ./build --extensions \".ts,.tsx\" --source-maps inline",
