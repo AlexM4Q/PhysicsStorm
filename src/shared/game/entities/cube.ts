@@ -4,11 +4,10 @@ import Updatable from "../base/updatable";
 import Box from "../geometry/shapes/box";
 import Color from "../../utils/color-utils";
 import {RUBBER} from "../physics/material/materials";
-import {injectable} from "inversify";
+import {decorate, injectable} from "inversify";
 import EntityFactory from "./entity-factory";
 import TYPES from "../../inversify.types";
 
-@injectable()
 export default class Cube extends RigidBody implements Updatable<Cube> {
 
     public constructor(position: Vector2, halfSize: Vector2) {
@@ -26,3 +25,5 @@ export default class Cube extends RigidBody implements Updatable<Cube> {
     }
 
 }
+
+decorate(injectable(), Cube);

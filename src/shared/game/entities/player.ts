@@ -1,4 +1,4 @@
-import {injectable} from "inversify";
+import {decorate, injectable} from "inversify";
 import Vector, {default as Vector2} from "../../data/vector2";
 import RigidBody from "../physics/rigid-body";
 import Updatable from "../base/updatable";
@@ -7,18 +7,17 @@ import Box from "../geometry/shapes/box";
 import EntityFactory from "./entity-factory";
 import TYPES from "../../inversify.types";
 
-@injectable()
 export default class Player extends RigidBody implements Updatable<Player> {
 
     public static readonly MAX_VELOCITY: number = 15;
 
     public static readonly JUMP_STRENGTH: number = 100;
 
-    public static readonly LEFT_IMPULSE: Vector2 = new Vector2(-Player.MAX_VELOCITY, 0);
+    public static readonly LEFT_IMPULSE: Vector2 = new Vector2(-15, 0);
 
-    public static readonly RIGHT_IMPULSE: Vector2 = new Vector2(Player.MAX_VELOCITY, 0);
+    public static readonly RIGHT_IMPULSE: Vector2 = new Vector2(15, 0);
 
-    public static readonly JUMP_IMPULSE: Vector2 = new Vector2(0, Player.JUMP_STRENGTH);
+    public static readonly JUMP_IMPULSE: Vector2 = new Vector2(0, 100);
 
     private _direction: number = 0;
 
@@ -82,3 +81,5 @@ export default class Player extends RigidBody implements Updatable<Player> {
     }
 
 }
+
+decorate(injectable(), Player);

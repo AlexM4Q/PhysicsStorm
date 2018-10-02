@@ -1,35 +1,38 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
-const outputDirectory = "build";
+const outputDirectory = path.resolve(__dirname, "build");
+const nodeModulesDirectory = path.resolve(__dirname, "node_modules");
 
 module.exports = {
     entry: "./src/client/index.tsx",
     output: {
         filename: "bundle.js",
-        path: path.resolve(__dirname, outputDirectory)
+        path: outputDirectory
     },
     resolve: {
         extensions: [".ts", ".tsx", ".js"],
         modules: [
-            path.resolve(__dirname, './src'),
-            path.resolve(__dirname, './node_modules'),
+            path.resolve(__dirname, "./src"),
+            path.resolve(__dirname, "./node_modules"),
         ]
     },
     module: {
         rules: [
             {
                 test: /\.ts|\.tsx?$/,
-                exclude: path.resolve(__dirname, './node_modules'),
+                exclude: nodeModulesDirectory,
                 use: ["babel-loader"]
             },
             {
                 test: /\.js$/,
-                use: ["source-map-loader"],
-                enforce: "pre"
+                enforce: "pre",
+                exclude: nodeModulesDirectory,
+                use: ["source-map-loader"]
             },
             {
                 test: /\.css$/,
+                exclude: nodeModulesDirectory,
                 use: ["style-loader", "css-loader"]
             }
         ]
@@ -43,7 +46,6 @@ module.exports = {
         }
     },
     plugins: [
-        // new CleanWebpackPlugin([outputDirectory]),
         new HtmlWebpackPlugin({
             template: "./public/index.html",
             favicon: "./public/favicon.ico"

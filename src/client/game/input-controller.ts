@@ -1,16 +1,15 @@
+import {decorate, inject, injectable} from "inversify";
 import Vector2 from "../../shared/data/vector2";
 import ClientContext from "./client-context";
-import {inject, injectable} from "inversify";
 import {CLIENT_TYPES} from "../inversify.types";
 import {WORLD_HEIGHT} from "../../shared/constants";
 
-@injectable()
 export default class InputController {
 
     public inputHistory: { [inputNumber: number]: any };
     private _inputNumber: number = 0;
 
-    public constructor(@inject(CLIENT_TYPES.ClientContext) private readonly context: ClientContext) {
+    public constructor(private readonly context: ClientContext) {
     }
 
     public startGame(): void {
@@ -47,4 +46,8 @@ export default class InputController {
             this.context.click(this._inputNumber++, new Vector2(event.layerX, WORLD_HEIGHT - event.layerY));
         }
     }
+
 }
+
+decorate(injectable(), InputController);
+decorate(inject(CLIENT_TYPES.ClientContext) as any, InputController, 0);

@@ -27,10 +27,6 @@ class Server {
 
         serverContainer.get<ServerContext>(SERVER_TYPES.ServerContext).startServer(this._app);
 
-        process.on('SIGINT', () => {
-            process.exit(0);
-        });
-
     }
 
     private middleware(): void {

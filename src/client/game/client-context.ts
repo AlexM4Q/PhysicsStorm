@@ -1,6 +1,6 @@
 import Renderer from "./renderer";
 import {WS_HOST} from "../../shared/constants";
-import {inject, injectable} from "inversify";
+import {decorate, inject, injectable} from "inversify";
 import {CLIENT_TYPES} from "../inversify.types";
 import GameClient from "./game-client";
 import World from "../../shared/game/world";
@@ -8,12 +8,11 @@ import Player from "../../shared/game/entities/player";
 import Vector2 from "../../shared/data/vector2";
 import Particle from "../../shared/game/physics/particle";
 
-@injectable()
 export default class ClientContext {
 
     private readonly _client: GameClient;
 
-    public constructor(@inject(CLIENT_TYPES.World) private readonly _world: World, @inject(CLIENT_TYPES.Player) private readonly _player: Player) {
+    public constructor(private readonly _world: World, private readonly _player: Player) {
         this._client = new GameClient(WS_HOST);
         this._world.addObject(this._player);
     }
@@ -68,3 +67,7 @@ export default class ClientContext {
     }
 
 }
+
+decorate(injectable(), ClientContext);
+decorate(inject(CLIENT_TYPES.World) as any, ClientContext, 0);
+decorate(inject(CLIENT_TYPES.Player) as any, ClientContext, 1);

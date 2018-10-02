@@ -1,13 +1,12 @@
 import GameObject from "../base/game-object";
 import Vector2 from "../../data/vector2";
 import Shape from "../geometry/shapes/shape";
-import {injectable} from "inversify";
+import {decorate, injectable, unmanaged} from "inversify";
 import Updatable from "../base/updatable";
 
 /**
  * Движимая частица с формой и цветом без столкновений
  */
-@injectable()
 export default abstract class Particle extends GameObject implements Updatable<Particle> {
 
     protected readonly _shape: Shape;
@@ -59,3 +58,7 @@ export default abstract class Particle extends GameObject implements Updatable<P
     }
 
 }
+
+decorate(injectable(), Particle);
+decorate(unmanaged() as any, Particle, 0);
+decorate(unmanaged() as any, Particle, 1);
