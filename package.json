@@ -63,7 +63,7 @@
     "bufferutil": "^4.0.0"
   },
   "scripts": {
-    "test": "mocha -r ts-node/register tests/**/*.spec.ts",
+    "test": "mocha -r ts-node/register test/**/*.spec.ts || exit 0",
     "dev:client": "webpack-dev-server --mode development --content-base ./build --hot --inline --colors --port 3000 --open",
     "dev:server": "nodemon",
     "build": "webpack --mode production",
