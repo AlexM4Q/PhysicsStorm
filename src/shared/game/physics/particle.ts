@@ -24,7 +24,7 @@ export default abstract class Particle extends GameObject implements Updatable<P
         this._shape.position = value;
     }
 
-    protected readonly _isStatic;
+    protected readonly _isStatic: boolean;
 
     public get isStatic(): boolean {
         return this._isStatic;

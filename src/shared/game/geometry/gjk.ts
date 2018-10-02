@@ -111,7 +111,7 @@ export default class GJK {
 
     public interpenetration(shapeA: Shape, shapeB: Shape): Vector2 {
         if (!this.overlap(shapeA, shapeB)) {
-            return null;
+            return undefined;
         }
 
         const e0: number = (this.vertices[1].x - this.vertices[0].x) * (this.vertices[1].y + this.vertices[0].y);
@@ -119,7 +119,7 @@ export default class GJK {
         const e2: number = (this.vertices[0].x - this.vertices[2].x) * (this.vertices[0].y + this.vertices[2].y);
         const winding: AngularDirection = e0 + e1 + e2 >= 0 ? AngularDirection.Clockwise : AngularDirection.CounterClockwise;
 
-        let intersection: Vector2;
+        let intersection!: Vector2;
         let iterations: number = GJK.MAX_ITERATIONS;
 
         while (iterations--) {

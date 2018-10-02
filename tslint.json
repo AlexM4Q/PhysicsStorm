@@ -1,11 +1,12 @@
 {
   "extends": [
-    "tslint:recommended",
+    "tslint:latest",
     "tslint-react"
   ],
   "rules": {
     "no-console": false,
     "no-bitwise": false,
+    "no-null-keyword": true,
     "no-switch-case-fall-through": true,
     "radix": false,
     "eofline": false,
@@ -25,6 +26,11 @@
     "interface-name": [
       true,
       "never-prefix"
+    ]
+  },
+  "linterOptions": {
+    "exclude": [
+      "./node_modules/**"
     ]
   }
 }

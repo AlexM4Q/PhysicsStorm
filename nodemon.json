@@ -3,6 +3,6 @@
     "src/server/",
     "src/shared/"
   ],
-  "ext": "ts",
+  "ext": "ts,tsx",
   "exec": "ts-node ./src/server/index.ts"
 }

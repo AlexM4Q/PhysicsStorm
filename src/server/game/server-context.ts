@@ -29,13 +29,13 @@ export default class ServerContext {
             });
         }, 100);
 
-        server.onConnection = (id) => {
+        server.onConnection = (id: string) => {
             const player = serverContainer.resolve(Player);
             player.id = id;
             this._world.addObject(player);
         };
 
-        server.onMessage = (info) => {
+        server.onMessage = (info: any) => {
             const data: any = info.data;
             const player: Player = this._world.gameObjects.filter(x => x.id === info.id && x instanceof Player)[0] as Player;
 
@@ -68,7 +68,7 @@ export default class ServerContext {
             }
         };
 
-        server.onClose = (id) => {
+        server.onClose = (id: string) => {
             this._world.remove(id);
         };
     }

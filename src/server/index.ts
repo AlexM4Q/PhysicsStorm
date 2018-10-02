@@ -1,12 +1,16 @@
-import * as bodyParser from "body-parser";
-import * as express from "express";
-import * as mongoose from "mongoose";
+import express from "express";
+import mongoose from "mongoose";
+import bodyParser from "body-parser";
 import {SERVER_PORT} from "./constants";
 import ServerContext from "./game/server-context";
 import {serverContainer} from "./inversify.config";
 import SERVER_TYPES from "./inversify.types";
+import Logger from "../shared/logging/logger";
+import ConsoleLogger from "../shared/logging/console-logger";
 
 class Server {
+
+    private static readonly log: Logger = new ConsoleLogger(Server);
 
     private static readonly dbUrl: string = "mongodb://localhost:27017/PhysicsStorm";
 
@@ -19,9 +23,14 @@ class Server {
         // this.mongoSetup();
         // this.routes();
 
-        this._app.listen(SERVER_PORT, () => console.log(`Listening on port ${SERVER_PORT}!`));
+        this._app.listen(SERVER_PORT, () => Server.log.info(`Listening on port ${SERVER_PORT}!`));
 
         serverContainer.get<ServerContext>(SERVER_TYPES.ServerContext).startServer(this._app);
+
+        process.on('SIGINT', () => {
+            process.exit(0);
+        });
+
     }
 
     private middleware(): void {
@@ -40,4 +49,4 @@ class Server {
 
 }
 
-const server = new Server();
+new Server();

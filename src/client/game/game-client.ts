@@ -36,7 +36,7 @@ export default class GameClient {
             this._socket.emit("register-request", this._id);
         });
 
-        this._socket.on("register-response", (id) => {
+        this._socket.on("register-response", (id: string) => {
             GameClient.log.debug(`Registered as ${id}`);
 
             this._id = id;
@@ -48,11 +48,11 @@ export default class GameClient {
         });
     }
 
-    public set onMessage(onmessage) {
+    public set onMessage(onmessage: any) {
         this._socket.on("message", onmessage);
     }
 
-    public set onRegister(onRegister) {
+    public set onRegister(onRegister: any) {
         this._onRegister = onRegister;
     }
 

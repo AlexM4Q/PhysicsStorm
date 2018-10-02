@@ -6,25 +6,25 @@ export default class ConsoleLogger implements Logger {
     }
 
     public debug(message: any): void {
-        console.log(`${this.clazz}: ${message}`, {
+        console.log(`${this.clazz.name}: ${message}`, {
             color: "#00ff00"
         });
     }
 
     public info(message: any): void {
-        console.log(`${this.clazz}: ${message}`, {
+        console.log(`${this.clazz.name}: ${message}`, {
             color: "#00ffff"
         });
     }
 
     public warn(message: any): void {
-        console.log(`${this.clazz}: ${message}`, {
+        console.log(`${this.clazz.name}: ${message}`, {
             color: "#ffff00"
         });
     }
 
     public error(message: any): void {
-        console.log(`${this.clazz}: ${message}`, {
+        console.log(`${this.clazz.name}: ${message}`, {
             color: "#ff0000"
         });
     }

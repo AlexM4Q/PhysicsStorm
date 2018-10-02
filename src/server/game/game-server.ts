@@ -1,5 +1,5 @@
 import {createServer, Server} from "http";
-import * as SocketIO from "socket.io";
+import SocketIO from "socket.io";
 import {Socket} from "socket.io";
 import {WS_PORT} from "../../shared/constants";
 import {Application} from "express";
@@ -62,15 +62,15 @@ export default class GameServer {
         });
     }
 
-    set onConnection(onconnection) {
+    set onConnection(onconnection: any) {
         this.onconnection = onconnection;
     }
 
-    set onMessage(onmessage) {
+    set onMessage(onmessage: any) {
         this.onmessage = onmessage;
     }
 
-    set onClose(onclose) {
+    set onClose(onclose: any) {
         this.onclose = onclose;
     }
 

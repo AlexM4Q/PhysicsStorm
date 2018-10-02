@@ -9,27 +9,27 @@ export default class App extends React.Component {
 
     private readonly _inputController: InputController;
 
-    constructor(props) {
+    constructor(props: any) {
         super(props);
 
         this._inputController = clientContainer.get<InputController>(CLIENT_TYPES.InputController);
     }
 
-    componentDidMount() {
-        document.addEventListener('keydown', (e) => this._inputController.onKeyDown(e));
-        document.addEventListener('keyup', (e) => this._inputController.onKeyUp(e));
-        document.addEventListener('click', (e) => this._inputController.onClick(e));
+    public componentDidMount() {
+        document.addEventListener("keydown", (e: any) => this._inputController.onKeyDown(e));
+        document.addEventListener("keyup", (e: any) => this._inputController.onKeyUp(e));
+        document.addEventListener("click", (e: any) => this._inputController.onClick(e));
 
         this._inputController.startGame();
     }
 
-    componentWillUnmount() {
-        document.removeEventListener('keydown', (e) => this._inputController.onKeyDown(e));
-        document.removeEventListener('keyup', (e) => this._inputController.onKeyUp(e));
-        document.removeEventListener('click', (e) => this._inputController.onClick(e));
+    public componentWillUnmount() {
+        document.removeEventListener("keydown", (e: any) => this._inputController.onKeyDown(e));
+        document.removeEventListener("keyup", (e: any) => this._inputController.onKeyUp(e));
+        document.removeEventListener("click", (e: any) => this._inputController.onClick(e));
     }
 
-    render() {
+    public render() {
         return (
             <canvas id="scene" width={WORLD_WIDTH} height={WORLD_HEIGHT}/>
         );

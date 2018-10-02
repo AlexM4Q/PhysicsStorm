@@ -32,10 +32,10 @@ export default abstract class RigidBody extends Particle implements Updatable<Ri
         return this._massData;
     }
 
-    protected _grounded: boolean;
+    protected _isGrounded: boolean;
 
-    public get grounded(): boolean {
-        return this._grounded;
+    public get isGrounded(): boolean {
+        return this._isGrounded;
     }
 
     protected _angularVelocity: number;
@@ -51,25 +51,23 @@ export default abstract class RigidBody extends Particle implements Updatable<Ri
     protected constructor(@unmanaged() shape: Shape, @unmanaged() material: Material, @unmanaged() isStatic: boolean = false, @unmanaged() isRotary: boolean = false) {
         super(shape, isStatic);
 
+        this._isRotary = isRotary;
+        this._force = Vector2.ZERO;
+        this._impulse = Vector2.ZERO;
         this._material = material;
+        this._isGrounded = false;
+        this._torque = 0;
         this._angularVelocity = 0;
+        this._angularMomentum = 0;
 
         if (isStatic) {
             this._massData = new MassData();
             return;
         }
 
-        this._force = Vector2.ZERO;
-        this._impulse = Vector2.ZERO;
-
         const mass = shape.square() * material.density;
         const inertia = shape.inertia(mass);
         this._massData = new MassData(mass, inertia);
-
-        this._grounded = false;
-        this._torque = 0;
-        this._angularMomentum = 0;
-        this._isRotary = isRotary;
     }
 
     public step(dt: number): void {
@@ -78,10 +76,10 @@ export default abstract class RigidBody extends Particle implements Updatable<Ri
         }
 
         if (this._force.y > RigidBody.FORCE_TOLERANCE || this._impulse.y > RigidBody.IMPULSE_TOLERANCE) {
-            this._grounded = false;
+            this._isGrounded = false;
         }
 
-        if (this._grounded) {
+        if (this._isGrounded) {
             this.linearVelocity = new Vector2(
                 0.95 * this.linearVelocity.x + (dt * this._force.x + this._impulse.x) * this._massData.inverseMass
             );
@@ -111,7 +109,7 @@ export default abstract class RigidBody extends Particle implements Updatable<Ri
 
         this._force = Vector2.ZERO;
         this._impulse = Vector2.ZERO;
-        this._grounded = false;
+        this._isGrounded = false;
     }
 
     public applyForce(force: Vector2): void {
@@ -144,14 +142,14 @@ export default abstract class RigidBody extends Particle implements Updatable<Ri
 
     public handleCollision(penetration: Vector2): void {
         if (penetration.y < 0) {
-            this._grounded = true;
+            this._isGrounded = true;
         }
     }
 
     public updateBy(rigidBody: RigidBody): void {
         super.updateBy(rigidBody);
 
-        this._grounded = rigidBody._grounded;
+        this._isGrounded = rigidBody._isGrounded;
         this._angularVelocity = rigidBody._angularVelocity;
     }
 
