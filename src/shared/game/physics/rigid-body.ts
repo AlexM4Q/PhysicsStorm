@@ -2,7 +2,7 @@ import Particle from "./particle";
 import {g} from "../../constants";
 import Vector2 from "../../data/vector2";
 import Shape from "../geometry/shapes/shape";
-import {injectable, unmanaged} from "inversify";
+import {injectable} from "inversify";
 import Updatable from "../base/updatable";
 import MassData from "./mass-data";
 import Material from "./material/material";
@@ -48,7 +48,7 @@ export default abstract class RigidBody extends Particle implements Updatable<Ri
 
     protected _angularMomentum: number;
 
-    protected constructor(@unmanaged() shape: Shape, @unmanaged() material: Material, @unmanaged() isStatic: boolean = false, @unmanaged() isRotary: boolean = false) {
+    protected constructor(shape: Shape, material: Material, isStatic: boolean = false, isRotary: boolean = false) {
         super(shape, isStatic);
 
         this._isRotary = isRotary;

@@ -15,7 +15,7 @@
     "express": "^4.16.3",
     "inversify": "^4.13.0",
     "mongodb": "^3.1.6",
-    "mongoose": "^5.3.0",
+    "mongoose": "^5.3.1",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "reflect-metadata": "^0.1.12",
@@ -38,10 +38,8 @@
     "@types/mocha": "^5.2.5",
     "@types/mongodb": "^3.1.9",
     "@types/mongoose": "^5.2.17",
-    "babel-loader": "^7.1.5",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-react": "^6.24.1",
-    "babel-register": "^6.26.0",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-loader": "^8.0.2",
     "chai": "^4.2.0",
     "clean-webpack-plugin": "^0.1.19",
     "concurrently": "^3.6.1",
@@ -69,9 +67,10 @@
     "dev:client": "webpack-dev-server --mode development --content-base ./build --hot --inline --colors --port 3000 --open",
     "dev:server": "nodemon",
     "clean": "if exist build rmdir /s /q build",
-    "build": "npm run clean && npm run build:types && npm run build:js",
+    "build": "npm run clean && npm run build:types && npm run build:js && npm run webpack",
     "build:types": "tsc --emitDeclarationOnly",
     "build:js": "babel ./src --out-dir ./build --extensions \".ts,.tsx\" --source-maps inline",
+    "webpack": "webpack --mode production",
     "start": "node ./build/server/index.js"
   }
 }

@@ -1,7 +1,7 @@
 import GameObject from "../base/game-object";
 import Vector2 from "../../data/vector2";
 import Shape from "../geometry/shapes/shape";
-import {injectable, unmanaged} from "inversify";
+import {injectable} from "inversify";
 import Updatable from "../base/updatable";
 
 /**
@@ -32,7 +32,7 @@ export default abstract class Particle extends GameObject implements Updatable<P
 
     public linearVelocity: Vector2 = Vector2.ZERO;
 
-    protected constructor(@unmanaged() shape: Shape, @unmanaged() isStatic: boolean = false) {
+    protected constructor(shape: Shape, isStatic: boolean = false) {
         super();
 
         this._shape = shape;

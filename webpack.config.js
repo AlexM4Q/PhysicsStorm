@@ -21,7 +21,12 @@ module.exports = {
             {
                 test: /\.ts|\.tsx?$/,
                 exclude: path.resolve(__dirname, './node_modules'),
-                loaders: ["babel-loader", "ts-loader"]
+                use: ["babel-loader"]
+            },
+            {
+                test: /\.js$/,
+                use: ["source-map-loader"],
+                enforce: "pre"
             },
             {
                 test: /\.css$/,
