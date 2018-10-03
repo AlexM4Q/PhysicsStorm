@@ -1,6 +1,5 @@
 const path = require("path");
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const sourceDirectory = path.resolve(__dirname, "source");
@@ -26,42 +25,23 @@ module.exports = {
                 test: /\.ts|\.tsx?$/,
                 exclude: nodeModulesDirectory,
                 use: ["babel-loader"]
-            },
-            {
-                test: /\.js$/,
-                enforce: "pre",
-                exclude: nodeModulesDirectory,
-                use: ["source-map-loader"]
-            },
-            {
-                test: /\.css$/,
-                exclude: nodeModulesDirectory,
-                use: ["style-loader", "css-loader"]
             }
         ]
     },
-    devtool: "inline-source-map",
-    devServer: {
-        port: 3000,
-        open: true,
-        proxy: {
-            "/api": "http://localhost:8080"
-        }
-    },
     plugins: [
         new CleanWebpackPlugin(outputDirectory),
-        new UglifyJsPlugin({
-            include: outputDirectory,
-            exclude: [
-                sourceDirectory,
-                nodeModulesDirectory
-            ],
-            parallel: true,
-            sourceMap: true
-        }),
         new HtmlWebpackPlugin({
             template: "./public/index.html",
-            favicon: "./public/favicon.ico"
+            favicon: "./public/favicon.ico",
+            minify: {
+                removeComments: true,
+                removeCommentsFromCDATA: true,
+                removeCDATASectionsFromCDATA: true,
+                collapseWhitespace: true,
+                collapseBooleanAttributes: true,
+                removeAttributeQuotes: true,
+                removeEmptyAttributes: true
+            }
         })
     ],
     target: "web",
