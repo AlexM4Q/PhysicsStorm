@@ -9,7 +9,7 @@
     "test": "mocha -r ts-node/register test/**/*.spec.ts",
     "dev:client": "webpack-dev-server --config webpack.dev.js --content-base ./build --hot --inline --colors --port 3000 --open",
     "dev:server": "nodemon",
-    "build": "webpack --config webpack.prod.js",
+    "build": "webpack --config webpack.prod.js && npm i -g mocha && npm i -g ts-node",
     "start": "ts-node ./src/server/index.ts"
   },
   "dependencies": {
