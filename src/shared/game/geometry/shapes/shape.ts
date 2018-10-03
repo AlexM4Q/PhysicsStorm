@@ -63,7 +63,6 @@ export default abstract class Shape implements Collidable, Updatable<Shape> {
         const support = this.support(impulse);
         const radius = this.position.subtract(support);
         const product = radius.crossProduct(impulse);
-        console.log(`(${impulse.x}:${impulse.y}), (${support.x}:${support.y}), (${radius.x}:${radius.y}), ${product}`);
         return product;
     }
 

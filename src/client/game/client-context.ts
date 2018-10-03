@@ -31,7 +31,6 @@ export default class ClientContext {
         this._client.onMessage = (message: any) => {
             switch (message.type) {
                 case "state":
-                    console.log(message.state);
                     this._world.update(message.state as Particle[]);
                     break;
                 case "delete":

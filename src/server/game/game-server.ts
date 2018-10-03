@@ -1,6 +1,5 @@
 import {createServer, Server} from "http";
-import SocketIO from "socket.io";
-import {Socket} from "socket.io";
+import SocketIO, {Socket} from "socket.io";
 import {WS_PORT} from "../../shared/constants";
 import {Application} from "express";
 import Logger from "../../shared/logging/logger";

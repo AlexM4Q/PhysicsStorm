@@ -26,7 +26,6 @@ class Server {
         this._app.listen(SERVER_PORT, () => Server.log.info(`Listening on port ${SERVER_PORT}!`));
 
         serverContainer.get<ServerContext>(SERVER_TYPES.ServerContext).startServer(this._app);
-
     }
 
     private middleware(): void {

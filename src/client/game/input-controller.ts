@@ -21,7 +21,7 @@ export default class InputController {
             case "KeyA":
                 this.context.left(this._inputNumber);
                 // this.inputHistory[this._inputNumber] = undefined;
-                this._inputNumber++;
+                // this._inputNumber++;
                 break;
             case "KeyD":
                 this.context.right(this._inputNumber++);
