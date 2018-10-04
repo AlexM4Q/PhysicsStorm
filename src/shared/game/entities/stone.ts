@@ -9,7 +9,7 @@ import Updatable from "../base/updatable";
 
 export default class Stone extends RigidBody implements Updatable<Stone> {
 
-    private constructor(id: string, position: Vector2, vertices: Vector2[]) {
+    protected constructor(id: string, position: Vector2, vertices: Vector2[]) {
         super(
             id || EntityFactory.newGuidTyped(TYPES.Stone),
             new Polygon(position, vertices),

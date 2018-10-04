@@ -9,7 +9,7 @@ import TYPES from "../../inversify.types";
 
 export default class Ball extends RigidBody implements Updatable<Ball> {
 
-    private constructor(id: string, position: Vector2, radius: number) {
+    protected constructor(id: string, position: Vector2, radius: number) {
         super(
             id || EntityFactory.newGuidTyped(TYPES.Ball),
             new Circle(position, radius),

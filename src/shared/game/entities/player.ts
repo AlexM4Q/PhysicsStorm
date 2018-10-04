@@ -21,7 +21,7 @@ export default class Player extends RigidBody implements Updatable<Player> {
 
     private _direction: number = 0;
 
-    private constructor(id: string, position: Vector2) {
+    protected constructor(id: string, position: Vector2) {
         super(
             id || EntityFactory.newGuidTyped(TYPES.Player),
             new Box(position, new Vector2(1, 1)),

@@ -10,7 +10,7 @@ import TYPES from "../../inversify.types";
 
 export default class Cube extends RigidBody implements Updatable<Cube> {
 
-    private constructor(id: string, position: Vector2, halfSize: Vector2) {
+    protected constructor(id: string, position: Vector2, halfSize: Vector2) {
         super(
             id || EntityFactory.newGuidTyped(TYPES.Cube),
             new Box(position, halfSize),
