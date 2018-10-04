@@ -18,7 +18,7 @@ export default class EntityFactory {
     }
 
     public static getType(guid: string): string {
-        return guid.substr(9, 4);
+        return guid.substring(9, 13);
     }
 
     public static createFrom(object: Particle): Particle {

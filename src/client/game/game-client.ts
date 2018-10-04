@@ -2,6 +2,22 @@ import {connect} from "socket.io-client";
 import ConsoleLogger from "../../shared/logging/console-logger";
 import Logger from "../../shared/logging/logger";
 import Vector2 from "../../shared/data/vector2";
+import {
+    WS_EVENT_CONNECT,
+    WS_EVENT_DISCONNECT,
+    WS_EVENT_MESSAGE,
+    WS_EVENT_REGISTER_REQUEST,
+    WS_EVENT_REGISTER_RESPONSE,
+    WS_KEY_DATA,
+    WS_KEY_ID,
+    WS_KEY_INPUT,
+    WS_KEY_INPUT_CLICK,
+    WS_KEY_INPUT_JUMP,
+    WS_KEY_INPUT_LEFT,
+    WS_KEY_INPUT_RIGHT,
+    WS_KEY_INPUT_STOP,
+    WS_KEY_TIME
+} from "../../shared/constants-ws";
 
 export default class GameClient {
 
@@ -10,9 +26,17 @@ export default class GameClient {
     private _id: string;
     private _socket: any;
 
+    public set onMessage(onMessage: any) {
+        this._socket.on(WS_EVENT_MESSAGE, onMessage);
+    }
+
     private _onRegister: any;
 
-    constructor(url: string) {
+    public set onRegister(onRegister: any) {
+        this._onRegister = onRegister;
+    }
+
+    public constructor(url: string) {
         this.connect(url);
     }
 
@@ -30,72 +54,50 @@ export default class GameClient {
             reconnectionAttempts: Infinity
         });
 
-        this._socket.on("connect", () => {
+        this._socket.on(WS_EVENT_CONNECT, () => {
             GameClient.log.debug("Connected to server");
 
-            this._socket.emit("register-request", this._id);
+            this._socket.on(WS_EVENT_REGISTER_RESPONSE, (id: string) => {
+                GameClient.log.debug(`Registered as ${id}`);
+
+                this._id = id;
+                this._onRegister(id);
+            });
+
+            this._socket.emit(WS_EVENT_REGISTER_REQUEST, this._id);
+
+            this._socket.on(WS_EVENT_DISCONNECT, () => {
+                GameClient.log.debug("Disconnected from server");
+
+                setTimeout(() => this.connect(url), 5000);
+            });
         });
-
-        this._socket.on("register-response", (id: string) => {
-            GameClient.log.debug(`Registered as ${id}`);
-
-            this._id = id;
-            this._onRegister(id);
-        });
-
-        this._socket.on("disconnect", () => {
-            setTimeout(() => this.connect(url), 5000);
-        });
     }
 
-    public set onMessage(onmessage: any) {
-        this._socket.on("message", onmessage);
+    public right(): void {
+        this._sendInput({[WS_KEY_INPUT]: WS_KEY_INPUT_RIGHT});
     }
 
-    public set onRegister(onRegister: any) {
-        this._onRegister = onRegister;
+    public left(): void {
+        this._sendInput({[WS_KEY_INPUT]: WS_KEY_INPUT_LEFT});
     }
 
-    public right(inputNumber: number): void {
-        this._sendInput({
-            type: "step",
-            direction: "right"
-        }, inputNumber);
+    public stop(): void {
+        this._sendInput({[WS_KEY_INPUT]: WS_KEY_INPUT_STOP});
     }
 
-    public left(inputNumber: number): void {
-        this._sendInput({
-            type: "step",
-            direction: "left"
-        }, inputNumber);
+    public jump(): void {
+        this._sendInput({[WS_KEY_INPUT]: WS_KEY_INPUT_JUMP});
     }
 
-    public stop(inputNumber: number): void {
-        this._sendInput({
-            type: "step",
-            direction: "stop"
-        }, inputNumber);
+    public click(target: Vector2): void {
+        this._sendInput({[WS_KEY_INPUT]: WS_KEY_INPUT_CLICK, [WS_KEY_DATA]: target});
     }
 
-    public jump(inputNumber: number): void {
-        this._sendInput({
-            type: "step",
-            direction: "jump"
-        }, inputNumber);
-    }
-
-    public click(inputNumber: number, target: Vector2): void {
-        this._sendInput({
-            type: "click",
-            target: target
-        }, inputNumber);
-    }
-
-    private _sendInput(data: any, inputNumber: number): void {
-        data.id = this._id;
-        data.time = Date.now();
-        data.inputNumber = inputNumber;
-        this._socket.send(data);
+    private _sendInput(message: any): void {
+        message[WS_KEY_ID] = this._id;
+        message[WS_KEY_TIME] = Date.now();
+        this._socket.emit(WS_EVENT_MESSAGE, message);
     }
 
 }

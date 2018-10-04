@@ -6,9 +6,6 @@ import {WORLD_HEIGHT} from "../../shared/constants";
 
 export default class InputController {
 
-    public inputHistory: { [inputNumber: number]: any };
-    private _inputNumber: number = 0;
-
     public constructor(private readonly context: ClientContext) {
     }
 
@@ -19,31 +16,29 @@ export default class InputController {
     public onKeyDown(event: any): void {
         switch (event.code) {
             case "KeyA":
-                this.context.left(this._inputNumber);
-                // this.inputHistory[this._inputNumber] = undefined;
-                // this._inputNumber++;
+                this.context.left();
                 break;
             case "KeyD":
-                this.context.right(this._inputNumber++);
+                this.context.right();
                 break;
             case "Space":
-                this.context.jump(this._inputNumber++);
+                this.context.jump();
                 break;
         }
     }
 
     public onKeyUp(event: any): void {
         switch (event.code) {
-            case "KeyD":
             case "KeyA":
-                this.context.stop(this._inputNumber++);
+            case "KeyD":
+                this.context.stop();
                 break;
         }
     }
 
     public onClick(event: any): void {
         if (event.path[0].id === 'scene') {
-            this.context.click(this._inputNumber++, new Vector2(event.layerX, WORLD_HEIGHT - event.layerY));
+            this.context.click(new Vector2(event.layerX, WORLD_HEIGHT - event.layerY));
         }
     }
 

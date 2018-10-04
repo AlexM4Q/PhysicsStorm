@@ -1,10 +1,4 @@
 /**
- * Порт и хост для вебсокетов
- */
-export const WS_PORT: number = 8081;
-export const WS_HOST: string = `ws://localhost:${WS_PORT}`;
-
-/**
  * Ширина и высота мира в пикселях
  */
 export const WORLD_WIDTH: number = 1500;

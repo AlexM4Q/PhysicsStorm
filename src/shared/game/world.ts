@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import Particle from "./physics/particle";
 import {PHYSICS_INTERVAL} from "../constants";
-import {injectable} from "inversify";
+import {decorate, injectable} from "inversify";
 import GameObject from "./base/game-object";
 import Vector2 from "../data/vector2";
 import RigidBody from "./physics/rigid-body";
@@ -11,7 +11,6 @@ import Manifold from "./geometry/manifold";
 import CollisionDetector from "./geometry/collision-detector";
 import EntityFactory from "./entities/entity-factory";
 
-@injectable()
 export default class World {
 
     private _gameObjects: Particle[] = [];
@@ -117,3 +116,5 @@ export default class World {
         }
     }
 }
+
+decorate(injectable(), World);

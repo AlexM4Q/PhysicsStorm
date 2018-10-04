@@ -1,10 +1,9 @@
-import {injectable} from "inversify";
+import {decorate, injectable} from "inversify";
 import Updatable from "./updatable";
 
 /**
  * Игровой объект
  */
-@injectable()
 export default abstract class GameObject implements Updatable<GameObject> {
 
     public id: string;
@@ -18,3 +17,5 @@ export default abstract class GameObject implements Updatable<GameObject> {
     }
 
 }
+
+decorate(injectable(), GameObject);

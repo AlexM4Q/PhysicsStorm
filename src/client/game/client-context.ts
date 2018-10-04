@@ -1,5 +1,12 @@
 import Renderer from "./renderer";
-import {WS_HOST} from "../../shared/constants";
+import {
+    WS_HOST,
+    WS_KEY_DATA,
+    WS_KEY_ID,
+    WS_KEY_TYPE,
+    WS_KEY_TYPE_REMOVE,
+    WS_KEY_TYPE_STATE
+} from "../../shared/constants-ws";
 import {decorate, inject, injectable} from "inversify";
 import {CLIENT_TYPES} from "../inversify.types";
 import GameClient from "./game-client";
@@ -29,40 +36,40 @@ export default class ClientContext {
         };
 
         this._client.onMessage = (message: any) => {
-            switch (message.type) {
-                case "state":
-                    this._world.update(message.state as Particle[]);
+            switch (message[WS_KEY_TYPE]) {
+                case WS_KEY_TYPE_STATE:
+                    this._world.update(message[WS_KEY_DATA] as Particle[]);
                     break;
-                case "delete":
-                    this._world.remove(message.id);
+                case WS_KEY_TYPE_REMOVE:
+                    this._world.remove(message[WS_KEY_ID] as string);
                     break;
             }
         };
     }
 
-    public right(inputNumber: number): void {
+    public right(): void {
         this._player.right();
-        this._client.right(inputNumber);
+        this._client.right();
     }
 
-    public left(inputNumber: number): void {
+    public left(): void {
         this._player.left();
-        this._client.left(inputNumber);
+        this._client.left();
     }
 
-    public stop(inputNumber: number): void {
+    public stop(): void {
         this._player.stop();
-        this._client.stop(inputNumber);
+        this._client.stop();
     }
 
-    public jump(inputNumber: number): void {
+    public jump(): void {
         this._player.jump();
-        this._client.jump(inputNumber);
+        this._client.jump();
     }
 
-    public click(inputNumber: number, target: Vector2): void {
+    public click(target: Vector2): void {
         this._player.shoot(target);
-        this._client.click(inputNumber, target);
+        this._client.click(target);
     }
 
 }

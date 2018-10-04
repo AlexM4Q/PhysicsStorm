@@ -1,6 +1,16 @@
 import {createServer, Server} from "http";
 import SocketIO, {Socket} from "socket.io";
-import {WS_PORT} from "../../shared/constants";
+import {
+    WS_EVENT_CONNECT,
+    WS_EVENT_DISCONNECT,
+    WS_EVENT_MESSAGE,
+    WS_EVENT_REGISTER_REQUEST,
+    WS_EVENT_REGISTER_RESPONSE,
+    WS_KEY_ID,
+    WS_KEY_TYPE,
+    WS_KEY_TYPE_REMOVE,
+    WS_PORT
+} from "../../shared/constants-ws";
 import {Application} from "express";
 import Logger from "../../shared/logging/logger";
 import ConsoleLogger from "../../shared/logging/console-logger";
@@ -11,72 +21,74 @@ export default class GameServer {
 
     private static readonly log: Logger = new ConsoleLogger(GameServer);
 
-    private readonly server: Server;
-    private readonly io: SocketIO.Server;
-
+    private readonly _server: Server;
+    private readonly _io: SocketIO.Server;
     private readonly _clients: { [id: string]: Socket };
-    private onconnection: any;
-    private onmessage: any;
-    private onclose: any;
+
+    private _onConnection: any;
+
+    public set onConnection(onConnection: any) {
+        this._onConnection = onConnection;
+    }
+
+    private _onMessage: any;
+
+    public set onMessage(onMessage: any) {
+        this._onMessage = onMessage;
+    }
+
+    private _onClose: any;
+
+    public set onClose(onClose: any) {
+        this._onClose = onClose;
+    }
 
     constructor(app: Application) {
         this._clients = {};
 
-        this.server = createServer(app);
-        this.io = SocketIO(this.server);
+        this._server = createServer(app);
+        this._io = SocketIO(this._server);
 
-        this.server.listen(WS_PORT);
+        this._server.listen(WS_PORT);
 
         const thiz = this;
 
-        this.io.on("connect", socket => {
-            socket.on("register-request", (id) => {
+        this._io.on(WS_EVENT_CONNECT, (socket: Socket) => {
+            socket.on(WS_EVENT_REGISTER_REQUEST, (id: string) => {
                 if (!id) {
                     id = EntityFactory.newGuidTyped(TYPES.Player);
-                    socket.emit("register-response", id);
+                    socket.emit(WS_EVENT_REGISTER_RESPONSE, id);
 
                     GameServer.log.debug(`Registered new player ${id}`);
                 }
 
                 thiz._clients[id] = socket;
-                thiz.onconnection(id);
+                thiz._onConnection(id);
 
-                socket.on("message", (message: any) => {
-                    thiz.onmessage({
-                        id: id,
-                        data: message
-                    });
+                socket.on(WS_EVENT_MESSAGE, (message: any) => {
+                    message[WS_KEY_ID] = id;
+                    thiz._onMessage(message);
                 });
 
-                socket.on("disconnect", () => {
+                socket.on(WS_EVENT_DISCONNECT, () => {
                     thiz._clients[id].disconnect(true);
                     delete thiz._clients[id];
-                    thiz.onclose(id);
-                    this.sendAll({
-                        type: "delete",
-                        id: id
+                    thiz._onClose(id);
+                    thiz.sendAll({
+                        [WS_KEY_ID]: id,
+                        [WS_KEY_TYPE]: [WS_KEY_TYPE_REMOVE]
                     });
+
+                    GameServer.log.debug(`Unregistered player ${id}`);
                 });
             });
         });
     }
 
-    set onConnection(onconnection: any) {
-        this.onconnection = onconnection;
-    }
-
-    set onMessage(onmessage: any) {
-        this.onmessage = onmessage;
-    }
-
-    set onClose(onclose: any) {
-        this.onclose = onclose;
-    }
-
     public sendAll(message: any): void {
         for (const id in this._clients) {
             if (this._clients.hasOwnProperty(id)) {
-                this._clients[id].emit("message", message);
+                this._clients[id].emit(WS_EVENT_MESSAGE, message);
             }
         }
     }
