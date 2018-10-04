@@ -39,16 +39,12 @@ export default abstract class RigidBody extends Particle implements Updatable<Ri
 
     protected _angularVelocity: number;
 
-    public get angularVelocity(): number {
-        return this._angularVelocity;
-    }
-
     protected _torque: number;
 
     protected _angularMomentum: number;
 
-    protected constructor(shape: Shape, material: Material, isStatic: boolean = false, isRotary: boolean = false) {
-        super(shape, isStatic);
+    protected constructor(id: string, shape: Shape, material: Material, isStatic: boolean = false, isRotary: boolean = false) {
+        super(id, shape, isStatic);
 
         this._isRotary = isRotary;
         this._force = Vector2.ZERO;
@@ -159,3 +155,4 @@ decorate(unmanaged() as any, RigidBody, 0);
 decorate(unmanaged() as any, RigidBody, 1);
 decorate(unmanaged() as any, RigidBody, 2);
 decorate(unmanaged() as any, RigidBody, 3);
+decorate(unmanaged() as any, RigidBody, 4);

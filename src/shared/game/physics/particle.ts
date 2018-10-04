@@ -31,8 +31,8 @@ export default abstract class Particle extends GameObject implements Updatable<P
 
     public linearVelocity: Vector2 = Vector2.ZERO;
 
-    protected constructor(shape: Shape, isStatic: boolean = false) {
-        super();
+    protected constructor(id: string, shape: Shape, isStatic: boolean = false) {
+        super(id);
 
         this._shape = shape;
         this._isStatic = isStatic;
@@ -62,3 +62,4 @@ export default abstract class Particle extends GameObject implements Updatable<P
 decorate(injectable(), Particle);
 decorate(unmanaged() as any, Particle, 0);
 decorate(unmanaged() as any, Particle, 1);
+decorate(unmanaged() as any, Particle, 2);

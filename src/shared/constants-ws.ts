@@ -1,8 +1,9 @@
 /**
  * Порт и хост для вебсокетов
  */
-export const WS_PORT: number = 8081;
-export const WS_HOST: string = `ws://localhost:${WS_PORT}`;
+export const WS_PORT: number = 8000;
+export const WS_HOST: string = `ws://physics-storm-physics-storm.1d35.starter-us-east-1.openshiftapps.com:${WS_PORT}`;
+// export const WS_HOST: string = `ws://localhost:${WS_PORT}`;
 
 /**
  * Коды событий при общении вебсокетов

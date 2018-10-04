@@ -11,31 +11,39 @@ import {decorate, inject, injectable} from "inversify";
 import {CLIENT_TYPES} from "../inversify.types";
 import GameClient from "./game-client";
 import World from "../../shared/game/world";
-import Player from "../../shared/game/entities/player";
 import Vector2 from "../../shared/data/vector2";
 import Particle from "../../shared/game/physics/particle";
+import Player from "../../shared/game/entities/player";
 
 export default class ClientContext {
 
+    private readonly _world: World;
+
     private readonly _client: GameClient;
 
-    public constructor(private readonly _world: World, private readonly _player: Player) {
+    private _player: Player;
+
+    public constructor(world: World) {
+        this._world = world;
         this._client = new GameClient(WS_HOST);
-        this._world.addObject(this._player);
     }
 
     public startGame(): void {
         const scene: HTMLCanvasElement = document.getElementById("scene") as HTMLCanvasElement;
         const renderer: Renderer = new Renderer(scene);
 
-        this._world.onWorldUpdate = () => renderer.draw(this._world.gameObjects);
+        this._world.onWorldUpdate = () => renderer.draw(this._world.particles);
         this._world.start();
 
         this._client.onRegister = (id: string) => {
-            this._player.id = id;
+            this._world.addObject(this._player = Player.createNew(id));
         };
 
         this._client.onMessage = (message: any) => {
+            if (!this._player) {
+                return;
+            }
+
             switch (message[WS_KEY_TYPE]) {
                 case WS_KEY_TYPE_STATE:
                     this._world.update(message[WS_KEY_DATA] as Particle[]);

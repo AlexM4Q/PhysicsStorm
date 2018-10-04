@@ -3,7 +3,7 @@ import Box from "../geometry/shapes/box";
 import Updatable from "../base/updatable";
 import RigidBody from "../physics/rigid-body";
 import {METAL} from "../physics/material/materials";
-import {decorate, injectable} from "inversify";
+import {decorate, injectable, unmanaged} from "inversify";
 import EntityFactory from "./entity-factory";
 import TYPES from "../../inversify.types";
 
@@ -11,10 +11,13 @@ export default class Bullet extends RigidBody implements Updatable<Bullet> {
 
     private direction: Vector2;
 
-    public constructor(position: Vector2, target: Vector2) {
-        super(new Box(position, new Vector2(2, 2)), METAL);
+    private constructor(id: string, position: Vector2, target: Vector2) {
+        super(
+            id || EntityFactory.newGuidTyped(TYPES.Bullet),
+            new Box(position, new Vector2(2, 2)),
+            METAL
+        );
 
-        this.id = EntityFactory.newGuidTyped(TYPES.Bullet);
         this.color = "#ff0000";
         this.linearVelocity = Vector2.ZERO;
         this.direction = target.subtract(position).normalized;
@@ -35,3 +38,5 @@ export default class Bullet extends RigidBody implements Updatable<Bullet> {
 }
 
 decorate(injectable(), Bullet);
+decorate(unmanaged() as any, Bullet, 0);
+decorate(unmanaged() as any, Bullet, 1);

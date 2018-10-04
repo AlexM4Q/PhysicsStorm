@@ -2,7 +2,6 @@ import "reflect-metadata";
 import Particle from "./physics/particle";
 import {PHYSICS_INTERVAL} from "../constants";
 import {decorate, injectable} from "inversify";
-import GameObject from "./base/game-object";
 import Vector2 from "../data/vector2";
 import RigidBody from "./physics/rigid-body";
 import WorldGenerator from "./world-generator";
@@ -10,19 +9,24 @@ import CollisionResolver from "./geometry/collision-resolver";
 import Manifold from "./geometry/manifold";
 import CollisionDetector from "./geometry/collision-detector";
 import EntityFactory from "./entities/entity-factory";
+import Particles from "../data/particles";
 
 export default class World {
 
-    private _gameObjects: Particle[] = [];
+    private readonly _particles: Particles;
 
-    public get gameObjects(): GameObject[] {
-        return this._gameObjects;
+    public get particles(): Particles {
+        return this._particles;
     }
 
-    private _onWorldUpdate: any;
+    private _onWorldUpdate: () => void;
 
-    public set onWorldUpdate(onPhysicsUpdate: any) {
+    public set onWorldUpdate(onPhysicsUpdate: () => void) {
         this._onWorldUpdate = onPhysicsUpdate;
+    }
+
+    public constructor() {
+        this._particles = new Particles();
     }
 
     public start(): void {
@@ -30,63 +34,51 @@ export default class World {
 
         let lastUpdate: number = Date.now();
         setInterval(() => {
-            const now = Date.now();
-            const dt = now - lastUpdate;
+            const now: number = Date.now();
+            const dt: number = now - lastUpdate;
             lastUpdate = now;
 
             this.updatePhysics(dt / 1000);
         }, PHYSICS_INTERVAL);
     }
 
-    public update(state: Particle[]): void {
-        stateCycle:
-            for (const object of state) {
-                for (const gameObject of this._gameObjects) {
-                    if (object.id === gameObject.id) {
-                        gameObject.updateBy(object);
-                        continue stateCycle;
-                    }
-                }
-
-                const newObject = EntityFactory.createFrom(object);
-                newObject.id = object.id;
-                newObject.updateBy(object);
-                this.addObject(newObject);
+    public update(state: any[]): void {
+        for (const object of state) {
+            let particle: Particle = this._particles.getObject(object._id);
+            if (!particle) {
+                this.addObject(particle = EntityFactory.createFrom(object as Particle));
             }
 
-        if (this._onWorldUpdate) {
-            this._onWorldUpdate();
+            particle.updateBy(object);
         }
-    }
 
-    public addObject(object: Particle): void {
-        this._gameObjects.push(object);
-    }
-
-    public remove(id: string): void {
-        this._gameObjects = this._gameObjects.filter(x => x.id !== id);
+        this._onWorldUpdate();
     }
 
     public updatePhysics(dt: number): void {
-        const particles = this._gameObjects;
-        // const gameObjects = this._gameObjects.sort((a, b) => b.position.y - a.position.y);
-        // const gameObjects = this._gameObjects.sort((a, b) => a.position.y - b.position.y);
         const manifolds: Manifold[] = [];
 
-        for (const particle of particles) {
+        for (const particleId in this._particles.map) {
+            const particle: Particle = this._particles.getObject(particleId);
             if (particle.isStatic || !(particle instanceof RigidBody)) {
                 continue;
             }
 
             particle.step(dt);
 
+            // todo Убрать когди придет время
             if (particle.position.y < 0) {
                 particle.position = new Vector2(particle.position.x, 0);
                 particle.linearVelocity = new Vector2(particle.linearVelocity.x, 0);
             }
 
-            for (const collide of particles) {
-                if (particle.id === collide.id || !(collide instanceof RigidBody)) {
+            for (const collideId in this._particles.map) {
+                if (particleId === collideId) {
+                    continue;
+                }
+
+                const collide: Particle = this._particles.getObject(collideId);
+                if (!(collide instanceof RigidBody)) {
                     continue;
                 }
 
@@ -114,6 +106,14 @@ export default class World {
         if (this._onWorldUpdate) {
             this._onWorldUpdate();
         }
+    }
+
+    public addObject(object: Particle): void {
+        this._particles.setObject(object);
+    }
+
+    public remove(id: string): void {
+        this._particles.removeObject(id);
     }
 }
 

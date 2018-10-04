@@ -1,4 +1,3 @@
-import {serverContainer} from "../inversify.config";
 import SERVER_TYPES from "../inversify.types";
 import GameServer from "./game-server";
 import Player from "../../shared/game/entities/player";
@@ -37,19 +36,16 @@ export default class ServerContext {
         setInterval(() => {
             server.sendAll({
                 [WS_KEY_TYPE]: WS_KEY_TYPE_STATE,
-                [WS_KEY_DATA]: this._world.gameObjects
+                [WS_KEY_DATA]: this._world.particles.toArray()
             });
         }, STATE_INTERVAL);
 
         server.onConnection = (id: string) => {
-            const player: Player = serverContainer.resolve(Player);
-            player.id = id;
-            this._world.addObject(player);
+            this._world.addObject(Player.createNew(id));
         };
 
         server.onMessage = (message: any) => {
-            const id: string = message[WS_KEY_ID];
-            const player: Player = this._world.gameObjects.filter(x => x.id === id && x instanceof Player)[0] as Player;
+            const player: Player = this._world.particles.find(message[WS_KEY_ID]) as Player;
 
             switch (message[WS_KEY_INPUT]) {
                 case WS_KEY_INPUT_RIGHT:

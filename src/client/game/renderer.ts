@@ -1,4 +1,4 @@
-import GameObject from "../../shared/game/base/game-object";
+import Particles from "../../shared/data/particles";
 
 export default class Renderer {
 
@@ -12,11 +12,11 @@ export default class Renderer {
         this._context.transform(1, 0, 0, -1, 0, scene.height);
     }
 
-    public draw(renders: GameObject[]): void {
+    public draw(particles: Particles): void {
         this._context.clearRect(0, 0, this._scene.width, this._scene.height);
 
-        for (const render of renders) {
-            render.draw(this._context);
+        for (const id in particles.map) {
+            particles.getObject(id).draw(this._context);
         }
     }
 

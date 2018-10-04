@@ -21,10 +21,10 @@ export default class EntityFactory {
         return guid.substring(9, 13);
     }
 
-    public static createFrom(object: Particle): Particle {
-        switch (EntityFactory.getType(object.id)) {
+    public static createFrom(object: any): Particle {
+        switch (EntityFactory.getType(object._id)) {
             case TYPES.Player:
-                return new Player();
+                return Player.createFrom(object as Player);
             case TYPES.Block:
                 return Block.createFrom(object as Block);
             case TYPES.Ball:

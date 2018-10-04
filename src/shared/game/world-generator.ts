@@ -27,7 +27,7 @@ export default class WorldGenerator {
      * @param halfHeight высота в пикселях
      */
     public static createBlock(x: number, y: number, halfWidth: number, halfHeight: number): Block {
-        return new Block(
+        return Block.createNew(
             new Vector2(
                 pixelsToMeters(x),
                 pixelsToMeters(y)
@@ -46,7 +46,7 @@ export default class WorldGenerator {
      * @param radius радиус в пикселях
      */
     public static createBall(x: number, y: number, radius: number): Ball {
-        return new Ball(
+        return Ball.createNew(
             new Vector2(
                 pixelsToMeters(x),
                 pixelsToMeters(y)
@@ -63,7 +63,7 @@ export default class WorldGenerator {
      * @param halfHeight высота в пикселях
      */
     public static createCube(x: number, y: number, halfWidth: number, halfHeight: number): Cube {
-        return new Cube(
+        return Cube.createNew(
             new Vector2(
                 pixelsToMeters(x),
                 pixelsToMeters(y)
@@ -82,7 +82,7 @@ export default class WorldGenerator {
      * @param vertices относительные координаты в пикселях
      */
     public static createStone(x: number, y: number, vertices: Vector2[]): Stone {
-        return new Stone(
+        return Stone.createNew(
             new Vector2(
                 pixelsToMeters(x),
                 pixelsToMeters(y)

@@ -1,4 +1,4 @@
-import {decorate, injectable} from "inversify";
+import {decorate, injectable, unmanaged} from "inversify";
 import Vector, {default as Vector2} from "../../data/vector2";
 import RigidBody from "../physics/rigid-body";
 import Updatable from "../base/updatable";
@@ -13,18 +13,21 @@ export default class Player extends RigidBody implements Updatable<Player> {
 
     public static readonly JUMP_STRENGTH: number = 100;
 
-    public static readonly LEFT_IMPULSE: Vector2 = new Vector2(-15, 0);
+    public static readonly LEFT_IMPULSE: Vector2 = new Vector2(-Player.MAX_VELOCITY, 0);
 
-    public static readonly RIGHT_IMPULSE: Vector2 = new Vector2(15, 0);
+    public static readonly RIGHT_IMPULSE: Vector2 = new Vector2(Player.MAX_VELOCITY, 0);
 
-    public static readonly JUMP_IMPULSE: Vector2 = new Vector2(0, 100);
+    public static readonly JUMP_IMPULSE: Vector2 = new Vector2(0, Player.JUMP_STRENGTH);
 
     private _direction: number = 0;
 
-    public constructor() {
-        super(new Box(new Vector(), new Vector2(1, 1)), METAL);
+    private constructor(id: string, position: Vector2) {
+        super(
+            id || EntityFactory.newGuidTyped(TYPES.Player),
+            new Box(position, new Vector2(1, 1)),
+            METAL
+        );
 
-        this.id = EntityFactory.newGuidTyped(TYPES.Player);
         this.color = "#ABCDEF";
     }
 
@@ -80,6 +83,19 @@ export default class Player extends RigidBody implements Updatable<Player> {
         }
     }
 
+    public static createNew(id: string, position: Vector2 = Vector2.ZERO): Player {
+        return new Player(id, position);
+    }
+
+    public static createFrom(player: any): Player {
+        return new Player(
+            player._id,
+            Vector2.parse(player._shape.position)
+        );
+    }
+
 }
 
 decorate(injectable(), Player);
+decorate(unmanaged() as any, Player, 0);
+decorate(unmanaged() as any, Player, 1);

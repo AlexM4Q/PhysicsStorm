@@ -22,24 +22,26 @@ export default class GameServer {
     private static readonly log: Logger = new ConsoleLogger(GameServer);
 
     private readonly _server: Server;
+
     private readonly _io: SocketIO.Server;
+
     private readonly _clients: { [id: string]: Socket };
 
-    private _onConnection: any;
+    private _onConnection: (id: string) => void;
 
-    public set onConnection(onConnection: any) {
+    public set onConnection(onConnection: (id: string) => void) {
         this._onConnection = onConnection;
     }
 
-    private _onMessage: any;
+    private _onMessage: (message: string) => void;
 
-    public set onMessage(onMessage: any) {
+    public set onMessage(onMessage: (message: string) => void) {
         this._onMessage = onMessage;
     }
 
-    private _onClose: any;
+    private _onClose: (id: string) => void;
 
-    public set onClose(onClose: any) {
+    public set onClose(onClose: (id: string) => void) {
         this._onClose = onClose;
     }
 
@@ -85,7 +87,7 @@ export default class GameServer {
         });
     }
 
-    public sendAll(message: any): void {
+    public sendAll(message: object): void {
         for (const id in this._clients) {
             if (this._clients.hasOwnProperty(id)) {
                 this._clients[id].emit(WS_EVENT_MESSAGE, message);
