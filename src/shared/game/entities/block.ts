@@ -3,13 +3,12 @@ import Box from "../geometry/shapes/box";
 import Updatable from "../base/updatable";
 import RigidBody from "../physics/rigid-body";
 import {METAL} from "../physics/material/materials";
-import {decorate, injectable, unmanaged} from "inversify";
 import EntityFactory from "./entity-factory";
 import TYPES from "../../inversify.types";
 
 export default class Block extends RigidBody implements Updatable<Block> {
 
-    protected constructor(id: string, position: Vector2, halfSize: Vector2) {
+    public constructor(id: string, position: Vector2, halfSize: Vector2) {
         super(
             id || EntityFactory.newGuidTyped(TYPES.Block),
             new Box(position, halfSize),
@@ -31,7 +30,3 @@ export default class Block extends RigidBody implements Updatable<Block> {
     }
 
 }
-
-decorate(injectable(), Block);
-decorate(unmanaged() as any, Block, 0);
-decorate(unmanaged() as any, Block, 1);

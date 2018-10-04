@@ -3,13 +3,12 @@ import Updatable from "../base/updatable";
 import RigidBody from "../physics/rigid-body";
 import {RUBBER} from "../physics/material/materials";
 import Circle from "../geometry/shapes/circle";
-import {decorate, injectable, unmanaged} from "inversify";
 import EntityFactory from "./entity-factory";
 import TYPES from "../../inversify.types";
 
 export default class Ball extends RigidBody implements Updatable<Ball> {
 
-    protected constructor(id: string, position: Vector2, radius: number) {
+    public constructor(id: string, position: Vector2, radius: number) {
         super(
             id || EntityFactory.newGuidTyped(TYPES.Ball),
             new Circle(position, radius),
@@ -32,8 +31,3 @@ export default class Ball extends RigidBody implements Updatable<Ball> {
     }
 
 }
-
-decorate(injectable(), Ball);
-decorate(unmanaged() as any, Ball, 0);
-decorate(unmanaged() as any, Ball, 1);
-decorate(unmanaged() as any, Ball, 2);

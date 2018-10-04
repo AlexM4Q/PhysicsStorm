@@ -1,4 +1,3 @@
-import {decorate, injectable, unmanaged} from "inversify";
 import Vector, {default as Vector2} from "../../data/vector2";
 import RigidBody from "../physics/rigid-body";
 import Updatable from "../base/updatable";
@@ -21,7 +20,7 @@ export default class Player extends RigidBody implements Updatable<Player> {
 
     private _direction: number = 0;
 
-    protected constructor(id: string, position: Vector2) {
+    private constructor(id: string, position: Vector2) {
         super(
             id || EntityFactory.newGuidTyped(TYPES.Player),
             new Box(position, new Vector2(1, 1)),
@@ -95,7 +94,3 @@ export default class Player extends RigidBody implements Updatable<Player> {
     }
 
 }
-
-decorate(injectable(), Player);
-decorate(unmanaged() as any, Player, 0);
-decorate(unmanaged() as any, Player, 1);
