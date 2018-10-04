@@ -22,29 +22,30 @@ import {
     WS_KEY_TYPE_STATE
 } from "../../shared/constants-ws";
 import {STATE_INTERVAL} from "../constants";
+import * as http from "http";
 
 export default class ServerContext {
 
     public constructor(private readonly _world: World) {
     }
 
-    public startServer(app: Application): void {
-        const server: GameServer = new GameServer(app);
+    public startServer(httpServer: http.Server): void {
+        const gameServer: GameServer = new GameServer(httpServer);
 
         this._world.start();
 
         setInterval(() => {
-            server.sendAll({
+            gameServer.sendAll({
                 [WS_KEY_TYPE]: WS_KEY_TYPE_STATE,
                 [WS_KEY_DATA]: this._world.particles.toArray()
             });
         }, STATE_INTERVAL);
 
-        server.onConnection = (id: string) => {
+        gameServer.onConnection = (id: string) => {
             this._world.addObject(Player.createNew(id));
         };
 
-        server.onMessage = (message: any) => {
+        gameServer.onMessage = (message: any) => {
             const player: Player = this._world.particles.find(message[WS_KEY_ID]) as Player;
 
             switch (message[WS_KEY_INPUT]) {
@@ -72,7 +73,7 @@ export default class ServerContext {
             }
         };
 
-        server.onClose = (id: string) => {
+        gameServer.onClose = (id: string) => {
             this._world.remove(id);
         };
     }

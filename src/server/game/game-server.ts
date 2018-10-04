@@ -1,4 +1,4 @@
-import {createServer, Server} from "http";
+import * as http from "http";
 import SocketIO, {Socket} from "socket.io";
 import {
     WS_EVENT_CONNECT,
@@ -8,10 +8,8 @@ import {
     WS_EVENT_REGISTER_RESPONSE,
     WS_KEY_ID,
     WS_KEY_TYPE,
-    WS_KEY_TYPE_REMOVE,
-    WS_PORT
+    WS_KEY_TYPE_REMOVE
 } from "../../shared/constants-ws";
-import {Application} from "express";
 import Logger from "../../shared/logging/logger";
 import ConsoleLogger from "../../shared/logging/console-logger";
 import EntityFactory from "../../shared/game/entities/entity-factory";
@@ -21,7 +19,7 @@ export default class GameServer {
 
     private static readonly log: Logger = new ConsoleLogger(GameServer);
 
-    private readonly _server: Server;
+    // private readonly _server: Server;
 
     private readonly _io: SocketIO.Server;
 
@@ -45,13 +43,13 @@ export default class GameServer {
         this._onClose = onClose;
     }
 
-    constructor(app: Application) {
+    constructor(httpServer: http.Server) {
         this._clients = {};
 
-        this._server = createServer(app);
-        this._io = SocketIO(this._server);
+        // this._server = httpServer;
+        this._io = SocketIO(httpServer);
 
-        this._server.listen(8080);
+        // this._server.listen(8000);
 
         const thiz = this;
 
