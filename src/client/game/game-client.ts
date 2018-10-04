@@ -1,4 +1,5 @@
 import {connect} from "socket.io-client";
+import SocketIO, {Socket} from "socket.io";
 import ConsoleLogger from "../../shared/logging/console-logger";
 import Logger from "../../shared/logging/logger";
 import Vector2 from "../../shared/data/vector2";
@@ -47,12 +48,13 @@ export default class GameClient {
             this._socket = undefined;
         }
 
-        this._socket = connect(url, {
-            reconnection: true,
-            reconnectionDelay: 1000,
-            reconnectionDelayMax: 5000,
-            reconnectionAttempts: Infinity
-        });
+        this._socket = connect();
+        // this._socket = connect(url, {
+        //     reconnection: true,
+        //     reconnectionDelay: 1000,
+        //     reconnectionDelayMax: 5000,
+        //     reconnectionAttempts: Infinity
+        // });
 
         this._socket.on(WS_EVENT_CONNECT, () => {
             GameClient.log.debug("Connected to server");
