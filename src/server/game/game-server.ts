@@ -51,7 +51,7 @@ export default class GameServer {
         this._server = createServer(app);
         this._io = SocketIO(this._server);
 
-        this._server.listen(WS_PORT);
+        this._server.listen(8080);
 
         const thiz = this;
 
