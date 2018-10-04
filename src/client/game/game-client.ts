@@ -1,5 +1,4 @@
 import {connect} from "socket.io-client";
-import SocketIO, {Socket} from "socket.io";
 import ConsoleLogger from "../../shared/logging/console-logger";
 import Logger from "../../shared/logging/logger";
 import Vector2 from "../../shared/data/vector2";
@@ -37,24 +36,23 @@ export default class GameClient {
         this._onRegister = onRegister;
     }
 
-    public constructor(url: string) {
-        this.connect(url);
+    public constructor() {
+        this.connect();
     }
 
-    public connect(url: string): void {
+    public connect(): void {
         if (this._socket) {
             this._socket.destroy();
             delete this._socket;
             this._socket = undefined;
         }
 
-        this._socket = connect();
-        // this._socket = connect(url, {
-        //     reconnection: true,
-        //     reconnectionDelay: 1000,
-        //     reconnectionDelayMax: 5000,
-        //     reconnectionAttempts: Infinity
-        // });
+        this._socket = connect({
+            reconnection: true,
+            reconnectionDelay: 1000,
+            reconnectionDelayMax: 5000,
+            reconnectionAttempts: Infinity
+        });
 
         this._socket.on(WS_EVENT_CONNECT, () => {
             GameClient.log.debug("Connected to server");
@@ -71,7 +69,7 @@ export default class GameClient {
             this._socket.on(WS_EVENT_DISCONNECT, () => {
                 GameClient.log.debug("Disconnected from server");
 
-                setTimeout(() => this.connect(url), 5000);
+                setTimeout(this.connect, 5000);
             });
         });
     }

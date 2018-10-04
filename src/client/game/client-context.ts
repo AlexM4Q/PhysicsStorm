@@ -1,12 +1,5 @@
 import Renderer from "./renderer";
-import {
-    WS_HOST,
-    WS_KEY_DATA,
-    WS_KEY_ID,
-    WS_KEY_TYPE,
-    WS_KEY_TYPE_REMOVE,
-    WS_KEY_TYPE_STATE
-} from "../../shared/constants-ws";
+import {WS_KEY_DATA, WS_KEY_ID, WS_KEY_TYPE, WS_KEY_TYPE_REMOVE, WS_KEY_TYPE_STATE} from "../../shared/constants-ws";
 import {decorate, inject, injectable} from "inversify";
 import {CLIENT_TYPES} from "../inversify.types";
 import GameClient from "./game-client";
@@ -25,7 +18,7 @@ export default class ClientContext {
 
     public constructor(world: World) {
         this._world = world;
-        this._client = new GameClient(WS_HOST);
+        this._client = new GameClient();
     }
 
     public startGame(): void {
