@@ -10,7 +10,7 @@ export default class Bullet extends RigidBody implements Updatable<Bullet> {
 
     private direction: Vector2;
 
-    private constructor(id: string, position: Vector2, target: Vector2) {
+    public constructor(id: string, position: Vector2, target: Vector2) {
         super(
             id || EntityFactory.newGuidTyped(TYPES.Bullet),
             new Box(position, new Vector2(2, 2)),
