@@ -3,6 +3,7 @@ import ConsoleLogger from "../../shared/logging/console-logger";
 import Logger from "../../shared/logging/logger";
 import Vector2 from "../../shared/data/vector2";
 import {
+    WS_DEV_HOST,
     WS_EVENT_CONNECT,
     WS_EVENT_DISCONNECT,
     WS_EVENT_MESSAGE,
@@ -18,21 +19,30 @@ import {
     WS_KEY_INPUT_STOP,
     WS_KEY_TIME
 } from "../../shared/constants-ws";
+import AppUtils from "../utils/app-utils";
 
 export default class GameClient {
 
     private static readonly log: Logger = new ConsoleLogger(GameClient);
 
-    private _id: string;
-    private _socket: any;
+    private static readonly opts: SocketIOClient.ConnectOpts = {
+        reconnection: true,
+        reconnectionDelay: 1000,
+        reconnectionDelayMax: 5000,
+        reconnectionAttempts: Infinity
+    };
 
-    public set onMessage(onMessage: any) {
+    private _id: string;
+
+    private _socket: SocketIOClient.Socket;
+
+    public set onMessage(onMessage: (message: any) => void) {
         this._socket.on(WS_EVENT_MESSAGE, onMessage);
     }
 
-    private _onRegister: any;
+    private _onRegister: (id: string) => void;
 
-    public set onRegister(onRegister: any) {
+    public set onRegister(onRegister: (id: string) => void) {
         this._onRegister = onRegister;
     }
 
@@ -42,18 +52,12 @@ export default class GameClient {
 
     public connect(): void {
         if (this._socket) {
-            this._socket.destroy();
+            this._socket.close();
             delete this._socket;
             this._socket = undefined;
         }
 
-        this._socket = connect({
-            reconnection: true,
-            reconnectionDelay: 1000,
-            reconnectionDelayMax: 5000,
-            reconnectionAttempts: Infinity
-        });
-
+        this._socket = AppUtils.isProd() ? connect(GameClient.opts) : connect(WS_DEV_HOST, GameClient.opts);
         this._socket.on(WS_EVENT_CONNECT, () => {
             GameClient.log.debug("Connected to server");
 

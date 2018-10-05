@@ -1,8 +1,9 @@
+import {SERVER_PORT} from "../server/constants";
+
 /**
- * Порт и хост для вебсокетов
+ * dev-хост для вебсокетов
  */
-export const WS_PORT: number = 8080;
-export const WS_HOST: string = `ws://localhost:${WS_PORT}`;
+export const WS_DEV_HOST: string = `ws://localhost:${SERVER_PORT}`;
 
 /**
  * Коды событий при общении вебсокетов

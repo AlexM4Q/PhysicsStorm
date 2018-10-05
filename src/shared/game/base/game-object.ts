@@ -12,9 +12,6 @@ export default abstract class GameObject implements Updatable<GameObject> {
         return this._id;
     }
 
-    public set id(value: string) {
-    }
-
     public color: string = "#000000";
 
     protected constructor(id: string) {

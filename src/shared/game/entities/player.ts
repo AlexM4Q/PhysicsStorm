@@ -8,15 +8,15 @@ import TYPES from "../../inversify.types";
 
 export default class Player extends RigidBody implements Updatable<Player> {
 
-    public static readonly MAX_VELOCITY: number = 15;
+    private static readonly MAX_VELOCITY: number = 15;
 
-    public static readonly JUMP_STRENGTH: number = 100;
+    private static readonly JUMP_STRENGTH: number = 100;
 
-    public static readonly LEFT_IMPULSE: Vector2 = new Vector2(-Player.MAX_VELOCITY, 0);
+    private static readonly LEFT_IMPULSE: Vector2 = new Vector2(-Player.MAX_VELOCITY, 0);
 
-    public static readonly RIGHT_IMPULSE: Vector2 = new Vector2(Player.MAX_VELOCITY, 0);
+    private static readonly RIGHT_IMPULSE: Vector2 = new Vector2(Player.MAX_VELOCITY, 0);
 
-    public static readonly JUMP_IMPULSE: Vector2 = new Vector2(0, Player.JUMP_STRENGTH);
+    private static readonly JUMP_IMPULSE: Vector2 = new Vector2(0, Player.JUMP_STRENGTH);
 
     private _direction: number = 0;
 
