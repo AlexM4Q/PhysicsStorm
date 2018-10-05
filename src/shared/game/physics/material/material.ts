@@ -5,7 +5,7 @@ export default class Material {
      */
     protected readonly _density: number;
 
-    get density(): number {
+    public get density(): number {
         return this._density;
     }
 
@@ -14,7 +14,7 @@ export default class Material {
      */
     protected readonly _restitution: number;
 
-    get restitution(): number {
+    public get restitution(): number {
         return this._restitution;
     }
 
@@ -23,7 +23,7 @@ export default class Material {
      */
     protected readonly _staticFriction: number;
 
-    get staticFriction(): number {
+    public get staticFriction(): number {
         return this._staticFriction;
     }
 
@@ -32,7 +32,7 @@ export default class Material {
      */
     protected readonly _dynamicFriction: number;
 
-    get dynamicFriction(): number {
+    public get dynamicFriction(): number {
         return this._dynamicFriction;
     }
 
@@ -43,7 +43,7 @@ export default class Material {
      * @param {number} staticFriction Статическое трение
      * @param {number} dynamicFriction Динамическое трение
      */
-    constructor(density: number, restitution: number, staticFriction: number, dynamicFriction: number) {
+    public constructor(density: number, restitution: number, staticFriction: number, dynamicFriction: number) {
         this._density = density;
         this._restitution = restitution;
         this._staticFriction = staticFriction;

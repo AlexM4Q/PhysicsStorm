@@ -4,7 +4,6 @@ import Player from "../../shared/game/entities/player";
 import {decorate, inject, injectable} from "inversify";
 import World from "../../shared/game/world";
 import Vector2 from "../../shared/data/vector2";
-import {Application} from "express";
 import WorldGenerator from "../../shared/game/world-generator";
 import container from "../../shared/inversify.config";
 import TYPES from "../../shared/inversify.types";
@@ -22,7 +21,7 @@ import {
     WS_KEY_TYPE_STATE
 } from "../../shared/constants-ws";
 import {STATE_INTERVAL} from "../constants";
-import * as http from "http";
+import http from "http";
 
 export default class ServerContext {
 

@@ -103,17 +103,16 @@ export default class CollisionResolver {
             return;
         }
 
-        const restitution: number = Math.min(a.material.restitution + b.material.restitution);
-        const j: number = -(1 + restitution) * velocityAlongNormal / (a.massData.inverseMass + b.massData.inverseMass);
-
+        const restitution: number = Math.min(a.material.restitution, b.material.restitution);
+        const j: number = (1 + restitution) * velocityAlongNormal / (a.massData.inverseMass + b.massData.inverseMass);
         const impulse: Vector2 = normal.factor(j);
-        const massSum: number = 1 / (a.massData.mass + b.massData.mass);
 
         if (b.isStatic) {
-            a.applyImpulse(impulse.factor(-a.massData.mass * massSum));
+            a.applyImpulse(impulse);
         } else {
-            a.applyImpulse(impulse.factor(-b.massData.mass * massSum));
-            b.applyImpulse(impulse.factor(a.massData.mass * massSum));
+            const massSum: number = 1 / (a.massData.mass + b.massData.mass);
+            a.applyImpulse(impulse.factor(b.massData.mass * massSum));
+            b.applyImpulse(impulse.factor(-a.massData.mass * massSum));
         }
 
         // const length: number = penetration.length;

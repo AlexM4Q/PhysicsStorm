@@ -57,23 +57,25 @@ export default class GameClient {
             this._socket = undefined;
         }
 
+        const thiz: GameClient = this;
+
         this._socket = AppUtils.isProd() ? connect(GameClient.opts) : connect(WS_DEV_HOST, GameClient.opts);
         this._socket.on(WS_EVENT_CONNECT, () => {
             GameClient.log.debug("Connected to server");
 
-            this._socket.on(WS_EVENT_REGISTER_RESPONSE, (id: string) => {
+            thiz._socket.on(WS_EVENT_REGISTER_RESPONSE, (id: string) => {
                 GameClient.log.debug(`Registered as ${id}`);
 
-                this._id = id;
-                this._onRegister(id);
+                thiz._id = id;
+                thiz._onRegister(id);
             });
 
-            this._socket.emit(WS_EVENT_REGISTER_REQUEST, this._id);
+            thiz._socket.emit(WS_EVENT_REGISTER_REQUEST, thiz._id);
 
-            this._socket.on(WS_EVENT_DISCONNECT, () => {
+            thiz._socket.on(WS_EVENT_DISCONNECT, () => {
                 GameClient.log.debug("Disconnected from server");
 
-                setTimeout(this.connect, 5000);
+                setTimeout(thiz.connect, 5000);
             });
         });
     }
