@@ -2,7 +2,6 @@ import Particle from "./particle";
 import {g} from "../../constants";
 import Vector2 from "../../data/vector2";
 import Shape from "../geometry/shapes/shape";
-import {decorate, injectable, unmanaged} from "inversify";
 import Updatable from "../base/updatable";
 import MassData from "./mass-data";
 import Material from "./material/material";
@@ -149,10 +148,3 @@ export default abstract class RigidBody extends Particle implements Updatable<Ri
     }
 
 }
-
-decorate(injectable(), RigidBody);
-decorate(unmanaged() as any, RigidBody, 0);
-decorate(unmanaged() as any, RigidBody, 1);
-decorate(unmanaged() as any, RigidBody, 2);
-decorate(unmanaged() as any, RigidBody, 3);
-decorate(unmanaged() as any, RigidBody, 4);

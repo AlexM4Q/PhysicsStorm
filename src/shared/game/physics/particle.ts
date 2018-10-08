@@ -1,7 +1,6 @@
 import GameObject from "../base/game-object";
 import Vector2 from "../../data/vector2";
 import Shape from "../geometry/shapes/shape";
-import {decorate, injectable, unmanaged} from "inversify";
 import Updatable from "../base/updatable";
 
 /**
@@ -58,8 +57,3 @@ export default abstract class Particle extends GameObject implements Updatable<P
     }
 
 }
-
-decorate(injectable(), Particle);
-decorate(unmanaged() as any, Particle, 0);
-decorate(unmanaged() as any, Particle, 1);
-decorate(unmanaged() as any, Particle, 2);

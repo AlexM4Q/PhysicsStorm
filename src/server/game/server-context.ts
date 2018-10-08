@@ -31,14 +31,17 @@ export default class ServerContext {
     public startServer(httpServer: http.Server): void {
         const gameServer: GameServer = new GameServer(httpServer);
 
+        // todo включить, когда будет сделана интерполяция
+        // this._world.onWorldUpdate = () => gameServer.sendAll({
+        //     [WS_KEY_TYPE]: WS_KEY_TYPE_STATE,
+        //     [WS_KEY_DATA]: this._world.particles.toArray()
+        // });
         this._world.start();
 
-        setInterval(() => {
-            gameServer.sendAll({
-                [WS_KEY_TYPE]: WS_KEY_TYPE_STATE,
-                [WS_KEY_DATA]: this._world.particles.toArray()
-            });
-        }, STATE_INTERVAL);
+        setInterval(() => gameServer.sendAll({
+            [WS_KEY_TYPE]: WS_KEY_TYPE_STATE,
+            [WS_KEY_DATA]: this._world.particles.toArray()
+        }), STATE_INTERVAL);
 
         gameServer.onConnection = (id: string) => {
             this._world.addObject(Player.createNew(id));

@@ -17,7 +17,7 @@ export default class Bullet extends RigidBody implements Updatable<Bullet> {
             METAL
         );
 
-        this.color = "#ff0000";
+        this.color = "#f00";
         this.linearVelocity = Vector2.ZERO;
         this.direction = target.subtract(position).normalized;
     }

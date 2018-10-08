@@ -1,4 +1,3 @@
-import {decorate, injectable, unmanaged} from "inversify";
 import Updatable from "./updatable";
 
 /**
@@ -12,7 +11,7 @@ export default abstract class GameObject implements Updatable<GameObject> {
         return this._id;
     }
 
-    public color: string = "#000000";
+    public color: string = "#000";
 
     protected constructor(id: string) {
         this._id = id;
@@ -25,6 +24,3 @@ export default abstract class GameObject implements Updatable<GameObject> {
     }
 
 }
-
-decorate(injectable(), GameObject);
-decorate(unmanaged() as any, GameObject, 0);

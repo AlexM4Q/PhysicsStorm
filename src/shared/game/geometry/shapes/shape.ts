@@ -60,10 +60,7 @@ export default abstract class Shape implements Collidable, Updatable<Shape> {
      * @returns {number}
      */
     public angularMomentum(impulse: Vector2): number {
-        const support = this.support(impulse);
-        const radius = this.position.subtract(support);
-        const product = radius.crossProduct(impulse);
-        return product;
+        return this.position.subtract(this.support(impulse)).crossProduct(impulse);
     }
 
     /**

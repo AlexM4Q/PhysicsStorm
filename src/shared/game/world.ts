@@ -82,7 +82,7 @@ export default class World {
                     continue;
                 }
 
-                const penetration = CollisionDetector.collide(particle.shape, collide.shape);
+                const penetration: Vector2 = CollisionDetector.collide(particle.shape, collide.shape);
                 if (penetration && (penetration.x || penetration.y)) {
                     manifolds.push(new Manifold(particle, collide, penetration));
                 }
@@ -103,9 +103,8 @@ export default class World {
                 CollisionResolver.resolveImpulse(manifold);
             }
 
-        if (this._onWorldUpdate) {
+        if (this._onWorldUpdate)
             this._onWorldUpdate();
-        }
     }
 
     public addObject(object: Particle): void {

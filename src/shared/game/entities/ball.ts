@@ -15,7 +15,7 @@ export default class Ball extends RigidBody implements Updatable<Ball> {
             RUBBER
         );
 
-        this.color = "#ff0000";
+        this.color = "#f00";
     }
 
     public static createNew(position: Vector2, radius: number): Ball {

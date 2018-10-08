@@ -26,11 +26,11 @@ export default class ClientContext {
         const renderer: Renderer = new Renderer(scene);
 
         this._world.onWorldUpdate = () => renderer.draw(this._world.particles);
-        this._world.start();
 
-        this._client.onRegister = (id: string) => {
-            this._world.addObject(this._player = Player.createNew(id));
-        };
+        this._client.onRegister = (id: string) => this._world.addObject(this._player = Player.createNew(id));
+
+        this._world.start();
+        this._client.connect();
 
         this._client.onMessage = (message: any) => {
             if (!this._player) {

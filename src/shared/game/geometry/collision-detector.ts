@@ -70,14 +70,14 @@ export default class CollisionDetector {
 
     public static collideBoxCircle(boxA: Box, circleB: Circle): Vector2 {
         let dx: number;
-        const leftBox = boxA.position.x - boxA.halfSize.x;
+        const leftBox: number = boxA.position.x - boxA.halfSize.x;
         if (leftBox > circleB.position.x) {
             dx = leftBox - circleB.position.x;
             if (dx > circleB.radius) {
                 return null;
             }
         } else {
-            const rightBox = boxA.position.x + boxA.halfSize.x;
+            const rightBox: number = boxA.position.x + boxA.halfSize.x;
             if (rightBox < circleB.position.x) {
                 dx = rightBox - circleB.position.x;
                 if (-dx > circleB.radius) {
@@ -89,14 +89,14 @@ export default class CollisionDetector {
         }
 
         let dy: number;
-        const topBox = boxA.position.y + boxA.halfSize.y;
+        const topBox: number = boxA.position.y + boxA.halfSize.y;
         if (topBox < circleB.position.y) {
             dy = topBox - circleB.position.y;
             if (-dy > circleB.radius) {
                 return null;
             }
         } else {
-            const bottomBox = boxA.position.y - boxA.halfSize.y;
+            const bottomBox: number = boxA.position.y - boxA.halfSize.y;
             if (bottomBox > circleB.position.y) {
                 dy = bottomBox - circleB.position.y;
                 if (dy > circleB.radius) {
@@ -116,7 +116,7 @@ export default class CollisionDetector {
             return null;
         }
 
-        const factor = 1 - circleB.radius / distance;
+        const factor: number = 1 - circleB.radius / distance;
 
         return new Vector2(dx * factor, dy * factor);
     }

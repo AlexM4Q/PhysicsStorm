@@ -17,7 +17,7 @@ export default class Stone extends RigidBody implements Updatable<Stone> {
             true
         );
 
-        this.color = "#555555";
+        this.color = "#555";
     }
 
     public static createNew(position: Vector2, vertices: Vector2[]): Stone {

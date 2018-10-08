@@ -46,15 +46,10 @@ export default class GameClient {
         this._onRegister = onRegister;
     }
 
-    public constructor() {
-        this.connect();
-    }
-
     public connect(): void {
         if (this._socket) {
             this._socket.close();
             delete this._socket;
-            this._socket = undefined;
         }
 
         const thiz: GameClient = this;
@@ -74,8 +69,6 @@ export default class GameClient {
 
             thiz._socket.on(WS_EVENT_DISCONNECT, () => {
                 GameClient.log.debug("Disconnected from server");
-
-                setTimeout(thiz.connect, 5000);
             });
         });
     }

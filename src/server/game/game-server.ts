@@ -76,7 +76,7 @@ export default class GameServer {
                     thiz._onClose(id);
                     thiz.sendAll({
                         [WS_KEY_ID]: id,
-                        [WS_KEY_TYPE]: [WS_KEY_TYPE_REMOVE]
+                        [WS_KEY_TYPE]: WS_KEY_TYPE_REMOVE
                     });
 
                     GameServer.log.debug(`Unregistered player ${id}`);
