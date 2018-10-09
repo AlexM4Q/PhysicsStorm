@@ -1,7 +1,7 @@
 import "mocha";
 import {expect} from "chai";
 import {FLOAT_TOLERANCE} from "../../../constants";
-import Vector2 from "../../../../src/shared/data/vector2";
+import Vector2 from "../../../../src/shared/game/data/vector2";
 import CollisionDetector from "../../../../src/shared/game/geometry/collision-detector";
 import Box from "../../../../src/shared/game/geometry/shapes/box";
 import Circle from "../../../../src/shared/game/geometry/shapes/circle";

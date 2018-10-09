@@ -1,5 +1,5 @@
 import Manifold from "./manifold";
-import Vector2 from "../../data/vector2";
+import Vector2 from "../data/vector2";
 import RigidBody from "../physics/rigid-body";
 
 export default class CollisionResolver {

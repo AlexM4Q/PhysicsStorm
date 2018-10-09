@@ -1,7 +1,7 @@
 import Shape from "./shapes/shape";
 import Box from "./shapes/box";
 import Circle from "./shapes/circle";
-import Vector2 from "../../data/vector2";
+import Vector2 from "../data/vector2";
 import Polygon from "./shapes/polygon";
 import GJK from "./gjk";
 

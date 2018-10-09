@@ -3,7 +3,7 @@ import GameServer from "./game-server";
 import Player from "../../shared/game/entities/player";
 import {decorate, inject, injectable} from "inversify";
 import World from "../../shared/game/world";
-import Vector2 from "../../shared/data/vector2";
+import Vector2 from "../../shared/game/data/vector2";
 import WorldGenerator from "../../shared/game/world-generator";
 import container from "../../shared/inversify.config";
 import TYPES from "../../shared/inversify.types";

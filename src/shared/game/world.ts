@@ -2,14 +2,14 @@ import "reflect-metadata";
 import Particle from "./physics/particle";
 import {PHYSICS_INTERVAL} from "../constants";
 import {decorate, injectable} from "inversify";
-import Vector2 from "../data/vector2";
+import Vector2 from "./data/vector2";
 import RigidBody from "./physics/rigid-body";
 import WorldGenerator from "./world-generator";
 import CollisionResolver from "./geometry/collision-resolver";
 import Manifold from "./geometry/manifold";
 import CollisionDetector from "./geometry/collision-detector";
 import EntityFactory from "./entities/entity-factory";
-import Particles from "../data/particles";
+import Particles from "./data/particles";
 
 export default class World {
 

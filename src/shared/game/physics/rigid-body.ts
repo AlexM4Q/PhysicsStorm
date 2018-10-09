@@ -1,6 +1,6 @@
 import Particle from "./particle";
 import {g} from "../../constants";
-import Vector2 from "../../data/vector2";
+import Vector2 from "../data/vector2";
 import Shape from "../geometry/shapes/shape";
 import Updatable from "../base/updatable";
 import MassData from "./mass-data";

@@ -1,4 +1,4 @@
-import Vector2 from "../../data/vector2";
+import Vector2 from "../data/vector2";
 
 export default class Edge {
 

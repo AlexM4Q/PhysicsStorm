@@ -1,4 +1,4 @@
-import Vector2 from "../../../data/vector2";
+import Vector2 from "../../data/vector2";
 import Box from "./box";
 import Circle from "./circle";
 import Polygon from "./polygon";

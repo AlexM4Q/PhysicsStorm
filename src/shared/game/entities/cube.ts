@@ -1,4 +1,4 @@
-import Vector2 from "../../data/vector2";
+import Vector2 from "../data/vector2";
 import RigidBody from "../physics/rigid-body";
 import Updatable from "../base/updatable";
 import Box from "../geometry/shapes/box";

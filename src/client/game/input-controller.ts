@@ -1,5 +1,5 @@
 import {decorate, inject, injectable} from "inversify";
-import Vector2 from "../../shared/data/vector2";
+import Vector2 from "../../shared/game/data/vector2";
 import ClientContext from "./client-context";
 import {CLIENT_TYPES} from "../inversify.types";
 import {WORLD_HEIGHT} from "../../shared/constants";

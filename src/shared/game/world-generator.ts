@@ -1,6 +1,6 @@
 import World from "./world";
 import Block from "./entities/block";
-import Vector2 from "../data/vector2";
+import Vector2 from "./data/vector2";
 import {WORLD_WIDTH} from "../constants";
 import {pixelsToMeters} from "../utils/common-utils";
 import Ball from "./entities/ball";

@@ -4,7 +4,7 @@ import {decorate, inject, injectable} from "inversify";
 import {CLIENT_TYPES} from "../inversify.types";
 import GameClient from "./game-client";
 import World from "../../shared/game/world";
-import Vector2 from "../../shared/data/vector2";
+import Vector2 from "../../shared/game/data/vector2";
 import Particle from "../../shared/game/physics/particle";
 import Player from "../../shared/game/entities/player";
 

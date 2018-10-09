@@ -1,4 +1,4 @@
-import Vector, {default as Vector2} from "../../data/vector2";
+import Vector, {default as Vector2} from "../data/vector2";
 import RigidBody from "../physics/rigid-body";
 import Updatable from "../base/updatable";
 import {METAL} from "../physics/material/materials";

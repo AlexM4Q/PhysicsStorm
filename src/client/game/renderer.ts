@@ -1,4 +1,4 @@
-import Particles from "../../shared/data/particles";
+import Particles from "../../shared/game/data/particles";
 
 export default class Renderer {
 

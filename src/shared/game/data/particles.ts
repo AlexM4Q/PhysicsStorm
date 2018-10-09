@@ -1,4 +1,4 @@
-import Particle from "../game/physics/particle";
+import Particle from "../physics/particle";
 
 export default class Particles {
 

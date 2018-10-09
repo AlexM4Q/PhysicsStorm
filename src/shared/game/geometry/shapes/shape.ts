@@ -1,4 +1,4 @@
-import Vector2 from "../../../data/vector2";
+import Vector2 from "../../data/vector2";
 import Updatable from "../../base/updatable";
 import Collidable from "./collidable";
 import Box from "./box";

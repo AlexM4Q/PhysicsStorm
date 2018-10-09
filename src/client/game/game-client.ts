@@ -1,7 +1,7 @@
 import {connect} from "socket.io-client";
 import ConsoleLogger from "../../shared/logging/console-logger";
 import Logger from "../../shared/logging/logger";
-import Vector2 from "../../shared/data/vector2";
+import Vector2 from "../../shared/game/data/vector2";
 import {
     WS_DEV_HOST,
     WS_EVENT_CONNECT,

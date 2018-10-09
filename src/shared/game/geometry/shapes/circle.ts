@@ -1,6 +1,6 @@
 import Shape from "./shape";
 import Updatable from "../../base/updatable";
-import Vector2 from "../../../data/vector2";
+import Vector2 from "../../data/vector2";
 import Box from "./box";
 import CollisionDetector from "../collision-detector";
 import {metersToPixels} from "../../../utils/common-utils";

@@ -1,4 +1,4 @@
-import Vector2 from "../../data/vector2";
+import Vector2 from "../data/vector2";
 import Shape from "./shapes/shape";
 import Edge from "./edge";
 import {AngularDirection} from "./angular-direction";
