@@ -16,14 +16,6 @@ export default class Particles {
         delete this.map[id];
     }
 
-    public find(goal: string): Particle {
-        for (const id in this.map) {
-            if (goal === id) {
-                return this.getObject(id);
-            }
-        }
-    }
-
     public toArray(): Particle[] {
         return Object.values(this.map);
     }

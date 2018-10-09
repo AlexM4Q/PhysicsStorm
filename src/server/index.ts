@@ -6,12 +6,12 @@ import ServerContext from "./game/server-context";
 import {serverContainer} from "./inversify.config";
 import SERVER_TYPES from "./inversify.types";
 import Logger from "../shared/logging/logger";
-import ConsoleLogger from "../shared/logging/console-logger";
 import * as http from "http";
+import {getLogger} from "../shared/logging/loggers";
 
 class Server {
 
-    private static readonly log: Logger = new ConsoleLogger(Server);
+    private static readonly log: Logger = getLogger(Server);
 
     private static readonly dbUrl: string = "mongodb://localhost:27017/PhysicsStorm";
 

@@ -1,17 +1,17 @@
-import Guid from "../../utils/guid-utils";
-import Particle from "../physics/particle";
-import TYPES from "../../inversify.types";
-import Player from "./player";
-import Block from "./block";
-import Ball from "./ball";
-import Cube from "./cube";
-import Stone from "./stone";
-import Logger from "../../logging/logger";
-import ConsoleLogger from "../../logging/console-logger";
+import Guid from "../utils/guid-utils";
+import Particle from "./physics/particle";
+import TYPES from "../inversify.types";
+import Player from "./entities/player";
+import Block from "./entities/block";
+import Ball from "./entities/ball";
+import Cube from "./entities/cube";
+import Stone from "./entities/stone";
+import Logger from "../logging/logger";
+import {getLogger} from "../logging/loggers";
 
 export default class EntityFactory {
 
-    private static readonly log: Logger = new ConsoleLogger(EntityFactory);
+    private static readonly log: Logger = getLogger(EntityFactory);
 
     public static newGuidTyped(type: string): string {
         return Guid.newGuid("xxxxxxxx-tttt-4xxx-yxxx-xxxxxxxxxxxx").replace("tttt", type);

@@ -3,7 +3,7 @@ import Box from "../geometry/shapes/box";
 import Updatable from "../base/updatable";
 import RigidBody from "../physics/rigid-body";
 import {METAL} from "../physics/material/materials";
-import EntityFactory from "./entity-factory";
+import EntityFactory from "../entity-factory";
 import TYPES from "../../inversify.types";
 
 export default class Bullet extends RigidBody implements Updatable<Bullet> {

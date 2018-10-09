@@ -11,15 +11,13 @@ import {
     WS_KEY_TYPE_REMOVE
 } from "../../shared/constants-ws";
 import Logger from "../../shared/logging/logger";
-import ConsoleLogger from "../../shared/logging/console-logger";
-import EntityFactory from "../../shared/game/entities/entity-factory";
+import EntityFactory from "../../shared/game/entity-factory";
 import TYPES from "../../shared/inversify.types";
+import {getLogger} from "../../shared/logging/loggers";
 
 export default class GameServer {
 
-    private static readonly log: Logger = new ConsoleLogger(GameServer);
-
-    // private readonly _server: Server;
+    private static readonly log: Logger = getLogger(GameServer);
 
     private readonly _io: SocketIO.Server;
 
@@ -43,13 +41,9 @@ export default class GameServer {
         this._onClose = onClose;
     }
 
-    constructor(httpServer: http.Server) {
-        this._clients = {};
-
-        // this._server = httpServer;
+    public constructor(httpServer: http.Server) {
         this._io = SocketIO(httpServer);
-
-        // this._server.listen(8000);
+        this._clients = {};
 
         const thiz = this;
 
@@ -87,8 +81,9 @@ export default class GameServer {
 
     public sendAll(message: object): void {
         for (const id in this._clients) {
-            if (this._clients.hasOwnProperty(id)) {
-                this._clients[id].emit(WS_EVENT_MESSAGE, message);
+            const client: Socket = this._clients[id];
+            if (client) {
+                client.emit(WS_EVENT_MESSAGE, message);
             }
         }
     }

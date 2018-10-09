@@ -40,7 +40,7 @@ export default class ServerContext {
 
         setInterval(() => gameServer.sendAll({
             [WS_KEY_TYPE]: WS_KEY_TYPE_STATE,
-            [WS_KEY_DATA]: this._world.particles.toArray()
+            [WS_KEY_DATA]: this._world.getState()
         }), STATE_INTERVAL);
 
         gameServer.onConnection = (id: string) => {
@@ -48,7 +48,7 @@ export default class ServerContext {
         };
 
         gameServer.onMessage = (message: any) => {
-            const player: Player = this._world.particles.find(message[WS_KEY_ID]) as Player;
+            const player: Player = this._world.particles.getObject(message[WS_KEY_ID]) as Player;
 
             switch (message[WS_KEY_INPUT]) {
                 case WS_KEY_INPUT_RIGHT:

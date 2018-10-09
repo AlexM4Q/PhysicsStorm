@@ -39,7 +39,7 @@ export default class ClientContext {
 
             switch (message[WS_KEY_TYPE]) {
                 case WS_KEY_TYPE_STATE:
-                    this._world.update(message[WS_KEY_DATA] as Particle[]);
+                    this._world.updateState(message[WS_KEY_DATA] as Particle[]);
                     break;
                 case WS_KEY_TYPE_REMOVE:
                     this._world.remove(message[WS_KEY_ID] as string);

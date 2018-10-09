@@ -3,7 +3,7 @@ import Updatable from "../base/updatable";
 import RigidBody from "../physics/rigid-body";
 import {RUBBER} from "../physics/material/materials";
 import Circle from "../geometry/shapes/circle";
-import EntityFactory from "./entity-factory";
+import EntityFactory from "../entity-factory";
 import TYPES from "../../inversify.types";
 
 export default class Ball extends RigidBody implements Updatable<Ball> {

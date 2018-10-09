@@ -1,5 +1,4 @@
 import {connect} from "socket.io-client";
-import ConsoleLogger from "../../shared/logging/console-logger";
 import Logger from "../../shared/logging/logger";
 import Vector2 from "../../shared/game/data/vector2";
 import {
@@ -20,10 +19,11 @@ import {
     WS_KEY_TIME
 } from "../../shared/constants-ws";
 import AppUtils from "../utils/app-utils";
+import {getLogger} from "../../shared/logging/loggers";
 
 export default class GameClient {
 
-    private static readonly log: Logger = new ConsoleLogger(GameClient);
+    private static readonly log: Logger = getLogger(GameClient);
 
     private static readonly opts: SocketIOClient.ConnectOpts = {
         reconnection: true,

@@ -3,7 +3,7 @@ import RigidBody from "../physics/rigid-body";
 import Updatable from "../base/updatable";
 import {METAL} from "../physics/material/materials";
 import Box from "../geometry/shapes/box";
-import EntityFactory from "./entity-factory";
+import EntityFactory from "../entity-factory";
 import TYPES from "../../inversify.types";
 
 export default class Player extends RigidBody implements Updatable<Player> {

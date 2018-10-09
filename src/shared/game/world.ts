@@ -8,8 +8,8 @@ import WorldGenerator from "./world-generator";
 import CollisionResolver from "./geometry/collision-resolver";
 import Manifold from "./geometry/manifold";
 import CollisionDetector from "./geometry/collision-detector";
-import EntityFactory from "./entities/entity-factory";
 import Particles from "./data/particles";
+import EntityOperator from "./entity-operator";
 
 export default class World {
 
@@ -42,16 +42,12 @@ export default class World {
         }, PHYSICS_INTERVAL);
     }
 
-    public update(state: any[]): void {
-        for (const object of state) {
-            let particle: Particle = this._particles.getObject(object._id);
-            if (!particle) {
-                this.addObject(particle = EntityFactory.createFrom(object as Particle));
-            }
+    public getState(): Particle[] {
+        return EntityOperator.getState(this._particles);
+    }
 
-            particle.updateBy(object);
-        }
-
+    public updateState(state: any[]): void {
+        EntityOperator.updateState(this._particles, state);
         this._onWorldUpdate();
     }
 

@@ -2,7 +2,7 @@ import Vector2 from "../data/vector2";
 import RigidBody from "../physics/rigid-body";
 import {STONE} from "../physics/material/materials";
 import Polygon from "../geometry/shapes/polygon";
-import EntityFactory from "./entity-factory";
+import EntityFactory from "../entity-factory";
 import TYPES from "../../inversify.types";
 import Updatable from "../base/updatable";
 
