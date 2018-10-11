@@ -76,7 +76,7 @@ export default abstract class RigidBody extends Particle implements Importable<R
 
         if (this._isGrounded) {
             this.linearVelocity = new Vector2(
-                0.95 * this.linearVelocity.x + (dt * this._force.x + this._impulse.x) * this._massData.inverseMass
+                0.95 * this.linearVelocity.x + (this._impulse.x + dt * this._force.x) * this._massData.inverseMass
             );
 
             this.position = new Vector2(

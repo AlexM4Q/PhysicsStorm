@@ -39,8 +39,8 @@ export default class CollisionResolver {
         let particlePenetrationY: number = 0;
         let collidePenetrationY: number = 0;
 
-        const particleYMovable: boolean = particle.linearVelocity.y && !particle.isGrounded;
-        const collideYMovable: boolean = collide.linearVelocity.y && !collide.isGrounded;
+        const particleYMovable: boolean = particle.linearVelocity.y > 0 || particle.linearVelocity.y < 0 && !particle.isGrounded;
+        const collideYMovable: boolean = collide.linearVelocity.y > 0 || collide.linearVelocity.y < 0 && !collide.isGrounded;
         if (particleYMovable && collideYMovable) {
             const particleYAbsVelocity: number = Math.abs(particle.linearVelocity.y);
             const collideYAbsVelocity: number = Math.abs(collide.linearVelocity.y);
