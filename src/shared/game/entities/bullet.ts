@@ -1,12 +1,12 @@
 import Vector2 from "../data/vector2";
 import Box from "../geometry/shapes/box";
-import Updatable from "../base/updatable";
+import Importable from "../base/importable";
 import RigidBody from "../physics/rigid-body";
 import {METAL} from "../physics/material/materials";
 import EntityFactory from "../entity-factory";
 import TYPES from "../../inversify.types";
 
-export default class Bullet extends RigidBody implements Updatable<Bullet> {
+export default class Bullet extends RigidBody implements Importable<Bullet> {
 
     private direction: Vector2;
 
@@ -26,8 +26,8 @@ export default class Bullet extends RigidBody implements Updatable<Bullet> {
         this.position = this.position.add(this.linearVelocity.multiply(this.direction).factor(dt));
     }
 
-    public updateBy(bullet: Bullet): void {
-        super.updateBy(bullet);
+    public import(bullet: Bullet): void {
+        super.import(bullet);
 
         if (this.direction !== undefined) {
             this.direction = Vector2.parse(bullet.direction);

@@ -10,6 +10,8 @@ export default class EntityOperator {
 
     private static readonly log: Logger = getLogger(EntityOperator);
 
+    private static lastState: { [id: string]: any } = {};
+
     public static updateState(particles: Particles, state: any[]): void {
         for (const object of state) {
             let particle: Particle = particles.getObject(object._id);
@@ -17,12 +19,17 @@ export default class EntityOperator {
                 particles.setObject(particle = EntityFactory.createFrom(object as Particle));
             }
 
-            particle.updateBy(object);
+            particle.import(object);
         }
     }
 
-    public static getState(particles: Particles): Particle[] {
-        return particles.toArray();
+    public static getState(particles: Particles): any[] {
+        const newState: { [id: string]: any } = {};
+        for (const id in particles.map) {
+            newState[id] = particles.getObject(id).export(EntityOperator.lastState[id]);
+        }
+
+        return Object.values(EntityOperator.lastState = newState);
     }
 
 }

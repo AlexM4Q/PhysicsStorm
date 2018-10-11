@@ -1,11 +1,12 @@
 import Vector2 from "../../data/vector2";
-import Updatable from "../../base/updatable";
+import Importable from "../../base/importable";
 import Collidable from "./collidable";
 import Box from "./box";
 import Circle from "./circle";
 import Polygon from "./polygon";
+import Exportable from "../../base/exportable";
 
-export default abstract class Shape implements Collidable, Updatable<Shape> {
+export default abstract class Shape implements Collidable, Importable<Shape>, Exportable<Shape> {
 
     public position: Vector2;
 
@@ -70,17 +71,12 @@ export default abstract class Shape implements Collidable, Updatable<Shape> {
      */
     public abstract inertia(mass: number): number;
 
-    /**
-     * Обновление фигуры по другой фигуре
-     * @param {Shape} shape Другая фигура
-     */
-    public updateBy(shape: Shape): void {
-        if (shape.position !== undefined) {
-            this.position = Vector2.parse(shape.position);
-        }
-
-        if (shape.angle !== undefined) {
-            this.angle = shape.angle;
-        }
+    public import(shape: Shape): void {
+        this.position = Vector2.parse(shape.position);
     }
+
+    public export(shape: Shape): any {
+        return {position: this.position};
+    }
+
 }

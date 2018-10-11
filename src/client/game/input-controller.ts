@@ -4,25 +4,29 @@ import ClientContext from "./client-context";
 import {CLIENT_TYPES} from "../inversify.types";
 import {WORLD_HEIGHT} from "../../shared/constants";
 
+// todo Наладить систему управления
 export default class InputController {
 
-    public constructor(private readonly context: ClientContext) {
+    private readonly _context: ClientContext;
+
+    public constructor(context: ClientContext) {
+        this._context = context;
     }
 
     public startGame(): void {
-        this.context.startGame();
+        this._context.startGame();
     }
 
     public onKeyDown(event: any): void {
         switch (event.code) {
             case "KeyA":
-                this.context.left();
+                this._context.left();
                 break;
             case "KeyD":
-                this.context.right();
+                this._context.right();
                 break;
             case "Space":
-                this.context.jump();
+                this._context.jump();
                 break;
         }
     }
@@ -31,14 +35,14 @@ export default class InputController {
         switch (event.code) {
             case "KeyA":
             case "KeyD":
-                this.context.stop();
+                this._context.stop();
                 break;
         }
     }
 
     public onClick(event: any): void {
-        if (event.path[0].id === 'scene') {
-            this.context.click(new Vector2(event.layerX, WORLD_HEIGHT - event.layerY));
+        if (event.path[0].id === "scene") {
+            this._context.click(new Vector2(event.layerX, WORLD_HEIGHT - event.layerY));
         }
     }
 

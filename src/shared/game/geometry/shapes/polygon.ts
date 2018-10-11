@@ -1,15 +1,16 @@
 import Vector2 from "../../data/vector2";
 import Shape from "./shape";
-import Updatable from "../../base/updatable";
+import Importable from "../../base/importable";
 import Collidable from "./collidable";
 import Circle from "./circle";
 import CollisionDetector from "../collision-detector";
 import {metersToPixels} from "../../../utils/common-utils";
 import Box from "./box";
+import Exportable from "../../base/exportable";
 
-export default class Polygon extends Shape implements Collidable, Updatable<Polygon> {
+export default class Polygon extends Shape implements Collidable, Importable<Polygon>, Exportable<Polygon> {
 
-    private _vertices: Vector2[];
+    private readonly _vertices: Vector2[];
 
     public get vertices(): Vector2[] {
         return this._vertices;
@@ -107,10 +108,10 @@ export default class Polygon extends Shape implements Collidable, Updatable<Poly
         // return mass * (this._halfSize.x * this._halfSize.x + this._halfSize.y * this._halfSize.y) / 6
     }
 
-    public updateBy(polygon: Polygon): void {
-        super.updateBy(polygon);
-
-        this._vertices = polygon._vertices.map(Vector2.parse);
+    public export(polygon: Polygon): any {
+        const result: any = super.export(polygon);
+        result._vertices = this._vertices;
+        return result;
     }
 
 }

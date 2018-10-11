@@ -19,9 +19,9 @@ export default class World {
         return this._particles;
     }
 
-    private _onWorldUpdate: () => void;
+    private _onWorldUpdate: (tick: number) => void;
 
-    public set onWorldUpdate(onPhysicsUpdate: () => void) {
+    public set onWorldUpdate(onPhysicsUpdate: (tick: number) => void) {
         this._onWorldUpdate = onPhysicsUpdate;
     }
 
@@ -30,25 +30,28 @@ export default class World {
     }
 
     public start(): void {
-        new WorldGenerator(this).generate();
-
+        let tick: number = 0;
         let lastUpdate: number = Date.now();
+
         setInterval(() => {
             const now: number = Date.now();
             const dt: number = now - lastUpdate;
             lastUpdate = now;
 
             this.updatePhysics(dt / 1000);
+
+            if (this._onWorldUpdate) {
+                this._onWorldUpdate(tick++);
+            }
         }, PHYSICS_INTERVAL);
     }
 
-    public getState(): Particle[] {
+    public getState(): any[] {
         return EntityOperator.getState(this._particles);
     }
 
     public updateState(state: any[]): void {
         EntityOperator.updateState(this._particles, state);
-        this._onWorldUpdate();
     }
 
     public updatePhysics(dt: number): void {
@@ -98,9 +101,6 @@ export default class World {
                 CollisionResolver.resolveState(manifold);
                 CollisionResolver.resolveImpulse(manifold);
             }
-
-        if (this._onWorldUpdate)
-            this._onWorldUpdate();
     }
 
     public addObject(object: Particle): void {

@@ -1,13 +1,14 @@
 import Vector2 from "../../data/vector2";
 import Shape from "./shape";
-import Updatable from "../../base/updatable";
+import Importable from "../../base/importable";
 import Collidable from "./collidable";
 import Circle from "./circle";
 import CollisionDetector from "../collision-detector";
 import {metersToPixels} from "../../../utils/common-utils";
 import Polygon from "./polygon";
+import Exportable from "../../base/exportable";
 
-export default class Box extends Shape implements Collidable, Updatable<Box> {
+export default class Box extends Shape implements Collidable, Importable<Box>, Exportable<Box> {
 
     private readonly _halfSize: Vector2;
 
@@ -88,6 +89,12 @@ export default class Box extends Shape implements Collidable, Updatable<Box> {
 
     public inertia(mass: number): number {
         return mass * (this._halfSize.x * this._halfSize.x + this._halfSize.y * this._halfSize.y) / 6
+    }
+
+    public export(box: Box): any {
+        const result: any = super.export(box);
+        result._halfSize = this._halfSize;
+        return result;
     }
 
 }

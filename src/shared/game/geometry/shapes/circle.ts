@@ -1,12 +1,13 @@
 import Shape from "./shape";
-import Updatable from "../../base/updatable";
+import Importable from "../../base/importable";
 import Vector2 from "../../data/vector2";
 import Box from "./box";
 import CollisionDetector from "../collision-detector";
 import {metersToPixels} from "../../../utils/common-utils";
 import Polygon from "./polygon";
+import Exportable from "../../base/exportable";
 
-export default class Circle extends Shape implements Updatable<Circle> {
+export default class Circle extends Shape implements Importable<Circle>, Exportable<Circle> {
 
     protected _radius: number;
 
@@ -68,6 +69,12 @@ export default class Circle extends Shape implements Updatable<Circle> {
 
     public inertia(mass: number): number {
         return mass * this._radius * this._radius / 2
+    }
+
+    public export(circle: Circle): any {
+        const result: any = super.export(circle);
+        result._radius = this._radius;
+        return result;
     }
 
 }

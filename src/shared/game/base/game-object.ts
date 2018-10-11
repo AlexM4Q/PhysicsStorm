@@ -1,9 +1,10 @@
-import Updatable from "./updatable";
+import Importable from "./importable";
+import Exportable from "./exportable";
 
 /**
  * Игровой объект
  */
-export default abstract class GameObject implements Updatable<GameObject> {
+export default abstract class GameObject implements Importable<GameObject>, Exportable<GameObject> {
 
     private readonly _id: string;
 
@@ -19,8 +20,15 @@ export default abstract class GameObject implements Updatable<GameObject> {
 
     public abstract draw(canvasContext: CanvasRenderingContext2D): void;
 
-    public updateBy(gameObject: GameObject): void {
+    public import(gameObject: GameObject): void {
         this.color = gameObject.color;
+    }
+
+    public export(gameObject: GameObject): any {
+        return {
+            _id: this._id,
+            color: this.color
+        };
     }
 
 }

@@ -1,12 +1,13 @@
 import GameObject from "../base/game-object";
 import Vector2 from "../data/vector2";
 import Shape from "../geometry/shapes/shape";
-import Updatable from "../base/updatable";
+import Importable from "../base/importable";
+import Exportable from "../base/exportable";
 
 /**
  * Движимая частица с формой и цветом без столкновений
  */
-export default abstract class Particle extends GameObject implements Updatable<Particle> {
+export default abstract class Particle extends GameObject implements Importable<Particle>, Exportable<Particle> {
 
     protected readonly _shape: Shape;
 
@@ -44,16 +45,16 @@ export default abstract class Particle extends GameObject implements Updatable<P
 
     public abstract step(dt: number): void;
 
-    public updateBy(particle: Particle): void {
-        super.updateBy(particle);
+    public import(particle: Particle): void {
+        super.import(particle);
 
-        if (particle._shape !== undefined) {
-            this._shape.updateBy(particle._shape);
-        }
+        this._shape.import(particle._shape);
+    }
 
-        if (particle.linearVelocity !== undefined) {
-            this.linearVelocity = Vector2.parse(particle.linearVelocity);
-        }
+    public export(particle: Particle): any {
+        const result: any = super.export(particle);
+        result._shape = this._shape.export(particle && particle._shape);
+        return result;
     }
 
 }

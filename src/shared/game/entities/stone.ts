@@ -4,9 +4,10 @@ import {STONE} from "../physics/material/materials";
 import Polygon from "../geometry/shapes/polygon";
 import EntityFactory from "../entity-factory";
 import TYPES from "../../inversify.types";
-import Updatable from "../base/updatable";
+import Importable from "../base/importable";
+import Exportable from "../base/exportable";
 
-export default class Stone extends RigidBody implements Updatable<Stone> {
+export default class Stone extends RigidBody implements Importable<Stone>, Exportable<Stone> {
 
     public constructor(id: string, position: Vector2, vertices: Vector2[]) {
         super(

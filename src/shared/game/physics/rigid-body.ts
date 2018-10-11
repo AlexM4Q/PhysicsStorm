@@ -2,11 +2,12 @@ import Particle from "./particle";
 import {g} from "../../constants";
 import Vector2 from "../data/vector2";
 import Shape from "../geometry/shapes/shape";
-import Updatable from "../base/updatable";
+import Importable from "../base/importable";
 import MassData from "./mass-data";
 import Material from "./material/material";
+import Exportable from "../base/exportable";
 
-export default abstract class RigidBody extends Particle implements Updatable<RigidBody> {
+export default abstract class RigidBody extends Particle implements Importable<RigidBody>, Exportable<RigidBody> {
 
     private static readonly FORCE_TOLERANCE: number = 0.025;
 
@@ -140,11 +141,16 @@ export default abstract class RigidBody extends Particle implements Updatable<Ri
         }
     }
 
-    public updateBy(rigidBody: RigidBody): void {
-        super.updateBy(rigidBody);
+    public import(rigidBody: RigidBody): void {
+        super.import(rigidBody);
 
         this._isGrounded = rigidBody._isGrounded;
-        this._angularVelocity = rigidBody._angularVelocity;
+    }
+
+    public export(rigidBody: RigidBody): any {
+        const result: any = super.export(rigidBody);
+        result._isGrounded = this._isGrounded;
+        return result;
     }
 
 }

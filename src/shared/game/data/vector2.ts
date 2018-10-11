@@ -138,4 +138,14 @@ export default class Vector2 {
     public static parse(target: Vector2): Vector2 {
         return new Vector2(target._x, target._y);
     }
+
+    /**
+     * Проверяет равенство двух векторов
+     * @param a Первый вектор
+     * @param b Второй вектор
+     */
+    public static equal(a: Vector2, b: Vector2): boolean {
+        return a && b && a._x === b._x && a._y === b._y;
+    }
+
 }

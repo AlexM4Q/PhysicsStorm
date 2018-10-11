@@ -1,6 +1,6 @@
-import Updatable from "../base/updatable";
+import Importable from "../base/importable";
 
-export default class MassData implements Updatable<MassData> {
+export default class MassData implements Importable<MassData> {
 
     /**
      * Масса
@@ -55,7 +55,7 @@ export default class MassData implements Updatable<MassData> {
         return this._inverseInertia;
     }
 
-    public updateBy(massData: MassData): void {
+    public import(massData: MassData): void {
         if (massData._mass !== undefined) {
             this._mass = massData._mass;
         }

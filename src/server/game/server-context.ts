@@ -36,6 +36,8 @@ export default class ServerContext {
         //     [WS_KEY_TYPE]: WS_KEY_TYPE_STATE,
         //     [WS_KEY_DATA]: this._world.particles.toArray()
         // });
+
+        new WorldGenerator(this._world).generate();
         this._world.start();
 
         setInterval(() => gameServer.sendAll({
