@@ -1,11 +1,11 @@
 import "./app.css";
-import React, {ReactNode} from "react";
+import React, {Component, ReactNode} from "react";
 import {clientContainer} from "./inversify.config";
 import {CLIENT_TYPES} from "./inversify.types";
 import InputController from "./game/input-controller";
-import {WORLD_HEIGHT, WORLD_WIDTH} from "../shared/constants";
+import {isMobile} from "./utils/app-utils";
 
-export default class App extends React.Component {
+export default class App extends Component {
 
     private readonly _inputController: InputController;
 
@@ -16,17 +16,43 @@ export default class App extends React.Component {
     }
 
     public componentDidMount(): void {
-        document.addEventListener("keydown", (e: any) => this._inputController.onKeyDown(e));
-        document.addEventListener("keyup", (e: any) => this._inputController.onKeyUp(e));
-        document.addEventListener("click", (e: any) => this._inputController.onClick(e));
-
         this._inputController.startGame();
     }
 
     public render(): ReactNode {
-        return (
-            <canvas id="scene" width={WORLD_WIDTH} height={WORLD_HEIGHT}/>
-        );
+        const width: number = window.innerWidth;
+        const height: number = window.innerHeight;
+
+        if (isMobile) {
+            return (
+                <div>
+                    <canvas id="scene"
+                            width={width}
+                            height={height}
+                            onTouchStart={(e: any) => this._inputController.onClick(e)}/>
+
+                    <div id="left"
+                         onTouchStart={() => this._inputController.left()}
+                         onTouchEnd={() => this._inputController.stop()}/>
+
+                    <div id="right"
+                         onTouchStart={() => this._inputController.right()}
+                         onTouchEnd={() => this._inputController.stop()}/>
+
+                    <div id="jump" onTouchStart={() => this._inputController.jump()}/>
+                </div>
+            );
+        } else {
+            document.addEventListener("keydown", (e: any) => this._inputController.onKeyDown(e));
+            document.addEventListener("keyup", (e: any) => this._inputController.onKeyUp(e));
+
+            return (
+                <canvas id="scene"
+                        width={width}
+                        height={height}
+                        onClick={(e: any) => this._inputController.onClick(e)}/>
+            );
+        }
     }
 
 }

@@ -25,6 +25,14 @@ module.exports = {
                 test: /\.ts|\.tsx?$/,
                 exclude: nodeModulesDirectory,
                 use: ["babel-loader"]
+            },
+            {
+                test: /\.svg$/,
+                loader: "svg-url-loader",
+                options: {
+                    limit: 10 * 1024,
+                    noquotes: true,
+                }
             }
         ]
     },

@@ -20,13 +20,13 @@ export default class InputController {
     public onKeyDown(event: any): void {
         switch (event.code) {
             case "KeyA":
-                this._context.left();
+                this.left();
                 break;
             case "KeyD":
-                this._context.right();
+                this.right();
                 break;
             case "Space":
-                this._context.jump();
+                this.jump();
                 break;
         }
     }
@@ -35,15 +35,36 @@ export default class InputController {
         switch (event.code) {
             case "KeyA":
             case "KeyD":
-                this._context.stop();
+                this.stop();
                 break;
         }
     }
 
     public onClick(event: any): void {
-        if (event.path[0].id === "scene") {
-            this._context.click(new Vector2(event.layerX, WORLD_HEIGHT - event.layerY));
+        switch (event.type) {
+            case "click":
+                this._context.click(new Vector2(event.clientX, WORLD_HEIGHT - event.clientY));
+                break;
+            case "touchstart":
+                this._context.click(new Vector2(event.touches[0].clientX, WORLD_HEIGHT - event.touches[0].clientY));
+                break;
         }
+    }
+
+    public left(): void {
+        this._context.left();
+    }
+
+    public right(): void {
+        this._context.right();
+    }
+
+    public jump(): void {
+        this._context.jump();
+    }
+
+    public stop(): void {
+        this._context.stop();
     }
 
 }

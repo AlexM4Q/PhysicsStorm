@@ -1,8 +1,33 @@
-html, body {
+@value buttonSize: 50px;
+
+html, body, canvas {
     margin: 0;
     padding: 0;
 }
 
-canvas {
-    border: 1px solid black;
+#left {
+    width: buttonSize;
+    height: buttonSize;
+    background-image: url("./images/button-left.svg");
+    position: absolute;
+    left: 5%;
+    bottom: 5%;
+}
+
+#right {
+    width: buttonSize;
+    height: buttonSize;
+    background-image: url("./images/button-right.svg");
+    position: absolute;
+    left: calc(10% + buttonSize);
+    bottom: 5%;
+}
+
+#jump {
+    width: buttonSize;
+    height: buttonSize;
+    background-image: url("./images/button-jump.svg");
+    position: absolute;
+    right: 5%;
+    bottom: 5%;
 }

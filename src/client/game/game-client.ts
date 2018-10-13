@@ -18,8 +18,8 @@ import {
     WS_KEY_INPUT_STOP,
     WS_KEY_TIME
 } from "../../shared/constants-ws";
-import AppUtils from "../utils/app-utils";
 import {getLogger} from "../../shared/logging/loggers";
+import {isProd} from "../utils/app-utils";
 
 export default class GameClient {
 
@@ -54,7 +54,7 @@ export default class GameClient {
 
         const thiz: GameClient = this;
 
-        this._socket = AppUtils.isProd() ? connect(GameClient.opts) : connect(WS_DEV_HOST, GameClient.opts);
+        this._socket = isProd ? connect(GameClient.opts) : connect(WS_DEV_HOST, GameClient.opts);
         this._socket.on(WS_EVENT_CONNECT, () => {
             GameClient.log.debug("Connected to server");
 
