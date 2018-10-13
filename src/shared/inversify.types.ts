@@ -5,7 +5,8 @@ const TYPES = {
     Ball: "e002",
     Cube: "e003",
     Stone: "e004",
-    Bullet: "e005"
+    Bullet: "e005",
+    MagnetCube: "e006",
 };
 
 export default TYPES;
