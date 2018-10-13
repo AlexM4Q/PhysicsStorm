@@ -27,6 +27,11 @@ module.exports = {
                 use: ["babel-loader"]
             },
             {
+                test: /\.(jpg|png|gif|svg)$/,
+                enforce: "pre",
+                use: ["image-webpack-loader"]
+            },
+            {
                 test: /\.svg$/,
                 loader: "svg-url-loader",
                 options: {
