@@ -16,6 +16,10 @@ export default class Renderer {
         this._context.clearRect(0, 0, this._scene.width, this._scene.height);
 
         for (const id in particles.map) {
+            if (!particles.map.hasOwnProperty(id)) {
+                continue;
+            }
+
             particles.getObject(id).draw(this._context);
         }
     }

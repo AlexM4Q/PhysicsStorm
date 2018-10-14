@@ -28,7 +28,7 @@ export default class Circle extends Shape implements Importable<Circle>, Exporta
 
     public collideBox(box: Box): Vector2 {
         const penetration: Vector2 = CollisionDetector.collideBoxCircle(box, this);
-        return penetration ? penetration.factor(-1) : null;
+        return penetration ? penetration.factor(-1) : undefined;
     }
 
     public collideCircle(circle: Circle): Vector2 {
@@ -68,7 +68,7 @@ export default class Circle extends Shape implements Importable<Circle>, Exporta
     }
 
     public inertia(mass: number): number {
-        return mass * this._radius * this._radius / 2
+        return mass * this._radius * this._radius / 2;
     }
 
     public export(circle: Circle): any {

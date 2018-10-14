@@ -26,18 +26,21 @@ export default class App extends Component {
         if (isMobile) {
             return (
                 <div>
-                    <canvas id="scene"
-                            width={width}
-                            height={height}
-                            onTouchStart={(e: any) => this._inputController.onClick(e)}/>
+                    <canvas
+                        id="scene"
+                        width={width}
+                        height={height}
+                        onTouchStart={(e: any) => this._inputController.onClick(e)}/>
 
-                    <div id="left"
-                         onTouchStart={() => this._inputController.left()}
-                         onTouchEnd={() => this._inputController.stop()}/>
+                    <div
+                        id="left"
+                        onTouchStart={() => this._inputController.left()}
+                        onTouchEnd={() => this._inputController.stop()}/>
 
-                    <div id="right"
-                         onTouchStart={() => this._inputController.right()}
-                         onTouchEnd={() => this._inputController.stop()}/>
+                    <div
+                        id="right"
+                        onTouchStart={() => this._inputController.right()}
+                        onTouchEnd={() => this._inputController.stop()}/>
 
                     <div id="jump" onTouchStart={() => this._inputController.jump()}/>
                 </div>

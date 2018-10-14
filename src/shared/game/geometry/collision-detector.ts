@@ -22,7 +22,7 @@ export default class CollisionDetector {
             return shapeA.collidePolygon(shapeB);
         }
 
-        return null;
+        return undefined;
     }
 
     public static collideBoxBox(boxA: Box, boxB: Box): Vector2 {
@@ -39,7 +39,7 @@ export default class CollisionDetector {
                 dx -= widthSum;
             }
         } else {
-            return null;
+            return undefined;
         }
 
         let dy: number = positionA.y - positionB.y;
@@ -51,7 +51,7 @@ export default class CollisionDetector {
                 dy -= heightSum;
             }
         } else {
-            return null;
+            return undefined;
         }
 
         const absDx: number = Math.abs(dx);
@@ -74,14 +74,14 @@ export default class CollisionDetector {
         if (leftBox > circleB.position.x) {
             dx = leftBox - circleB.position.x;
             if (dx > circleB.radius) {
-                return null;
+                return undefined;
             }
         } else {
             const rightBox: number = boxA.position.x + boxA.halfSize.x;
             if (rightBox < circleB.position.x) {
                 dx = rightBox - circleB.position.x;
                 if (-dx > circleB.radius) {
-                    return null;
+                    return undefined;
                 }
             } else {
                 dx = 0;
@@ -93,14 +93,14 @@ export default class CollisionDetector {
         if (topBox < circleB.position.y) {
             dy = topBox - circleB.position.y;
             if (-dy > circleB.radius) {
-                return null;
+                return undefined;
             }
         } else {
             const bottomBox: number = boxA.position.y - boxA.halfSize.y;
             if (bottomBox > circleB.position.y) {
                 dy = bottomBox - circleB.position.y;
                 if (dy > circleB.radius) {
-                    return null;
+                    return undefined;
                 }
             } else {
                 dy = 0;
@@ -113,7 +113,7 @@ export default class CollisionDetector {
 
         const distance: number = Math.sqrt(dx * dx + dy * dy);
         if (distance >= circleB.radius) {
-            return null;
+            return undefined;
         }
 
         const factor: number = 1 - circleB.radius / distance;
@@ -128,7 +128,7 @@ export default class CollisionDetector {
         const distance: number = Math.sqrt(dx * dx + dy * dy);
 
         if (distance >= radiusSum) {
-            return null;
+            return undefined;
         }
 
         const factor: number = radiusSum / distance - 1;
