@@ -1,10 +1,18 @@
 {
   "author": "AlexM4Q",
-  "license": "ISC",
+  "license": "AGPL-3.0",
   "name": "physics-storm",
   "version": "1.0.0",
-  "description": "Let's try write js-Game",
+  "description": "Let's try write ts-Game",
   "main": "src/server/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlexM4Q/PhysicsStorm.git"
+  },
+  "bugs": {
+    "url": "https://github.com/AlexM4Q/PhysicsStorm/issues"
+  },
+  "homepage": "https://github.com/AlexM4Q/PhysicsStorm#readme",
   "scripts": {
     "test": "mocha -r ts-node/register test/**/*.spec.ts",
     "dev:client": "webpack-dev-server --config webpack.dev.js --content-base ./build --hot --inline --colors --port 3000 --open",
@@ -12,6 +20,8 @@
     "tslint": "tslint --project tsconfig.json",
     "tsc": "tsc -p tsconfig.json",
     "ci": "npm run build && npm run test",
+    "cover": "istanbul cover -e .ts ./node_modules/mocha/bin/_mocha -- -r ts-node/register test/**/*.spec.ts",
+    "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | coveralls",
     "build": "webpack --config webpack.prod.js",
     "start": "ts-node ./src/server/index.ts"
   },
@@ -57,7 +67,9 @@
     "css-loader": "^0.28.11",
     "html-webpack-plugin": "^3.2.0",
     "image-webpack-loader": "^4.3.1",
+    "istanbul": "next",
     "mini-css-extract-plugin": "^0.4.3",
+    "mocha-lcov-reporter": "^1.3.0",
     "nodemon": "^1.18.4",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "source-map-loader": "^0.2.4",
