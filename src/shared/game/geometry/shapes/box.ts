@@ -88,7 +88,7 @@ export default class Box extends Shape implements Collidable, Importable<Box>, E
     }
 
     public inertia(mass: number): number {
-        return mass * (this._halfSize.x * this._halfSize.x + this._halfSize.y * this._halfSize.y) / 6
+        return mass * (this._halfSize.x * this._halfSize.x + this._halfSize.y * this._halfSize.y) / 6;
     }
 
     public export(box: Box): any {

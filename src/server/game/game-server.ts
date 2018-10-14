@@ -81,6 +81,10 @@ export default class GameServer {
 
     public sendAll(message: object): void {
         for (const id in this._clients) {
+            if (!this._clients.hasOwnProperty(id)) {
+                continue;
+            }
+
             const client: Socket = this._clients[id];
             if (client) {
                 client.emit(WS_EVENT_MESSAGE, message);

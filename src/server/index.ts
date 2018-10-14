@@ -1,4 +1,5 @@
-import express from "express";
+import http from "http";
+import express, {Application} from "express";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import {SERVER_PORT} from "./constants";
@@ -6,44 +7,35 @@ import ServerContext from "./game/server-context";
 import {serverContainer} from "./inversify.config";
 import SERVER_TYPES from "./inversify.types";
 import Logger from "../shared/logging/logger";
-import * as http from "http";
 import {getLogger} from "../shared/logging/loggers";
 
-class Server {
+const log: Logger = getLogger({name: "Server"});
+const dbUrl: string = "mongodb://localhost:27017/PhysicsStorm";
 
-    private static readonly log: Logger = getLogger(Server);
+function start() {
+    const app: Application = express();
 
-    private static readonly dbUrl: string = "mongodb://localhost:27017/PhysicsStorm";
+    middleware(app);
+    // this.mongoSetup();
+    // this.routes(app);
 
-    private readonly _app: express.Application;
+    const server: http.Server = app.listen(SERVER_PORT, () => log.info(`Listening on port ${SERVER_PORT}!`));
 
-    public constructor() {
-        this._app = express();
-
-        this.middleware();
-        // this.mongoSetup();
-        // this.routes();
-
-        const server: http.Server = this._app
-            .listen(SERVER_PORT, () => Server.log.info(`Listening on port ${SERVER_PORT}!`));
-
-        serverContainer.get<ServerContext>(SERVER_TYPES.ServerContext).startServer(server);
-    }
-
-    private middleware(): void {
-        this._app.use(express.static("build"));
-        this._app.use(bodyParser.json());
-        this._app.use(bodyParser.urlencoded({extended: false}));
-    }
-
-    private mongoSetup(): void {
-        mongoose.connect(Server.dbUrl, {useNewUrlParser: true});
-    }
-
-    private routes(): void {
-        // this._app.use("/api/v1/users", UsersApi);
-    }
-
+    serverContainer.get<ServerContext>(SERVER_TYPES.ServerContext).startServer(server);
 }
 
-new Server();
+function middleware(app: Application): void {
+    app.use(express.static("build"));
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({extended: false}));
+}
+
+function mongoSetup(): void {
+    mongoose.connect(dbUrl, {useNewUrlParser: true});
+}
+
+function routes(app: Application): void {
+    // app.use("/api/v1/users", UsersApi);
+}
+
+start();

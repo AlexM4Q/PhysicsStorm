@@ -6,12 +6,12 @@ export default abstract class Logger {
         this._name = _clazz.name;
     }
 
-    abstract debug(message: any): void;
+    public abstract debug(message: any): void;
 
-    abstract info(message: any): void;
+    public abstract info(message: any): void;
 
-    abstract warn(message: any): void;
+    public abstract warn(message: any): void;
 
-    abstract error(message: any): void;
+    public abstract error(message: any): void;
 
 }

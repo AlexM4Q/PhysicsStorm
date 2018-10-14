@@ -22,9 +22,17 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.ts|\.tsx?$/,
+                test: /\.tsx?$/,
                 exclude: nodeModulesDirectory,
-                use: ["babel-loader"]
+                loader: "babel-loader"
+            },
+            {
+                test: /\.(jpg|png|gif|svg)$/,
+                enforce: "pre",
+                loader: "image-webpack-loader",
+                options: {
+                    bypassOnDebug: true
+                }
             },
             {
                 test: /\.svg$/,

@@ -4,7 +4,6 @@ import {PHYSICS_INTERVAL} from "../constants";
 import {decorate, injectable} from "inversify";
 import Vector2 from "./data/vector2";
 import RigidBody from "./physics/rigid-body";
-import WorldGenerator from "./world-generator";
 import CollisionResolver from "./geometry/collision-resolver";
 import Manifold from "./geometry/manifold";
 import CollisionDetector from "./geometry/collision-detector";
@@ -58,6 +57,10 @@ export default class World {
         const manifolds: Manifold[] = [];
 
         for (const particleId in this._particles.map) {
+            if (!this._particles.map.hasOwnProperty(particleId)) {
+                continue;
+            }
+
             const particle: Particle = this._particles.getObject(particleId);
             if (particle.isStatic || !(particle instanceof RigidBody)) {
                 continue;
@@ -72,6 +75,10 @@ export default class World {
             }
 
             for (const collideId in this._particles.map) {
+                if (!this._particles.map.hasOwnProperty(collideId)) {
+                    continue;
+                }
+
                 if (particleId === collideId) {
                     continue;
                 }
