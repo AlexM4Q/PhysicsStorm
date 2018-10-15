@@ -3,6 +3,7 @@ import Vector2 from "../data/vector2";
 import Shape from "../geometry/shapes/shape";
 import Importable from "../base/importable";
 import Exportable from "../base/exportable";
+import Viewport from "../data/viewport";
 
 /**
  * Движимая частица с формой и цветом без столкновений
@@ -38,9 +39,9 @@ export default abstract class Particle extends GameObject implements Importable<
         this._isStatic = isStatic;
     }
 
-    public draw(canvasContext: CanvasRenderingContext2D): void {
+    public draw(canvasContext: CanvasRenderingContext2D, viewport: Viewport): void {
         canvasContext.fillStyle = this.color;
-        this._shape.draw(canvasContext);
+        this._shape.draw(canvasContext, viewport);
     }
 
     public abstract step(dt: number): void;

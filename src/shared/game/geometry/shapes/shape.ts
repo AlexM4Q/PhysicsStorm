@@ -5,6 +5,7 @@ import Box from "./box";
 import Circle from "./circle";
 import Polygon from "./polygon";
 import Exportable from "../../base/exportable";
+import Viewport from "../../data/viewport";
 
 export default abstract class Shape implements Collidable, Importable<Shape>, Exportable<Shape> {
 
@@ -25,7 +26,7 @@ export default abstract class Shape implements Collidable, Importable<Shape>, Ex
     /**
      * Отрисовка фигуры
      */
-    public abstract draw(canvasContext: CanvasRenderingContext2D): void;
+    public abstract draw(canvasContext: CanvasRenderingContext2D, viewport: Viewport): void;
 
     /**
      * Вращает Фигуру на заданный угол в радианах

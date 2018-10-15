@@ -7,6 +7,7 @@ import CollisionDetector from "../collision-detector";
 import {metersToPixels} from "../../../utils/common-utils";
 import Polygon from "./polygon";
 import Exportable from "../../base/exportable";
+import Viewport from "../../data/viewport";
 
 export default class Box extends Shape implements Collidable, Importable<Box>, Exportable<Box> {
 
@@ -34,10 +35,10 @@ export default class Box extends Shape implements Collidable, Importable<Box>, E
         return CollisionDetector.collideShapeShape(this, polygon);
     }
 
-    public draw(canvasContext: CanvasRenderingContext2D): void {
+    public draw(canvasContext: CanvasRenderingContext2D, viewport: Viewport): void {
         canvasContext.fillRect(
-            metersToPixels(this.position.x - this._halfSize.x),
-            metersToPixels(this.position.y - this._halfSize.y),
+            viewport.center.x + metersToPixels(this.position.x - this._halfSize.x),
+            viewport.center.y + metersToPixels(this.position.y - this._halfSize.y),
             metersToPixels(this._halfSize.x * 2),
             metersToPixels(this._halfSize.y * 2)
         );

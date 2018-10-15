@@ -25,7 +25,11 @@ export default class ClientContext {
         const scene: HTMLCanvasElement = document.getElementById("scene") as HTMLCanvasElement;
         const renderer: Renderer = new Renderer(scene);
 
-        this._world.onWorldUpdate = () => renderer.draw(this._world.particles);
+        this._world.onWorldUpdate = () => {
+            if (this._player) {
+                renderer.draw(this._world.particles, this._player.position);
+            }
+        };
 
         this._client.onRegister = (id: string) => this._world.addObject(this._player = Player.createNew(id));
 

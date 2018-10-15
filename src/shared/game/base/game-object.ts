@@ -1,5 +1,6 @@
 import Importable from "./importable";
 import Exportable from "./exportable";
+import Viewport from "../data/viewport";
 
 /**
  * Игровой объект
@@ -18,7 +19,7 @@ export default abstract class GameObject implements Importable<GameObject>, Expo
         this._id = id;
     }
 
-    public abstract draw(canvasContext: CanvasRenderingContext2D): void;
+    public abstract draw(canvasContext: CanvasRenderingContext2D, viewport: Viewport): void;
 
     public import(gameObject: GameObject): void {
         this.color = gameObject.color;

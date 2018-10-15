@@ -6,6 +6,7 @@ import CollisionDetector from "../collision-detector";
 import {metersToPixels} from "../../../utils/common-utils";
 import Polygon from "./polygon";
 import Exportable from "../../base/exportable";
+import Viewport from "../../data/viewport";
 
 export default class Circle extends Shape implements Importable<Circle>, Exportable<Circle> {
 
@@ -39,11 +40,11 @@ export default class Circle extends Shape implements Importable<Circle>, Exporta
         return CollisionDetector.collideShapeShape(this, polygon);
     }
 
-    public draw(canvasContext: CanvasRenderingContext2D): void {
+    public draw(canvasContext: CanvasRenderingContext2D, viewport: Viewport): void {
         canvasContext.beginPath();
         canvasContext.arc(
-            metersToPixels(this.position.x),
-            metersToPixels(this.position.y),
+            viewport.center.x + metersToPixels(this.position.x),
+            viewport.center.y + metersToPixels(this.position.y),
             metersToPixels(this._radius),
             0, 2 * Math.PI
         );
