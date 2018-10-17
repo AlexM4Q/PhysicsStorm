@@ -2,7 +2,6 @@ import {decorate, inject, injectable} from "inversify";
 import Vector2 from "../../shared/game/data/vector2";
 import ClientContext from "./client-context";
 import {CLIENT_TYPES} from "../inversify.types";
-import {WORLD_HEIGHT} from "../../shared/constants";
 
 // todo Наладить систему управления
 export default class InputController {
@@ -41,12 +40,13 @@ export default class InputController {
     }
 
     public onClick(event: any): void {
+        const sceneHeight: number = event.target.height;
         switch (event.type) {
             case "click":
-                this._context.click(new Vector2(event.clientX, WORLD_HEIGHT - event.clientY));
+                this._context.click(new Vector2(event.clientX, sceneHeight - event.clientY));
                 break;
             case "touchstart":
-                this._context.click(new Vector2(event.touches[0].clientX, WORLD_HEIGHT - event.touches[0].clientY));
+                this._context.click(new Vector2(event.touches[0].clientX, sceneHeight - event.touches[0].clientY));
                 break;
         }
     }

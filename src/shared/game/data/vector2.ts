@@ -1,6 +1,6 @@
 export default class Vector2 {
 
-    public static readonly ZERO: Vector2 = new Vector2(0, 0);
+    public static readonly ZERO: Vector2 = new Vector2();
 
     public get x(): number {
         return this._x;

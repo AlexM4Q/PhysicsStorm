@@ -14,6 +14,8 @@ export default class ClientContext {
 
     private readonly _client: GameClient;
 
+    private _renderer: Renderer;
+
     private _player: Player;
 
     public constructor(world: World) {
@@ -22,12 +24,11 @@ export default class ClientContext {
     }
 
     public startGame(): void {
-        const scene: HTMLCanvasElement = document.getElementById("scene") as HTMLCanvasElement;
-        const renderer: Renderer = new Renderer(scene);
+        this._renderer = new Renderer(document.getElementById("scene") as HTMLCanvasElement);
 
         this._world.onWorldUpdate = () => {
             if (this._player) {
-                renderer.draw(this._world.particles, this._player.position);
+                this._renderer.draw(this._world.particles, this._player.position);
             }
         };
 
@@ -73,12 +74,12 @@ export default class ClientContext {
     }
 
     public click(target: Vector2): void {
-        this._player.shoot(target);
-        this._client.click(target);
+        const worldTarget: Vector2 = target.subtract(this._renderer.viewport.center);
+        this._player.shoot(worldTarget);
+        this._client.click(worldTarget);
     }
 
 }
 
 decorate(injectable(), ClientContext);
 decorate(inject(CLIENT_TYPES.World) as any, ClientContext, 0);
-decorate(inject(CLIENT_TYPES.Player) as any, ClientContext, 1);

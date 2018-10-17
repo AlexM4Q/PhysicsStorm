@@ -10,6 +10,12 @@ export default class Renderer {
 
     private readonly _context: CanvasRenderingContext2D;
 
+    private _viewport: Viewport;
+
+    public get viewport(): Viewport {
+        return this._viewport;
+    }
+
     public constructor(scene: HTMLCanvasElement) {
         this._scene = scene;
         this._context = scene.getContext("2d");
@@ -21,15 +27,15 @@ export default class Renderer {
         const height: number = this._scene.height;
         this._context.clearRect(0, 0, width, height);
 
-        const viewport: Viewport = new Viewport(new Vector2(
-            -metersToPixels(position.x) + width / 2,
-            -metersToPixels(position.y) + height / 2
+        this._viewport = new Viewport(new Vector2(
+            width / 2 - metersToPixels(position.x),
+            height / 2 - metersToPixels(position.y)
         ));
 
         for (const id in particles.map) {
             const particle: Particle = particles.getObject(id);
             if (particle) {
-                particle.draw(this._context, viewport);
+                particle.draw(this._context, this._viewport);
             }
         }
     }
