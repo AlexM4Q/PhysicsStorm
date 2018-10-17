@@ -34,13 +34,13 @@ export default class App extends Component {
 
                     <div
                         id="left"
-                        onTouchStart={() => this._inputController.left()}
-                        onTouchEnd={() => this._inputController.stop()}/>
+                        onTouchStart={() => this._inputController.left(true)}
+                        onTouchEnd={() => this._inputController.left(false)}/>
 
                     <div
                         id="right"
-                        onTouchStart={() => this._inputController.right()}
-                        onTouchEnd={() => this._inputController.stop()}/>
+                        onTouchStart={() => this._inputController.right(true)}
+                        onTouchEnd={() => this._inputController.right(false)}/>
 
                     <div id="jump" onTouchStart={() => this._inputController.jump()}/>
                 </div>

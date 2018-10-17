@@ -3,10 +3,13 @@ import Vector2 from "../../shared/game/data/vector2";
 import ClientContext from "./client-context";
 import {CLIENT_TYPES} from "../inversify.types";
 
-// todo Наладить систему управления
 export default class InputController {
 
     private readonly _context: ClientContext;
+
+    private pressingLeft: boolean;
+
+    private pressingRight: boolean;
 
     public constructor(context: ClientContext) {
         this._context = context;
@@ -19,10 +22,10 @@ export default class InputController {
     public onKeyDown(event: any): void {
         switch (event.code) {
             case "KeyA":
-                this.left();
+                this.left(true);
                 break;
             case "KeyD":
-                this.right();
+                this.right(true);
                 break;
             case "Space":
                 this.jump();
@@ -33,8 +36,10 @@ export default class InputController {
     public onKeyUp(event: any): void {
         switch (event.code) {
             case "KeyA":
+                this.left(false);
+                break;
             case "KeyD":
-                this.stop();
+                this.right(false);
                 break;
         }
     }
@@ -51,20 +56,28 @@ export default class InputController {
         }
     }
 
-    public left(): void {
-        this._context.left();
+    public left(pressing: boolean): void {
+        this.pressingLeft = pressing;
+        this.processMovement();
     }
 
-    public right(): void {
-        this._context.right();
+    public right(pressing: boolean): void {
+        this.pressingRight = pressing;
+        this.processMovement();
+    }
+
+    private processMovement(): void {
+        if (this.pressingLeft === this.pressingRight) {
+            this._context.stop();
+        } else if (this.pressingLeft) {
+            this._context.left();
+        } else if (this.pressingRight) {
+            this._context.right();
+        }
     }
 
     public jump(): void {
         this._context.jump();
-    }
-
-    public stop(): void {
-        this._context.stop();
     }
 
 }
