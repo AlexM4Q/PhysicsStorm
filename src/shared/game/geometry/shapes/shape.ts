@@ -1,13 +1,12 @@
 import Vector2 from "../../data/vector2";
-import Importable from "../../base/importable";
 import Collidable from "./collidable";
 import Box from "./box";
 import Circle from "./circle";
 import Polygon from "./polygon";
-import Exportable from "../../base/exportable";
 import Viewport from "../../data/viewport";
+import Transferable from "../../base/transferable";
 
-export default abstract class Shape implements Collidable, Importable<Shape>, Exportable<Shape> {
+export default abstract class Shape implements Collidable, Transferable<Shape> {
 
     public position: Vector2;
 
@@ -72,12 +71,16 @@ export default abstract class Shape implements Collidable, Importable<Shape>, Ex
      */
     public abstract inertia(mass: number): number;
 
-    public import(shape: Shape): void {
-        this.position = Vector2.parse(shape.position);
-    }
-
     public export(shape: Shape): any {
         return {position: this.position};
+    }
+
+    public compare(shape: Shape): boolean {
+        return this.position.compare(shape.position, 1);
+    }
+
+    public import(shape: Shape): void {
+        this.position = Vector2.parse(shape.position);
     }
 
 }

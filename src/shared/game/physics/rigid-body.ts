@@ -2,12 +2,11 @@ import Particle from "./particle";
 import {g} from "../../constants";
 import Vector2 from "../data/vector2";
 import Shape from "../geometry/shapes/shape";
-import Importable from "../base/importable";
 import MassData from "./mass-data";
 import Material from "./material/material";
-import Exportable from "../base/exportable";
+import Transferable from "../base/transferable";
 
-export default abstract class RigidBody extends Particle implements Importable<RigidBody>, Exportable<RigidBody> {
+export default abstract class RigidBody extends Particle implements Transferable<RigidBody> {
 
     private static readonly FORCE_TOLERANCE: number = 0.025;
 
@@ -141,16 +140,20 @@ export default abstract class RigidBody extends Particle implements Importable<R
         }
     }
 
-    public import(rigidBody: RigidBody): void {
-        super.import(rigidBody);
-
-        this._isGrounded = rigidBody._isGrounded;
-    }
-
     public export(rigidBody: RigidBody): any {
         const result: any = super.export(rigidBody);
         result._isGrounded = this._isGrounded;
         return result;
+    }
+
+    public compare(rigidBody: RigidBody): boolean {
+        return super.compare(rigidBody) && this._isGrounded === rigidBody._isGrounded;
+    }
+
+    public import(rigidBody: RigidBody): void {
+        super.import(rigidBody);
+
+        this._isGrounded = rigidBody._isGrounded;
     }
 
 }

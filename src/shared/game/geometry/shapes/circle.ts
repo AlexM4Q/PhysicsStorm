@@ -78,4 +78,8 @@ export default class Circle extends Shape implements Importable<Circle>, Exporta
         return result;
     }
 
+    public compare(circle: Circle): boolean {
+        return super.compare(circle) && this._radius === circle._radius;
+    }
+
 }

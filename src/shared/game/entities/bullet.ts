@@ -1,12 +1,12 @@
 import Vector2 from "../data/vector2";
 import Box from "../geometry/shapes/box";
-import Importable from "../base/importable";
 import RigidBody from "../physics/rigid-body";
 import {METAL} from "../physics/material/materials";
 import EntityFactory from "../entity-factory";
 import TYPES from "../../inversify.types";
+import Transferable from "../base/transferable";
 
-export default class Bullet extends RigidBody implements Importable<Bullet> {
+export default class Bullet extends RigidBody implements Transferable<Bullet> {
 
     private direction: Vector2;
 

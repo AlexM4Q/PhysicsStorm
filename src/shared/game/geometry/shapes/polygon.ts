@@ -115,4 +115,8 @@ export default class Polygon extends Shape implements Collidable, Importable<Pol
         return result;
     }
 
+    public compare(polygon: Polygon): boolean {
+        return super.compare(polygon) && this._vertices.every((e, i) => e.compare(polygon._vertices[i]));
+    }
+
 }

@@ -8,8 +8,6 @@ import CollisionResolver from "./geometry/collision-resolver";
 import Manifold from "./geometry/manifold";
 import CollisionDetector from "./geometry/collision-detector";
 import Particles from "./data/particles";
-import EntityOperator from "./entity-operator";
-
 export default class World {
 
     private readonly _particles: Particles;
@@ -43,14 +41,6 @@ export default class World {
                 this._onWorldUpdate(tick++);
             }
         }, PHYSICS_INTERVAL);
-    }
-
-    public getState(): any[] {
-        return EntityOperator.getState(this._particles);
-    }
-
-    public updateState(state: any[]): void {
-        EntityOperator.updateState(this._particles, state);
     }
 
     public updatePhysics(dt: number): void {

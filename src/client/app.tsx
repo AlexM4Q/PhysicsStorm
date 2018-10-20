@@ -30,30 +30,38 @@ export default class App extends Component {
                         id="scene"
                         width={width}
                         height={height}
-                        onTouchStart={(e: any) => this._inputController.onClick(e)}/>
+                        onTouchStart={this._inputController.onClick.bind(this._inputController)}
+                    />
 
                     <div
                         id="left"
-                        onTouchStart={() => this._inputController.left(true)}
-                        onTouchEnd={() => this._inputController.left(false)}/>
+                        onTouchStart={this._inputController.left.bind(this._inputController, true)}
+                        onTouchEnd={this._inputController.left.bind(this._inputController, false)}
+                    />
 
                     <div
                         id="right"
-                        onTouchStart={() => this._inputController.right(true)}
-                        onTouchEnd={() => this._inputController.right(false)}/>
+                        onTouchStart={this._inputController.right.bind(this._inputController, true)}
+                        onTouchEnd={this._inputController.right.bind(this._inputController, false)}
+                    />
 
-                    <div id="jump" onTouchStart={() => this._inputController.jump()}/>
+                    <div
+                        id="jump"
+                        onTouchStart={this._inputController.jump.bind(this._inputController)}
+                    />
                 </div>
             );
         } else {
-            document.addEventListener("keydown", (e: any) => this._inputController.onKeyDown(e));
-            document.addEventListener("keyup", (e: any) => this._inputController.onKeyUp(e));
+            document.addEventListener("keydown", this._inputController.onKeyDown.bind(this._inputController));
+            document.addEventListener("keyup", this._inputController.onKeyUp.bind(this._inputController));
 
             return (
-                <canvas id="scene"
-                        width={width}
-                        height={height}
-                        onClick={(e: any) => this._inputController.onClick(e)}/>
+                <canvas
+                    id="scene"
+                    width={width}
+                    height={height}
+                    onClick={this._inputController.onClick.bind(this._inputController)}
+                />
             );
         }
     }

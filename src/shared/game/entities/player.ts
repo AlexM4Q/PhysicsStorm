@@ -1,13 +1,12 @@
 import Vector, {default as Vector2} from "../data/vector2";
 import RigidBody from "../physics/rigid-body";
-import Importable from "../base/importable";
 import {METAL} from "../physics/material/materials";
 import Box from "../geometry/shapes/box";
 import EntityFactory from "../entity-factory";
 import TYPES from "../../inversify.types";
-import Exportable from "../base/exportable";
+import Transferable from "../base/transferable";
 
-export default class Player extends RigidBody implements Importable<Player>, Exportable<Player> {
+export default class Player extends RigidBody implements Transferable<Player> {
 
     private static readonly MAX_VELOCITY: number = 15;
 
@@ -75,16 +74,20 @@ export default class Player extends RigidBody implements Importable<Player>, Exp
         //
     }
 
-    public import(player: Player) {
-        super.import(player);
-
-        this._direction = player._direction;
-    }
-
     public export(player: Player): any {
         const result: any = super.export(player);
         result._direction = this._direction;
         return result;
+    }
+
+    public compare(player: Player): boolean {
+        return super.compare(player) && this._direction === player._direction;
+    }
+
+    public import(player: Player) {
+        super.import(player);
+
+        this._direction = player._direction;
     }
 
     public static createNew(id: string, position: Vector2 = Vector2.ZERO): Player {

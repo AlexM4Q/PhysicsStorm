@@ -1,11 +1,10 @@
-import Importable from "./importable";
-import Exportable from "./exportable";
 import Viewport from "../data/viewport";
+import Transferable from "./transferable";
 
 /**
  * Игровой объект
  */
-export default abstract class GameObject implements Importable<GameObject>, Exportable<GameObject> {
+export default abstract class GameObject implements Transferable<GameObject> {
 
     private readonly _id: string;
 
@@ -23,6 +22,10 @@ export default abstract class GameObject implements Importable<GameObject>, Expo
 
     public import(gameObject: GameObject): void {
         this.color = gameObject.color;
+    }
+
+    public compare(gameObject: GameObject): boolean {
+        return this._id === gameObject._id && this.color === gameObject.color;
     }
 
     public export(gameObject: GameObject): any {

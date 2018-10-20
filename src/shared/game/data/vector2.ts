@@ -1,4 +1,8 @@
-export default class Vector2 {
+import Comparable from "../base/comparable";
+
+export default class Vector2 implements Comparable<Vector2> {
+
+    public static readonly TOLERANCE: number = 0.1;
 
     public static readonly ZERO: Vector2 = new Vector2();
 
@@ -130,6 +134,14 @@ export default class Vector2 {
         }
     }
 
+    public equals(vector: Vector2): boolean {
+        return this._x === vector._x && this._y === vector._y;
+    }
+
+    public compare(vector: Vector2, tolerance: number = Vector2.TOLERANCE): boolean {
+        return Math.abs(this._x - vector._x) < tolerance && Math.abs(this._y - vector._y) < tolerance;
+    }
+
     /**
      * Конвертирование произвольного объектв в вектор
      * @param target Произвольный объект
@@ -144,8 +156,8 @@ export default class Vector2 {
      * @param a Первый вектор
      * @param b Второй вектор
      */
-    public static equal(a: Vector2, b: Vector2): boolean {
-        return a && b && a._x === b._x && a._y === b._y;
+    public static equals(a: Vector2, b: Vector2): boolean {
+        return a && b && a.equals(b);
     }
 
 }

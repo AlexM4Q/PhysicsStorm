@@ -17,11 +17,13 @@ import {
     WS_KEY_INPUT_LEFT,
     WS_KEY_INPUT_RIGHT,
     WS_KEY_INPUT_STOP,
+    WS_KEY_TIME,
     WS_KEY_TYPE,
     WS_KEY_TYPE_STATE
 } from "../../shared/constants-ws";
 import {STATE_INTERVAL} from "../constants";
 import http from "http";
+import StateExporter from "./state-exporter";
 
 export default class ServerContext {
 
@@ -42,7 +44,8 @@ export default class ServerContext {
 
         setInterval(() => gameServer.sendAll({
             [WS_KEY_TYPE]: WS_KEY_TYPE_STATE,
-            [WS_KEY_DATA]: this._world.getState()
+            [WS_KEY_TIME]: Date.now(),
+            [WS_KEY_DATA]: StateExporter.export(this._world.particles)
         }), STATE_INTERVAL);
 
         gameServer.onConnection = (id: string) => {

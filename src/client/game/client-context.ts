@@ -1,5 +1,12 @@
 import Renderer from "./renderer";
-import {WS_KEY_DATA, WS_KEY_ID, WS_KEY_TYPE, WS_KEY_TYPE_REMOVE, WS_KEY_TYPE_STATE} from "../../shared/constants-ws";
+import {
+    WS_KEY_DATA,
+    WS_KEY_ID,
+    WS_KEY_TIME,
+    WS_KEY_TYPE,
+    WS_KEY_TYPE_REMOVE,
+    WS_KEY_TYPE_STATE
+} from "../../shared/constants-ws";
 import {decorate, inject, injectable} from "inversify";
 import {CLIENT_TYPES} from "../inversify.types";
 import GameClient from "./game-client";
@@ -7,6 +14,7 @@ import World from "../../shared/game/world";
 import Vector2 from "../../shared/game/data/vector2";
 import Particle from "../../shared/game/physics/particle";
 import Player from "../../shared/game/entities/player";
+import StateImporter from "./state-importer";
 
 export default class ClientContext {
 
@@ -28,6 +36,7 @@ export default class ClientContext {
 
         this._world.onWorldUpdate = () => {
             if (this._player) {
+                StateImporter.addState(this._world.particles);
                 this._renderer.draw(this._world.particles, this._player.position);
             }
         };
@@ -44,7 +53,9 @@ export default class ClientContext {
 
             switch (message[WS_KEY_TYPE]) {
                 case WS_KEY_TYPE_STATE:
-                    this._world.updateState(message[WS_KEY_DATA] as Particle[]);
+                    const timestamp: number = message[WS_KEY_TIME] as number;
+                    const particles: Particle[] = message[WS_KEY_DATA] as Particle[];
+                    StateImporter.import(this._world.particles, particles, timestamp);
                     break;
                 case WS_KEY_TYPE_REMOVE:
                     this._world.remove(message[WS_KEY_ID] as string);

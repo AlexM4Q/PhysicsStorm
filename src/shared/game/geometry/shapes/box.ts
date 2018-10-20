@@ -1,15 +1,14 @@
 import Vector2 from "../../data/vector2";
 import Shape from "./shape";
-import Importable from "../../base/importable";
 import Collidable from "./collidable";
 import Circle from "./circle";
 import CollisionDetector from "../collision-detector";
 import {metersToPixels} from "../../../utils/common-utils";
 import Polygon from "./polygon";
-import Exportable from "../../base/exportable";
 import Viewport from "../../data/viewport";
+import Transferable from "../../base/transferable";
 
-export default class Box extends Shape implements Collidable, Importable<Box>, Exportable<Box> {
+export default class Box extends Shape implements Collidable, Transferable<Box> {
 
     private readonly _halfSize: Vector2;
 
@@ -96,6 +95,10 @@ export default class Box extends Shape implements Collidable, Importable<Box>, E
         const result: any = super.export(box);
         result._halfSize = this._halfSize;
         return result;
+    }
+
+    public compare(box: Box): boolean {
+        return super.compare(box) && this._halfSize.equals(box._halfSize);
     }
 
 }

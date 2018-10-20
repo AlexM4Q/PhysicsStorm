@@ -1,13 +1,12 @@
 import Vector2 from "../data/vector2";
 import Box from "../geometry/shapes/box";
-import Importable from "../base/importable";
 import RigidBody from "../physics/rigid-body";
 import {METAL} from "../physics/material/materials";
 import EntityFactory from "../entity-factory";
 import TYPES from "../../inversify.types";
-import Exportable from "../base/exportable";
+import Transferable from "../base/transferable";
 
-export default class Block extends RigidBody implements Importable<Block>, Exportable<Block> {
+export default class Block extends RigidBody implements Transferable<Block> {
 
     public constructor(id: string, position: Vector2, halfSize: Vector2) {
         super(
